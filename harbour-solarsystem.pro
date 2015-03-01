@@ -10,19 +10,19 @@
 #   - translation filenames have to be changed
 
 # The name of your application
-TARGET = sailfish-solarsystem
+TARGET = harbour-solarsystem
 
 CONFIG += sailfishapp
 
-SOURCES += src/sailfish-solarsystem.cpp
+SOURCES += src/harbour-solarsystem.cpp
 
-OTHER_FILES += qml/sailfish-solarsystem.qml \
+OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/cover/CoverPage.qml \
-    rpm/sailfish-solarsystem.changes.in \
-    rpm/sailfish-solarsystem.spec \
-    rpm/sailfish-solarsystem.yaml \
+    rpm/harbour-solarsystem.changes.in \
+    rpm/harbour-solarsystem.spec \
+    rpm/harbour-solarsystem.yaml \
     translations/*.ts \
-    sailfish-solarsystem.desktop \
+    harbour-solarsystem.desktop \
     qml/gfx/venus.png \
     qml/gfx/uranus.png \
     qml/gfx/sun_light.png \
@@ -49,5 +49,5 @@ OTHER_FILES += qml/sailfish-solarsystem.qml \
 # to disable building translations every time, comment out the
 # following CONFIG line
 CONFIG += sailfishapp_i18n
-TRANSLATIONS += translations/sailfish-solarsystem-de.ts
+TRANSLATIONS += translations/harbour-solarsystem-de.ts
 

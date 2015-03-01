@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
 X-Nemo-Application-Type=silica-qt5
-Icon=sailfish-solarsystem
-Exec=sailfish-solarsystem
+Icon=harbour-solarsystem
+Exec=harbour-solarsystem
 Name=SolarSystem
 Name[de]=Sonnensystem
 

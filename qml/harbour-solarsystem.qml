@@ -33,6 +33,7 @@ ApplicationWindow
 
     initialPage: page
     cover: cover
+
     Component.onCompleted:
     {
         Storage.startInit();
