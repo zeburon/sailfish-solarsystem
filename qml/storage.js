@@ -28,13 +28,15 @@ function setValue(name, value)
     }
 
     var database = getDatabase();
-    var result = false;
     database.transaction(function(tx)
     {
-        var rs = tx.executeSql('INSERT OR REPLACE INTO memory VALUES (?,?);', [name, value.toString()]);
-        result = rs.rowsAffected > 0;
+        var result = tx.executeSql('INSERT OR REPLACE INTO memory VALUES (?,?);', [name, value.toString()]);
+        if (result.rowsAffected === 0)
+        {
+            return false;
+        }
     });
-    return result;
+    return true;
 }
 
 function getValue(name)
@@ -57,6 +59,6 @@ function destroyData()
     var database = getDatabase();
     database.transaction(function(tx)
     {
-        var rs = tx.executeSql('DROP TABLE memory');
+        tx.executeSql('DROP TABLE memory');
     });
 }
