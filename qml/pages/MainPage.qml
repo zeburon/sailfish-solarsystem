@@ -114,7 +114,7 @@ Page
                 animationIncrement: app.animationIncrement
                 simplifiedOrbits: app.simplifiedOrbits
                 zoomedOut: app.zoomedOut
-                animateSun: app.active
+                animateSun: page.active && app.active
                 animateZoom: app.initialized
                 Component.onCompleted:
                 {
