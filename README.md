@@ -17,4 +17,4 @@ SolarSystem is distributed in the hope that it will be useful, but WITHOUT ANY W
 You should have received a copy of the GNU General Public License along with SolarSystem. If not, see http://www.gnu.org/licenses/.
 
 
-Planet images based on photographs created by NASA & ESA
+Planet images based on photographs taken by NASA & ESA
