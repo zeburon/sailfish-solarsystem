@@ -20,15 +20,15 @@
         <translation></translation>
     </message>
     <message>
-        <source>You can find the source code at the</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>GitHub Project Page</source>
         <translation></translation>
     </message>
     <message>
         <source>Copyright © 2015 Lukas Fraser</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>You can find the source code at the</source>
         <translation></translation>
     </message>
 </context>

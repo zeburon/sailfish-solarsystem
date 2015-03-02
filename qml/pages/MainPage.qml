@@ -79,6 +79,8 @@ Page
                 onClicked:
                 {
                     app.simplifiedOrbits = !app.simplifiedOrbits;
+                    if (!app.simplifiedOrbits)
+                        zoomTextTimeout.start();
                 }
             }
         }
@@ -125,8 +127,8 @@ Page
                 {
                     id: zoomTextTimeout
                     repeat: false
-                    running: zoomImage.visible
-                    interval: 5000
+                    running: false
+                    interval: 3000
                 }
                 MouseArea
                 {
