@@ -10,6 +10,7 @@ Item
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         opacity: 0.35
+        scale: 2
 
         SequentialAnimation on rotation
         {
