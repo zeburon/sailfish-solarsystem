@@ -81,6 +81,10 @@
         <source>About Solar System</source>
         <translation></translation>
     </message>
+    <message>
+        <source>Click to toggle zoom</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>SolarSystem</name>

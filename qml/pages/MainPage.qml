@@ -95,11 +95,38 @@ Page
 
                 Image
                 {
+                    id: zoomImage
+
                     anchors.left: parent.left
                     anchors.leftMargin: Theme.paddingLarge
                     anchors.verticalCenter: parent.verticalCenter
                     visible: !app.simplifiedOrbits
                     source: app.zoomedOut ? "image://theme/icon-camera-zoom-in" : "image://theme/icon-camera-zoom-out"
+                }
+                Text
+                {
+                    id: zoomText
+
+                    anchors.left: zoomImage.right
+                    anchors.verticalCenter: zoomImage.verticalCenter
+                    anchors.margins: Theme.paddingSmall
+                    text: qsTr("Click to toggle zoom")
+                    visible: zoomImage.visible
+                    color: Theme.secondaryHighlightColor
+                    font.pixelSize: Theme.fontSizeTiny
+                    opacity: zoomTextTimeout.running ? 1 : 0
+
+                    Behavior on opacity
+                    {
+                        NumberAnimation { easing.type: Easing.InOutQuart; duration: 500 }
+                    }
+                }
+                Timer
+                {
+                    id: zoomTextTimeout
+                    repeat: false
+                    running: zoomImage.visible
+                    interval: 5000
                 }
                 MouseArea
                 {
