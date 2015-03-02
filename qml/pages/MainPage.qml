@@ -51,6 +51,14 @@ Page
         {
             MenuItem
             {
+                text: qsTr("About Solar System")
+                onClicked:
+                {
+                    pageStack.push(Qt.resolvedUrl("AboutPage.qml"));
+                }
+            }
+            MenuItem
+            {
                 text: app.showLabels ? qsTr("Hide Labels") : qsTr("Show Labels")
                 onClicked:
                 {

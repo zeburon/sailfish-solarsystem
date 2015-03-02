@@ -37,6 +37,7 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/gfx/earth.png \
     qml/components/Sun.qml \
     qml/pages/MainPage.qml \
+    qml/pages/AboutPage.qml \
     qml/components/SolarSystem.qml \
     qml/storage.js \
     qml/calculation.js \
@@ -44,7 +45,8 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/components/PlanetLabel.qml \
     qml/gfx/shadow2.png \
     qml/components/PlanetInfo.qml \
-    qml/components/PlanetOrbits.qml
+    qml/components/PlanetOrbits.qml \
+    qml/globals.js
 
 # to disable building translations every time, comment out the
 # following CONFIG line

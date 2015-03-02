@@ -2,10 +2,41 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
+    <name>AboutPage</name>
+    <message>
+        <source>Solar System</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Version %1</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Planet images based on photographs taken by NASA and ESA (public domain)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>This program is open source software licensed under the terms of the GNU General Public License.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>You can find the source code at the</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>GitHub Project Page</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Copyright © 2015 Lukas Fraser</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>CoverPage</name>
     <message>
         <source>Distance to %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -44,6 +75,10 @@
     </message>
     <message>
         <source>Simplified Orbits</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>About Solar System</source>
         <translation></translation>
     </message>
 </context>
