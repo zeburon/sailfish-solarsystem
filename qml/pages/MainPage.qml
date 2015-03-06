@@ -282,8 +282,27 @@ Page
         repeat: true
         onTriggered:
         {
-            var newDate = new Date(date);
+            var newDate = new Date(app.date);
             newDate.setDate(newDate.getDate() + animationIncrement * app.animationDirection);
+
+            // QDateTime documentation:
+            // There is no year 0. Dates in that year are considered invalid.
+            // The year -1 is the year "1 before Christ" or "1 before current era." The day before 1 January 1 CE is 31 December 1 BCE.
+
+            // HOWEVER:
+            // subtracting one day from january first of the year 1 will make the year jump to 0.
+            // this makes the whole date invalid, as there is no year 0 according to the documentation.
+            if (newDate.getFullYear() === 0)
+            {
+                newDate.setFullYear(app.animationDirection);
+            }
+            // next problem: if we assign a date with a negative year to a different date, the year is increased by one.
+            // year -1 becomes year 0, which is invalid yet again.
+            // 'solution': subtract one year, which will be added again during assignment.
+            if (newDate.getFullYear() < 0)
+            {
+                newDate.setFullYear(newDate.getFullYear() - 1);
+            }
             app.date = newDate;
         }
     }
