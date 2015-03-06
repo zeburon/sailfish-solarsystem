@@ -1,7 +1,5 @@
-// number of days since start of century
-var d;
-// centuries since J2000
-var cy;
+var daysSinceJ2000;
+var centuriesSinceJ2000;
 
 // size of one astronomical unit
 var au;
@@ -32,9 +30,8 @@ function setDate(newDate)
     var year = newDate.getFullYear();
     var month = newDate.getMonth() + 1;
     var day = newDate.getDate();
-
-    d = 367 * year - (7 * (year + ((month + 9) / 12))) / 4 + (275 * month) / 9 + day - 730530;
-    cy = d / 36525;
+    daysSinceJ2000 = 367 * year - (7 * (year + ((month + 9) / 12))) / 4 + (275 * month) / 9 + day - 730530;
+    centuriesSinceJ2000 = daysSinceJ2000 / 36525;
 }
 
 function setOrbitParameters(newAu, newSimplified)
@@ -57,12 +54,12 @@ function iterate(m, e)
 
 function calculateEclipticCoordinates(planet)
 {
-    var a = planet.a1 + cy * planet.a2;
-    var e = planet.e1 + cy * planet.e2;
-    var i = deg2rad(planet.i1 + cy * planet.i2);
-    var l = deg2rad(planet.l1 + cy * planet.l2);
-    var w = deg2rad(planet.w1 + cy * planet.w2);
-    var o = deg2rad(planet.o1 + cy * planet.o2);
+    var a = planet.a1 + centuriesSinceJ2000 * planet.a2;
+    var e = planet.e1 + centuriesSinceJ2000 * planet.e2;
+    var i = deg2rad(planet.i1 + centuriesSinceJ2000 * planet.i2);
+    var l = deg2rad(planet.l1 + centuriesSinceJ2000 * planet.l2);
+    var w = deg2rad(planet.w1 + centuriesSinceJ2000 * planet.w2);
+    var o = deg2rad(planet.o1 + centuriesSinceJ2000 * planet.o2);
 
     var ww = w - o;
     var m = mod2pi(l - w);
