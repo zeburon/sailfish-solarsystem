@@ -120,5 +120,9 @@
         <source>Neptune</source>
         <translation>Neptun</translation>
     </message>
+    <message>
+        <source>Pluto</source>
+        <translation>Pluto</translation>
+    </message>
 </context>
 </TS>

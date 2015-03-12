@@ -21,11 +21,11 @@ Item
     property real radiusSunOffset: Math.max(40, Math.min(width, height) / 20) * imageScale
     property real radiusBorderOffset: 15
     property real radiusRange: Math.min(width / 2, height / 2) - radiusBorderOffset - radiusSunOffset
-    property real radiusIncrement: radiusRange / 7
+    property real radiusIncrement: radiusRange / (planetInfos.length - 1)
     property real au: earth.orbitSimplifiedRadius
 
     property real currentZoom: simplifiedOrbits ? 1.0 : currentZoomRealistic
-    property real currentZoomRealistic: zoomedOut ? 0.08 : 1.0
+    property real currentZoomRealistic: zoomedOut ? 0.06 : 1.0
     property bool animateZoom: false
 
     property list<PlanetInfo> planetInfos:
@@ -155,6 +155,23 @@ Item
             l1: 304.22289287; l2: 218.46515314; b: -0.00041348; c: 0.68346318; s: -0.10162547; f: 7.67025000
             w1: 46.68158724; w2: 0.01009938
             o1: 131.78635853; o2: -0.00606302
+        },
+        PlanetInfo
+        {
+            id: pluto
+
+            name: qsTr("Pluto")
+            imageSource: "../gfx/pluto.png"
+            orbitColor: "#73a7fe"
+            orbitSimplifiedRadius: radiusSunOffset + radiusIncrement * 8
+            positionCorrectionFactorX: 1.021
+            positionCorrectionFactorY: 0.982
+            a1: 39.48686035; a2: 0.00449751
+            e1: 0.24885238; e2: 0.00006016
+            i1: 17.14104260; i2: 0.00000501
+            l1: 238.96535011; l2: 145.18042903; b: -0.01262724
+            w1: 224.09702598; w2: -0.00968827
+            o1: 110.30167986; o2: -0.00809981
         }
     ]
 
