@@ -209,7 +209,10 @@ Page
                         opacity: 0.75
                         onClicked:
                         {
-                            app.date = new Date(Date.now());
+                            var newDate = new Date(Date.now());
+                            newDate.setHours(0);
+                            newDate.setMinutes(0);
+                            app.date = newDate;
                         }
                     }
                     Label
@@ -283,6 +286,11 @@ Page
         onTriggered:
         {
             var newDate = new Date(app.date);
+            newDate.setHours(0);
+            newDate.setMinutes(0);
+            newDate.setSeconds(0);
+            newDate.setMilliseconds(0);
+
             newDate.setDate(newDate.getDate() + animationIncrement * app.animationDirection);
 
             // QDateTime documentation:
@@ -303,7 +311,17 @@ Page
             {
                 newDate.setFullYear(newDate.getFullYear() - 1);
             }
-            app.date = newDate;
+
+
+            if (Calculation.isDateValid(newDate))
+            {
+                app.date = newDate;
+            }
+            else
+            {
+                console.log("reached illegal date. stopping animation");
+                app.animationEnabled = false;
+            }
         }
     }
 }

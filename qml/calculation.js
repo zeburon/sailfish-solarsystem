@@ -1,11 +1,11 @@
 var daysSinceJ2000;
 var centuriesSinceJ2000;
 
-// size of one astronomical unit
-var au;
-
 // use simplified calculation
 var simplified = true;
+
+// size of one astronomical unit
+var au;
 
 // precision of iterate function
 var numIterations = 3;
@@ -23,6 +23,15 @@ function mod2pi(angle)
         result += 2.0 * Math.PI
     }
     return result;
+}
+
+function isDateValid(d)
+{
+    if (Object.prototype.toString.call(d) !== "[object Date]")
+    {
+        return false;
+    }
+    return !isNaN(d.getTime());
 }
 
 function setDate(newDate)
@@ -61,16 +70,22 @@ function calculateEclipticCoordinates(planet)
     var w = deg2rad(planet.w1 + centuriesSinceJ2000 * planet.w2);
     var o = deg2rad(planet.o1 + centuriesSinceJ2000 * planet.o2);
 
+    var b = deg2rad(planet.b);
+    var c = deg2rad(planet.c);
+    var s = deg2rad(planet.s);
+    var f = deg2rad(planet.f);
+
     var ww = w - o;
-    var m = mod2pi(l - w);
+    var m = mod2pi(l - w  + b * centuriesSinceJ2000 * centuriesSinceJ2000 + c * Math.cos(f * centuriesSinceJ2000) + s * Math.sin(f * centuriesSinceJ2000));
     var ea = iterate(m, e);
 
     var x = a * (Math.cos(ea) - e);
     var y = a * Math.sqrt(1.0 - e * e) * Math.sin(ea);
 
-    var xEcliptic = ((Math.cos(ww) * Math.cos(o) - Math.sin(ww) * Math.sin(o) * Math.cos(i)) * x + (-Math.sin(ww) * Math.cos(o) - Math.cos(ww) * Math.sin(o) * Math.cos(i)) * y);
-    var yEcliptic = ((Math.cos(ww) * Math.sin(o) + Math.sin(ww) * Math.cos(o) * Math.cos(i)) * x + (-Math.sin(ww) * Math.sin(o) + Math.cos(ww) * Math.cos(o) * Math.cos(i)) * y);
-    return [xEcliptic, yEcliptic];
+    var xEcliptic = (Math.cos(ww) * Math.cos(o) - Math.sin(ww) * Math.sin(o) * Math.cos(i)) * x + (-Math.sin(ww) * Math.cos(o) - Math.cos(ww) * Math.sin(o) * Math.cos(i)) * y;
+    var yEcliptic = (Math.cos(ww) * Math.sin(o) + Math.sin(ww) * Math.cos(o) * Math.cos(i)) * x + (-Math.sin(ww) * Math.sin(o) + Math.cos(ww) * Math.cos(o) * Math.cos(i)) * y;
+
+    return [xEcliptic * planet.positionCorrectionFactorX, yEcliptic * planet.positionCorrectionFactorY];
 }
 
 function updatePlanetPosition(planet)
