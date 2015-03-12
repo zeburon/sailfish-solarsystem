@@ -38,7 +38,6 @@ Item
             imageSource: "../gfx/mercury.png"
             imageZoomedOutScale: 0.0
             orbitColor: "#8d8d8d"
-            orbitSimplifiedRadius: radiusSunOffset + radiusIncrement * 0
             a1: 0.38709843; a2: 0.00000000
             e1: 0.20563661; e2: 0.00002123
             i1: 7.00559432; i2: -0.00590158
@@ -54,7 +53,6 @@ Item
             imageSource: "../gfx/venus.png"
             imageZoomedOutScale: 0.1
             orbitColor: "#e8bb79"
-            orbitSimplifiedRadius: radiusSunOffset + radiusIncrement * 1
             a1: 0.72332102; a2: -0.00000026
             e1: 0.00676399; e2: -0.00005107
             i1: 3.39777545; i2: 0.00043494
@@ -72,7 +70,6 @@ Item
             useInPlanetDistanceList: false
             orbitColor: "#ffffff"
             orbitAlpha: 0.55
-            orbitSimplifiedRadius: radiusSunOffset + radiusIncrement * 2
             a1: 1.00000018; a2: -0.00000003
             e1: 0.01673163; e2: -0.00003661
             i1: -0.00054346; i2: -0.01337178
@@ -88,7 +85,6 @@ Item
             imageSource: "../gfx/mars.png"
             imageZoomedOutScale: 0.3
             orbitColor: "#e58e5c"
-            orbitSimplifiedRadius: radiusSunOffset + radiusIncrement * 3
             a1: 1.52371243; a2: 0.00000097
             e1: 0.09336511; e2: 0.00009149
             i1: 1.85181869; i2: -0.00724757
@@ -103,7 +99,6 @@ Item
             name: qsTr("Jupiter")
             imageSource: "../gfx/jupiter.png"
             orbitColor: "#e4d6cd"
-            orbitSimplifiedRadius: radiusSunOffset + radiusIncrement * 4
             a1: 5.20248019; a2: -0.00002864
             e1: 0.04853590; e2: 0.00018026
             i1: 1.29861416; i2: -0.00322699
@@ -118,7 +113,6 @@ Item
             name: qsTr("Saturn")
             imageSource: "../gfx/saturn.png"
             orbitColor: "#e3c9a3"
-            orbitSimplifiedRadius: radiusSunOffset + radiusIncrement * 5
             a1: 9.54149883; a2: -0.00003065
             e1: 0.05550825; e2: -0.00032044
             i1: 2.49424102; i2: 0.00451969
@@ -133,7 +127,6 @@ Item
             name: qsTr("Uranus")
             imageSource: "../gfx/uranus.png"
             orbitColor: "#c2e5eb"
-            orbitSimplifiedRadius: radiusSunOffset + radiusIncrement * 6
             a1: 19.18797948; a2: -0.00020455
             e1: 0.04685740; e2: -0.00001550
             i1: 0.77298127; i2: -0.00180155
@@ -148,7 +141,6 @@ Item
             name: qsTr("Neptune")
             imageSource: "../gfx/neptune.png"
             orbitColor: "#73a7fe"
-            orbitSimplifiedRadius: radiusSunOffset + radiusIncrement * 7
             a1: 30.06952752; a2: 0.00006447
             e1: 0.00895439; e2: 0.00000818
             i1: 1.77005520; i2: 0.00022400
@@ -163,7 +155,6 @@ Item
             name: qsTr("Pluto")
             imageSource: "../gfx/pluto.png"
             orbitColor: "#73a7fe"
-            orbitSimplifiedRadius: radiusSunOffset + radiusIncrement * 8
             positionCorrectionFactorX: 1.021
             positionCorrectionFactorY: 0.982
             a1: 39.48686035; a2: 0.00449751
@@ -216,9 +207,12 @@ Item
 
     Component.onCompleted:
     {
-        for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
+        // automatically sort images and labels by creating planets in reverse order
+        for (var planetIdx = planetInfos.length - 1; planetIdx >= 0; --planetIdx)
         {
-            var planetInfo = planetInfos[planetInfos.length - planetIdx - 1];
+            var planetInfo = planetInfos[planetIdx];
+            planetInfo.orbitSimplifiedRadius = radiusSunOffset + radiusIncrement * planetIdx;
+
             var planetImage = planetImageComponent.createObject(images, {"planetInfo": planetInfo});
             var planetLabel = planetLabelComponent.createObject(labels, {"planetInfo": planetInfo, "yOffset": planetImage.size});
         }
