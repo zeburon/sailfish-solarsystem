@@ -42,6 +42,10 @@
 <context>
     <name>MainPage</name>
     <message>
+        <source>About Solar System</source>
+        <translation></translation>
+    </message>
+    <message>
         <source>Hide Labels</source>
         <translation></translation>
     </message>
@@ -58,18 +62,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>Solar System</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Today</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Increment: %1 day(s)</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Realistic Orbits</source>
         <translation></translation>
     </message>
@@ -78,11 +70,19 @@
         <translation></translation>
     </message>
     <message>
-        <source>About Solar System</source>
+        <source>Solar System</source>
         <translation></translation>
     </message>
     <message>
         <source>Click to toggle zoom</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Today</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Animation Speed</source>
         <translation></translation>
     </message>
 </context>

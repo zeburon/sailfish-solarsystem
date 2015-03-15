@@ -67,7 +67,7 @@
     </message>
     <message>
         <source>Increment: %1 day(s)</source>
-        <translation>Schrittweite: %1 Tag(e)</translation>
+        <translation type="vanished">Schrittweite: %1 Tag(e)</translation>
     </message>
     <message>
         <source>Realistic Orbits</source>
@@ -84,6 +84,10 @@
     <message>
         <source>Click to toggle zoom</source>
         <translation>Klicke um zu zoomen</translation>
+    </message>
+    <message>
+        <source>Animation Speed</source>
+        <translation>Geschwindigkeit</translation>
     </message>
 </context>
 <context>

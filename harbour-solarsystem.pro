@@ -47,7 +47,8 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/components/PlanetInfo.qml \
     qml/components/PlanetOrbits.qml \
     qml/globals.js \
-    qml/gfx/pluto.png
+    qml/gfx/pluto.png \
+    qml/components/DateDisplay.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line

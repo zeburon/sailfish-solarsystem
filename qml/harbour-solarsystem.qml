@@ -22,7 +22,7 @@ ApplicationWindow
     property string showOrbitsString: "showOrbits"
     property date date: new Date(Date.now())
     property string dateString: "date"
-    property int animationIncrement: 5
+    property int animationIncrement: 1
     property string animationIncrementString: "animationIncrement"
     property bool simplifiedOrbits: true
     property string simplifiedOrbitsString: "simplifiedOrbits"
@@ -31,63 +31,65 @@ ApplicationWindow
     property int distancePlanetIdx: 0
     property string distancePlanetIdxString: "distancePlanetIdx"
 
-    initialPage: page
+    initialPage: mainPage
     cover: cover
 
     Component.onCompleted:
     {
         Storage.startInit();
+
+        // load date
         var storedDate = Storage.getValue(dateString);
         if (storedDate)
             date = new Date(storedDate);
 
+        // load animationIncrement
         var storedAnimationIncrement = Storage.getValue(animationIncrementString);
         if (storedAnimationIncrement)
             animationIncrement = storedAnimationIncrement;
 
+        // load showOrbits
         var storedShowOrbits = Storage.getValue(showOrbitsString);
         if (storedShowOrbits)
             showOrbits = storedShowOrbits === "true";
 
+        // load showLabels
         var storedShowLabels = Storage.getValue(showLabelsString);
         if (storedShowLabels)
             showLabels = storedShowLabels === "true";
 
+        // load simplifiedOrbits
         var storedSimplifiedOrbits = Storage.getValue(simplifiedOrbitsString);
         if (storedSimplifiedOrbits)
             simplifiedOrbits = storedSimplifiedOrbits === "true";
 
+        // load zoomedOut
         var storedZoomedOut = Storage.getValue(zoomedOutString);
         if (storedZoomedOut)
             zoomedOut = storedZoomedOut === "true";
 
-        var storedDistancePlanceIdx = Storage.getValue(distancePlanetIdxString);
-        if (storedDistancePlanceIdx)
-            distancePlanetIdx = storedDistancePlanceIdx;
+        // load distancePlanetIdx
+        var storedDistancePlanetIdx = Storage.getValue(distancePlanetIdxString);
+        if (storedDistancePlanetIdx)
+            distancePlanetIdx = storedDistancePlanetIdx;
 
+        mainPage.init();
         Storage.finishInit();
         initialized = true;
-
         cover.refresh();
     }
     onActiveChanged:
     {
         animationEnabled = false;
-        page.refresh();
-    }
-    onDateChanged:
-    {
-        if (!animationEnabled)
-            Storage.setValue(dateString, date);
+        mainPage.refresh();
     }
     onAnimationEnabledChanged:
     {
         if (!animationEnabled)
+        {
             Storage.setValue(dateString, date);
-    }
-    onAnimationIncrementChanged:
-    {
-        Storage.setValue(animationIncrementString, animationIncrement);
+            Storage.setValue(animationIncrementString, animationIncrement);
+        }
     }
     onShowOrbitsChanged:
     {
@@ -96,6 +98,18 @@ ApplicationWindow
     onShowLabelsChanged:
     {
         Storage.setValue(showLabelsString, showLabels);
+    }
+    onDateChanged:
+    {
+        // value keeps changing as long as animation is enabled. store when animation is disabled
+        if (!animationEnabled)
+            Storage.setValue(dateString, date);
+    }
+    onAnimationIncrementChanged:
+    {
+        // value keeps changing as long as animation is enabled. store when animation is disabled
+        if (!animationEnabled)
+            Storage.setValue(animationIncrementString, animationIncrement);
     }
     onSimplifiedOrbitsChanged:
     {
@@ -112,7 +126,7 @@ ApplicationWindow
 
     MainPage
     {
-        id: page
+        id: mainPage
     }
     CoverPage
     {

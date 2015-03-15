@@ -3,12 +3,33 @@ import Sailfish.Silica 1.0
 
 import "../components"
 import "../calculation.js" as Calculation
+import "../globals.js" as Globals
 
 Page
 {
     id: page
 
     property bool active: status === PageStatus.Active
+
+    function init()
+    {
+        loadAnimationIncrement();
+        solarSystem.update();
+    }
+
+    function loadAnimationIncrement()
+    {
+        var diff = Globals.MAX_ANIMATION_INCREMENT - Globals.MIN_ANIMATION_INCREMENT;
+        var s = (app.animationIncrement - Globals.MIN_ANIMATION_INCREMENT) / diff;
+        s = Math.max(0.0, Math.min(1.0, s));
+        animationIncrementSlider.value = Math.pow(s, 1.0 / 3.0);
+    }
+
+    function saveAnimationIncrement()
+    {
+        var s = Math.pow(animationIncrementSlider.value, 3.0);
+        app.animationIncrement = Math.round(Globals.MIN_ANIMATION_INCREMENT * (1.0 - s) + Globals.MAX_ANIMATION_INCREMENT * s);
+    }
 
     function selectDate()
     {
@@ -46,6 +67,7 @@ Page
     {
         anchors.fill: parent
         contentHeight: column.height
+        visible: app.initialized
 
         PullDownMenu
         {
@@ -89,7 +111,7 @@ Page
             id: column
 
             width: page.width
-            spacing: Theme.paddingMedium
+            spacing: Theme.paddingSmall
 
             PageHeader
             {
@@ -156,18 +178,11 @@ Page
                 Component.onCompleted:
                 {
                     solarSystem.clicked.connect(toggleZoom);
-                    solarSystem.update();
                 }
             }
-            Label
+            DateDisplay
             {
-                width: parent.width
-                height: font.pixelSize + Theme.paddingLarge
-                horizontalAlignment: Text.AlignHCenter
-                text: Qt.formatDate(app.date)
-                color: Theme.primaryColor
-                font.family: Theme.fontFamily
-                font.pixelSize: Theme.fontSizeLarge
+                width: column.width
 
                 MouseArea
                 {
@@ -237,41 +252,18 @@ Page
                     }
                 }
             }
-            Row
-            {
-                spacing: Theme.paddingMedium
-                anchors.horizontalCenter: parent.horizontalCenter
+            Slider {
+                id: animationIncrementSlider
 
-                IconButton
+                width: parent.width
+                anchors.horizontalCenter: parent.horizontalCenter
+                minimumValue: 0
+                maximumValue: 1
+                handleVisible: true
+                label: qsTr("Animation Speed")
+                onValueChanged:
                 {
-                    icon.source: "image://theme/icon-l-left"
-                    enabled: app.animationIncrement > 1
-                    onClicked:
-                    {
-                        if (app.animationIncrement <= 5)
-                            app.animationIncrement -= 1;
-                        else
-                            app.animationIncrement -= 5;
-                    }
-                }
-                Label
-                {
-                    text: qsTr("Increment: %1 day(s)").arg(app.animationIncrement)
-                    color: Theme.highlightColor
-                    font.family: Theme.fontFamilyHeading
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-                IconButton
-                {
-                    icon.source: "image://theme/icon-l-right"
-                    enabled: app.animationIncrement < 200
-                    onClicked:
-                    {
-                        if (app.animationIncrement < 5)
-                            app.animationIncrement += 1;
-                        else
-                            app.animationIncrement += 5;
-                    }
+                    saveAnimationIncrement();
                 }
             }
         }
@@ -280,17 +272,14 @@ Page
     {
         id: timer
 
-        interval: 50
+        interval: Globals.ANIMATION_INTERVAL_MS
         running: app.animationEnabled
         repeat: true
         onTriggered:
         {
             var newDate = new Date(app.date);
-            newDate.setHours(0);
+            newDate.setHours(12);
             newDate.setMinutes(0);
-            newDate.setSeconds(0);
-            newDate.setMilliseconds(0);
-
             newDate.setDate(newDate.getDate() + animationIncrement * app.animationDirection);
 
             // QDateTime documentation:
@@ -311,7 +300,6 @@ Page
             {
                 newDate.setFullYear(newDate.getFullYear() - 1);
             }
-
 
             if (Calculation.isDateValid(newDate))
             {
