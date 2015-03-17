@@ -7,8 +7,8 @@ QtObject
 
     property string name
     property string imageSource
+    property real imageZoomedInScale: 1.0
     property real imageZoomedOutScale: 1.0
-    property real currentFadeOutValue: 1.0 - (1.0 - currentZoom) * (1.0 - imageZoomedOutScale)
     property bool useInPlanetDistanceList: true
 
     // -----------------------------------------------------------------------
@@ -68,5 +68,12 @@ QtObject
 
     property real calculatedX
     property real calculatedY
-    property real calculatedShadowRotation
+    property real calculatedZ
+
+    // -----------------------------------------------------------------------
+    // dynamic parameters used for displaying the current state
+
+    property real currentShadowRotation: Math.atan2(calculatedY + calculatedZ, calculatedX) * 180 / Math.PI;
+    property real currentOpacityFactor: simplifiedOrbits ? 1.0 : (1.0 - ((1.0 - currentZoom) * (1.0 - imageZoomedOutScale) + currentZoom * (1.0 - imageZoomedInScale)))
+
 }

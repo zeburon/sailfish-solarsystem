@@ -25,8 +25,16 @@ Item
     property real au: earth.orbitSimplifiedRadius
 
     property real currentZoom: simplifiedOrbits ? 1.0 : currentZoomRealistic
-    property real currentZoomRealistic: zoomedOut ? 0.06 : 1.0
+    property real currentZoomRealistic: zoomedOut ? 0.059 : 1.0
     property bool animateZoom: false
+
+    property real currentOffsetRealisticX: zoomedOut ? -width / 12 : 0.0
+    property real currentOffsetRealisticY: zoomedOut ? -height / 8 : 0.0
+
+    /*
+    x: simplifiedOrbits ? 0.0 : currentOffsetRealisticX
+    y: simplifiedOrbits ? 0.0 : currentOffsetRealisticY
+    */
 
     property list<PlanetInfo> planetInfos:
     [
@@ -98,6 +106,7 @@ Item
 
             name: qsTr("Jupiter")
             imageSource: "../gfx/jupiter.png"
+            imageZoomedInScale: 0.0
             orbitColor: "#e4d6cd"
             a1: 5.20248019; a2: -0.00002864
             e1: 0.04853590; e2: 0.00018026
@@ -112,6 +121,7 @@ Item
 
             name: qsTr("Saturn")
             imageSource: "../gfx/saturn.png"
+            imageZoomedInScale: 0.0
             orbitColor: "#e3c9a3"
             a1: 9.54149883; a2: -0.00003065
             e1: 0.05550825; e2: -0.00032044
@@ -126,6 +136,7 @@ Item
 
             name: qsTr("Uranus")
             imageSource: "../gfx/uranus.png"
+            imageZoomedInScale: 0.0
             orbitColor: "#c2e5eb"
             a1: 19.18797948; a2: -0.00020455
             e1: 0.04685740; e2: -0.00001550
@@ -140,6 +151,7 @@ Item
 
             name: qsTr("Neptune")
             imageSource: "../gfx/neptune.png"
+            imageZoomedInScale: 0.0
             orbitColor: "#73a7fe"
             a1: 30.06952752; a2: 0.00006447
             e1: 0.00895439; e2: 0.00000818
@@ -154,6 +166,7 @@ Item
 
             name: qsTr("Pluto")
             imageSource: "../gfx/pluto.png"
+            imageZoomedInScale: 0.0
             orbitColor: "#73a7fe"
             positionCorrectionFactorX: 1.021
             positionCorrectionFactorY: 0.982
@@ -202,8 +215,6 @@ Item
         }
         return result;
     }
-
-    clip: true
 
     Component.onCompleted:
     {
@@ -270,8 +281,6 @@ Item
         planetInfos: root.planetInfos
         lineThickness: orbitThickness
         visible: showOrbits
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
         anchors.fill: parent
         z: 1
     }

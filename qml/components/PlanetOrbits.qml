@@ -27,7 +27,7 @@ Canvas
             context.beginPath();
             context.arc(0.0, 0.0, a, 0.0, 2.0 * Math.PI);
             context.restore();
-            context.globalAlpha = planetInfo.orbitAlpha * planetInfo.currentFadeOutValue;
+            context.globalAlpha = planetInfo.orbitAlpha * planetInfo.currentOpacityFactor;
             context.lineWidth = lineThickness;
             context.strokeStyle = planetInfo.orbitColor;
             context.stroke();

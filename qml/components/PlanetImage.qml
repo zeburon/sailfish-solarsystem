@@ -8,9 +8,9 @@ Item
     property alias size: image.height
 
     x: planetInfo.calculatedX * currentZoom
-    y: planetInfo.calculatedY * currentZoom
-    scale: imageScale * planetInfo.currentFadeOutValue
-    opacity: imageOpacity
+    y: planetInfo.calculatedY * currentZoom + planetInfo.calculatedZ * currentZoom
+    scale: imageScale * planetInfo.currentOpacityFactor
+    opacity: imageOpacity * planetInfo.currentOpacityFactor
 
     Image
     {
@@ -21,13 +21,40 @@ Item
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
     }
+    Rectangle
+    {
+        id: zIndicator
+
+        width: 4
+        radius: 2
+        z: -1
+        height: Math.abs(planetInfo.calculatedZ * currentZoom)
+        color: planetInfo.calculatedZ < 0.0 ? "green" : "red"
+        opacity: 0.3
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: planetInfo.calculatedZ > 0.0 ? -height : 0
+
+        Rectangle
+        {
+            id: zIndicatorBase
+
+            width: 8
+            height: width
+            radius: width / 2
+            anchors.verticalCenter: planetInfo.calculatedZ < 0 ? parent.bottom : parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
+            color: parent.color
+        }
+    }
+
     Item
     {
         id: shadow
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
-        rotation: planetInfo.calculatedShadowRotation
+        rotation: planetInfo.currentShadowRotation
 
         Image
         {

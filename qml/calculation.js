@@ -84,33 +84,39 @@ function calculateEclipticCoordinates(planet)
 
     var xEcliptic = (Math.cos(ww) * Math.cos(o) - Math.sin(ww) * Math.sin(o) * Math.cos(i)) * x + (-Math.sin(ww) * Math.cos(o) - Math.cos(ww) * Math.sin(o) * Math.cos(i)) * y;
     var yEcliptic = (Math.cos(ww) * Math.sin(o) + Math.sin(ww) * Math.cos(o) * Math.cos(i)) * x + (-Math.sin(ww) * Math.sin(o) + Math.cos(ww) * Math.cos(o) * Math.cos(i)) * y;
+    var zEcliptic = (Math.sin(ww) * Math.sin(i)) * x + (Math.cos(ww)* Math.sin(i)) * y;
 
-    return [xEcliptic * planet.positionCorrectionFactorX, yEcliptic * planet.positionCorrectionFactorY];
+    return [xEcliptic * planet.positionCorrectionFactorX, yEcliptic * planet.positionCorrectionFactorY, zEcliptic];
 }
 
 function updatePlanetPosition(planet)
 {
-    var coordinates = calculateEclipticCoordinates(planet);
-    var x = au * coordinates[0];
-    var y = au * coordinates[1];
-
+    var eclipticCoordinates = calculateEclipticCoordinates(planet);
+    var x, y, z;
     if (simplified)
     {
-        var angle = Math.atan2(y, x);
+        var angle = Math.atan2(eclipticCoordinates[1], eclipticCoordinates[0]);
         x = planet.orbitSimplifiedRadius * Math.cos(angle);
         y = planet.orbitSimplifiedRadius * Math.sin(angle);
+        z = 0.0;
     }
-
+    else
+    {
+        x = au * eclipticCoordinates[0];
+        y = au * eclipticCoordinates[1];
+        z = au * eclipticCoordinates[2];
+    }
     planet.calculatedX = Math.round(x);
     planet.calculatedY = Math.round(-y);
-    planet.calculatedShadowRotation = Math.atan2(planet.calculatedY, planet.calculatedX) * 180 / Math.PI;
+    planet.calculatedZ = Math.round(z);
 }
 
 function getDistanceBetweenPlanets(planet1, planet2)
 {
-    var coordinates1 = calculateEclipticCoordinates(planet1);
-    var coordinates2 = calculateEclipticCoordinates(planet2);
-    var dx = coordinates1[0] - coordinates2[0];
-    var dy = coordinates1[1] - coordinates2[1];
-    return Math.sqrt(dx * dx + dy * dy);
+    var eclipticCoordinates1 = calculateEclipticCoordinates(planet1);
+    var eclipticCoordinates2 = calculateEclipticCoordinates(planet2);
+    var dx = eclipticCoordinates1[0] - eclipticCoordinates2[0];
+    var dy = eclipticCoordinates1[1] - eclipticCoordinates2[1];
+    var dz = eclipticCoordinates1[2] - eclipticCoordinates2[2];
+    return Math.sqrt(dx * dx + dy * dy + dz * dz);
 }

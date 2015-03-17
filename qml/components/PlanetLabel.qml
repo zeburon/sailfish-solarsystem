@@ -8,7 +8,7 @@ Item
 
     x: planetInfo.calculatedX * currentZoom
     y: planetInfo.calculatedY * currentZoom + yOffset * 0.75
-    opacity: planetInfo.currentFadeOutValue
+    opacity: planetInfo.currentOpacityFactor
 
     Label
     {
