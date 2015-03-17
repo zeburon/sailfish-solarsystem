@@ -10,6 +10,8 @@ Page
     id: page
 
     property bool active: status === PageStatus.Active
+    property bool animatingBackward: app.animationEnabled && app.animationDirection == -1
+    property bool animatingForward: app.animationEnabled && app.animationDirection == 1
 
     function init()
     {
@@ -161,6 +163,7 @@ Page
                     }
                 }
             }
+
             SolarSystem
             {
                 id: solarSystem
@@ -180,6 +183,7 @@ Page
                     solarSystem.clicked.connect(toggleZoom);
                 }
             }
+
             DateDisplay
             {
                 width: column.width
@@ -193,6 +197,7 @@ Page
                     }
                 }
             }
+
             Row
             {
                 spacing: Theme.paddingLarge * 2
@@ -200,9 +205,9 @@ Page
 
                 IconButton
                 {
-                    id: togglePlayBackward
+                    id: toggleAnimateBackward
 
-                    icon.source: (app.animationEnabled && app.animationDirection == -1) ? "image://theme/icon-l-pause" : "image://theme/icon-l-play"
+                    icon.source: animatingBackward ? "image://theme/icon-l-pause" : "image://theme/icon-l-play"
                     icon.mirror: true
                     onClicked:
                     {
@@ -210,6 +215,14 @@ Page
                             app.animationEnabled = !app.animationEnabled;
 
                         app.animationDirection = -1;
+                    }
+
+                    BusyIndicator
+                    {
+                        anchors.fill: parent
+                        size: BusyIndicatorSize.Medium
+                        opacity: running ? 0.25 : 0.0
+                        running: animatingBackward
                     }
                 }
                 Column
@@ -240,9 +253,9 @@ Page
                 }
                 IconButton
                 {
-                    id: toggle_play_forward
+                    id: toggleAnimateForward
 
-                    icon.source: (app.animationEnabled && app.animationDirection == 1) ? "image://theme/icon-l-pause" : "image://theme/icon-l-play"
+                    icon.source: animatingForward ? "image://theme/icon-l-pause" : "image://theme/icon-l-play"
                     onClicked:
                     {
                         if (!app.animationEnabled || app.animationDirection == 1)
@@ -250,9 +263,18 @@ Page
 
                         app.animationDirection = 1;
                     }
+
+                    BusyIndicator
+                    {
+                        anchors.fill: parent
+                        size: BusyIndicatorSize.Medium
+                        opacity: running ? 0.25 : 0.0
+                        running: animatingForward
+                    }
                 }
             }
-            Slider {
+            Slider
+            {
                 id: animationIncrementSlider
 
                 width: parent.width
@@ -296,11 +318,14 @@ Page
             // next problem: if we assign a date with a negative year to a different date, the year is increased by one.
             // year -1 becomes year 0, which is invalid yet again.
             // 'solution': subtract one year, which will be added again during assignment.
+            // note: same behavior if you have a binding to a date
+            // the whole thing smells like a bug :)
             if (newDate.getFullYear() < 0)
             {
                 newDate.setFullYear(newDate.getFullYear() - 1);
             }
 
+            // final check... just to be on the safe side
             if (Calculation.isDateValid(newDate))
             {
                 app.date = newDate;
