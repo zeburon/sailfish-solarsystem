@@ -10,19 +10,19 @@ Page
     id: page
 
     property bool active: status === PageStatus.Active
-    property bool animatingBackward: app.animationEnabled && app.animationDirection == -1
-    property bool animatingForward: app.animationEnabled && app.animationDirection == 1
+    property bool animatingBackward: settings.animationEnabled && settings.animationDirection === -1
+    property bool animatingForward: settings.animationEnabled && settings.animationDirection === 1
 
     function init()
     {
         loadAnimationIncrement();
-        solarSystem.update();
+        solarSystem.updatePlanetPositions();
     }
 
     function loadAnimationIncrement()
     {
         var diff = Globals.MAX_ANIMATION_INCREMENT - Globals.MIN_ANIMATION_INCREMENT;
-        var s = (app.animationIncrement - Globals.MIN_ANIMATION_INCREMENT) / diff;
+        var s = (settings.animationIncrement - Globals.MIN_ANIMATION_INCREMENT) / diff;
         s = Math.max(0.0, Math.min(1.0, s));
         animationIncrementSlider.value = Math.pow(s, 1.0 / 3.0);
     }
@@ -30,7 +30,12 @@ Page
     function saveAnimationIncrement()
     {
         var s = Math.pow(animationIncrementSlider.value, 3.0);
-        app.animationIncrement = Math.round(Globals.MIN_ANIMATION_INCREMENT * (1.0 - s) + Globals.MAX_ANIMATION_INCREMENT * s);
+        settings.animationIncrement = Math.round(Globals.MIN_ANIMATION_INCREMENT * (1.0 - s) + Globals.MAX_ANIMATION_INCREMENT * s);
+    }
+
+    function refresh()
+    {
+        solarSystem.paintOrbits();
     }
 
     function selectDate()
@@ -42,27 +47,22 @@ Page
         }
         var dialog = pageStack.push("Sailfish.Silica.DatePickerDialog",
         {
-            date: app.date,
+            date: settings.date,
             allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
         })
 
         dialog.accepted.connect(function()
         {
-            app.date = dialog.date;
+            settings.date = dialog.date;
         })
     }
 
     function toggleZoom()
     {
-        if (!app.simplifiedOrbits)
+        if (!settings.simplifiedOrbits)
         {
-            app.zoomedOut = !app.zoomedOut;
+            settings.zoomedOut = !settings.zoomedOut;
         }
-    }
-
-    function refresh()
-    {
-        solarSystem.paintOrbits();
     }
 
     SilicaFlickable
@@ -78,33 +78,17 @@ Page
                 text: qsTr("About Solar System")
                 onClicked:
                 {
-                    pageStack.push(Qt.resolvedUrl("AboutPage.qml"));
+                    //pageStack.push(Qt.resolvedUrl("AboutPage.qml"));
+                    pageStack.push(aboutPage);
                 }
             }
             MenuItem
             {
-                text: app.showLabels ? qsTr("Hide Labels") : qsTr("Show Labels")
+                text: qsTr("Settings")
                 onClicked:
                 {
-                    app.showLabels = !app.showLabels;
-                }
-            }
-            MenuItem
-            {
-                text: app.showOrbits ? qsTr("Hide Orbits") : qsTr("Show Orbits")
-                onClicked:
-                {
-                    app.showOrbits = !app.showOrbits;
-                }
-            }
-            MenuItem
-            {
-                text: app.simplifiedOrbits ? qsTr("Realistic Orbits") : qsTr("Simplified Orbits")
-                onClicked:
-                {
-                    app.simplifiedOrbits = !app.simplifiedOrbits;
-                    if (!app.simplifiedOrbits)
-                        zoomTextTimeout.start();
+                    //pageStack.push(Qt.resolvedUrl("SettingsPage.qml"));
+                    pageStack.push(settingsPage);
                 }
             }
         }
@@ -126,8 +110,8 @@ Page
                     anchors.left: parent.left
                     anchors.leftMargin: Theme.paddingLarge
                     anchors.verticalCenter: parent.verticalCenter
-                    visible: !app.simplifiedOrbits
-                    source: app.zoomedOut ? "image://theme/icon-camera-zoom-in" : "image://theme/icon-camera-zoom-out"
+                    visible: !settings.simplifiedOrbits
+                    source: settings.zoomedOut ? "image://theme/icon-camera-zoom-in" : "image://theme/icon-camera-zoom-out"
                 }
                 Text
                 {
@@ -170,12 +154,14 @@ Page
 
                 width: column.width
                 height: column.width
-                showLabels: app.showLabels
-                showOrbits: app.showOrbits
-                date: app.date
-                animationIncrement: app.animationIncrement
-                simplifiedOrbits: app.simplifiedOrbits
-                zoomedOut: app.zoomedOut
+                showLabels: settings.showLabels
+                showOrbits: settings.showOrbits
+                showDwarfPlanets: settings.showDwarfPlanets
+                showZPosition: settings.showZPosition
+                date: settings.date
+                animationIncrement: settings.animationIncrement
+                simplifiedOrbits: settings.simplifiedOrbits
+                zoomedOut: settings.zoomedOut
                 animateSun: page.active && app.active
                 animateZoom: app.initialized
                 Component.onCompleted:
@@ -211,10 +197,10 @@ Page
                     icon.mirror: true
                     onClicked:
                     {
-                        if (!app.animationEnabled || app.animationDirection == -1)
-                            app.animationEnabled = !app.animationEnabled;
+                        if (!settings.animationEnabled || settings.animationDirection == -1)
+                            settings.animationEnabled = !settings.animationEnabled;
 
-                        app.animationDirection = -1;
+                        settings.animationDirection = -1;
                     }
 
                     BusyIndicator
@@ -240,7 +226,7 @@ Page
                             var newDate = new Date(Date.now());
                             newDate.setHours(0);
                             newDate.setMinutes(0);
-                            app.date = newDate;
+                            settings.date = newDate;
                         }
                     }
                     Label
@@ -258,10 +244,10 @@ Page
                     icon.source: animatingForward ? "image://theme/icon-l-pause" : "image://theme/icon-l-play"
                     onClicked:
                     {
-                        if (!app.animationEnabled || app.animationDirection == 1)
-                            app.animationEnabled = !app.animationEnabled;
+                        if (!settings.animationEnabled || settings.animationDirection == 1)
+                            settings.animationEnabled = !settings.animationEnabled;
 
-                        app.animationDirection = 1;
+                        settings.animationDirection = 1;
                     }
 
                     BusyIndicator
@@ -295,14 +281,14 @@ Page
         id: timer
 
         interval: Globals.ANIMATION_INTERVAL_MS
-        running: app.animationEnabled
+        running: settings.animationEnabled
         repeat: true
         onTriggered:
         {
-            var newDate = new Date(app.date);
+            var newDate = new Date(settings.date);
             newDate.setHours(12);
             newDate.setMinutes(0);
-            newDate.setDate(newDate.getDate() + animationIncrement * app.animationDirection);
+            newDate.setDate(newDate.getDate() + settings.animationIncrement * settings.animationDirection);
 
             // QDateTime documentation:
             // There is no year 0. Dates in that year are considered invalid.
@@ -313,7 +299,7 @@ Page
             // this makes the whole date invalid, as there is no year 0 according to the documentation.
             if (newDate.getFullYear() === 0)
             {
-                newDate.setFullYear(app.animationDirection);
+                newDate.setFullYear(settings.animationDirection);
             }
             // next problem: if we assign a date with a negative year to a different date, the year is increased by one.
             // year -1 becomes year 0, which is invalid yet again.
@@ -328,12 +314,12 @@ Page
             // final check... just to be on the safe side
             if (Calculation.isDateValid(newDate))
             {
-                app.date = newDate;
+                settings.date = newDate;
             }
             else
             {
                 console.log("reached illegal date. stopping animation");
-                app.animationEnabled = false;
+                settings.animationEnabled = false;
             }
         }
     }

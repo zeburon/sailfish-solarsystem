@@ -43,19 +43,19 @@
     <name>MainPage</name>
     <message>
         <source>Hide Labels</source>
-        <translation>Beschriftungen ausblenden</translation>
+        <translation type="vanished">Beschriftungen ausblenden</translation>
     </message>
     <message>
         <source>Show Labels</source>
-        <translation>Beschriftungen einblenden</translation>
+        <translation type="vanished">Beschriftungen einblenden</translation>
     </message>
     <message>
         <source>Hide Orbits</source>
-        <translation>Umlaufbahnen ausblenden</translation>
+        <translation type="vanished">Umlaufbahnen ausblenden</translation>
     </message>
     <message>
         <source>Show Orbits</source>
-        <translation>Umlaufbahnen einblenden</translation>
+        <translation type="vanished">Umlaufbahnen einblenden</translation>
     </message>
     <message>
         <source>Solar System</source>
@@ -71,11 +71,11 @@
     </message>
     <message>
         <source>Realistic Orbits</source>
-        <translation>Realistische Umlaufbahnen</translation>
+        <translation type="vanished">Realistische Umlaufbahnen</translation>
     </message>
     <message>
         <source>Simplified Orbits</source>
-        <translation>Vereinfachte Umlaufbahnen</translation>
+        <translation type="vanished">Vereinfachte Umlaufbahnen</translation>
     </message>
     <message>
         <source>About Solar System</source>
@@ -88,6 +88,69 @@
     <message>
         <source>Animation Speed</source>
         <translation>Geschwindigkeit</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Einstellungen</translation>
+    </message>
+</context>
+<context>
+    <name>SettingsPage</name>
+    <message>
+        <source>Settings</source>
+        <translation>Einstellungen</translation>
+    </message>
+    <message>
+        <source>Show Labels</source>
+        <translation type="obsolete">Beschriftungen einblenden</translation>
+    </message>
+    <message>
+        <source>Show Orbits</source>
+        <translation type="obsolete">Umlaufbahnen einblenden</translation>
+    </message>
+    <message>
+        <source>Show Pluto</source>
+        <translation>Pluto einblenden</translation>
+    </message>
+    <message>
+        <source>simplified</source>
+        <translation>vereinfacht</translation>
+    </message>
+    <message>
+        <source>realistic</source>
+        <translation>realistisch</translation>
+    </message>
+    <message>
+        <source>Show planet names</source>
+        <translation>Beschriftungen einblenden</translation>
+    </message>
+    <message>
+        <source>Show planet orbits</source>
+        <translation>Umlaufbahnen einblenden</translation>
+    </message>
+    <message>
+        <source>Show inclination of Pluto</source>
+        <translation>Neigung von Plutos Bahnebene einblenden</translation>
+    </message>
+    <message>
+        <source>Display offset to Earth&apos;s ecliptic orbital plane.</source>
+        <translation>Abstand zur Ekliptik über Y-Achse visualisieren.</translation>
+    </message>
+    <message>
+        <source>Orbits are depicted as circles with uniform spacing.</source>
+        <translation type="vanished">Umlaufbahnen werden als reguläre Kreise angezeigt.</translation>
+    </message>
+    <message>
+        <source>Orbits are drawn to scale.</source>
+        <translation>Umlaufbahnen werden maßstabsgetreu dargestellt.</translation>
+    </message>
+    <message>
+        <source>Style</source>
+        <translation>Stil</translation>
+    </message>
+    <message>
+        <source>Orbits are depicted as regular circles.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

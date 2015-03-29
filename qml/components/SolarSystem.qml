@@ -13,28 +13,26 @@ Item
     property bool zoomedOut: false
     property bool showLabels: true
     property bool showOrbits: true
+    property bool showDwarfPlanets: false
+    property bool showZPosition: false
     property bool animateSun: true
     property real imageOpacity: 1.0
     property real imageScale: 1.0
     property int orbitThickness: 3
 
+    property int realPlanetCount: 0
+    property int dwarfPlanetCount: 0
+
     property real radiusSunOffset: Math.max(40, Math.min(width, height) / 20) * imageScale
     property real radiusBorderOffset: 15
     property real radiusRange: Math.min(width / 2, height / 2) - radiusBorderOffset - radiusSunOffset
-    property real radiusIncrement: radiusRange / (planetInfos.length - 1)
+    property real radiusIncrementWithDwarfPlanets: radiusRange / (planetInfos.length - 1)
+    property real radiusIncrementWithoutDwarfPlanets: radiusRange / (realPlanetCount - 1)
     property real au: earth.orbitSimplifiedRadius
 
     property real currentZoom: simplifiedOrbits ? 1.0 : currentZoomRealistic
-    property real currentZoomRealistic: zoomedOut ? 0.059 : 1.0
+    property real currentZoomRealistic: zoomedOut ? (showDwarfPlanets ? 0.059 : 0.08) : 1.0
     property bool animateZoom: false
-
-    property real currentOffsetRealisticX: zoomedOut ? -width / 12 : 0.0
-    property real currentOffsetRealisticY: zoomedOut ? -height / 8 : 0.0
-
-    /*
-    x: simplifiedOrbits ? 0.0 : currentOffsetRealisticX
-    y: simplifiedOrbits ? 0.0 : currentOffsetRealisticY
-    */
 
     property list<PlanetInfo> planetInfos:
     [
@@ -167,6 +165,7 @@ Item
             name: qsTr("Pluto")
             imageSource: "../gfx/pluto.png"
             imageZoomedInScale: 0.0
+            isDwarfPlanet: true
             orbitColor: "#73a7fe"
             positionCorrectionFactorX: 1.021
             positionCorrectionFactorY: 0.982
@@ -182,6 +181,12 @@ Item
     signal clicked()
 
     function update()
+    {
+        paintOrbits();
+        updatePlanetPositions();
+    }
+
+    function updatePlanetPositions()
     {
         Calculation.setOrbitParameters(au, simplifiedOrbits);
         Calculation.setDate(date);
@@ -216,26 +221,73 @@ Item
         return result;
     }
 
-    Component.onCompleted:
+    function setPlanetIndices()
+    {
+        for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
+        {
+            var planetInfo = planetInfos[planetIdx];
+
+            // set indices
+            planetInfo.idxWithDwarfPlanets = planetIdx;
+            if (planetInfo.isDwarfPlanet)
+            {
+                ++dwarfPlanetCount;
+            }
+            else
+            {
+                planetInfo.idxWithoutDwarfPlanets = realPlanetCount;
+                ++realPlanetCount;
+            }
+        }
+    }
+
+    function setPlanetVisibilityProperties()
+    {
+        for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
+        {
+            var planetInfo = planetInfos[planetIdx];
+
+            // set simplified orbits
+            planetInfo.orbitSimplifiedRadiusWithDwarfPlanets = Qt.binding(function() { return radiusSunOffset + radiusIncrementWithDwarfPlanets * planetInfo.idxWithDwarfPlanets });
+            planetInfo.orbitSimplifiedRadiusWithoutDwarfPlanets = Qt.binding(function() { return radiusSunOffset + radiusIncrementWithoutDwarfPlanets * planetInfo.idxWithoutDwarfPlanets });
+
+            // set visibility
+            if (planetInfo.isDwarfPlanet)
+            {
+                planetInfo.visible = Qt.binding(function() { return showDwarfPlanets });
+            }
+        }
+    }
+
+    function createPlanetComponents()
     {
         // automatically sort images and labels by creating planets in reverse order
         for (var planetIdx = planetInfos.length - 1; planetIdx >= 0; --planetIdx)
         {
             var planetInfo = planetInfos[planetIdx];
-            planetInfo.orbitSimplifiedRadius = radiusSunOffset + radiusIncrement * planetIdx;
 
             var planetImage = planetImageComponent.createObject(images, {"planetInfo": planetInfo});
             var planetLabel = planetLabelComponent.createObject(labels, {"planetInfo": planetInfo, "yOffset": planetImage.size});
         }
     }
+
+    Component.onCompleted:
+    {
+        setPlanetIndices();
+        setPlanetVisibilityProperties();
+        createPlanetComponents();
+    }
     onDateChanged:
     {
-        update();
+        updatePlanetPositions();
     }
     onSimplifiedOrbitsChanged:
     {
-        update();
-        paintOrbits();
+        delayedUpdateTimer.start();
+    }
+    onShowDwarfPlanetsChanged:
+    {
+        delayedUpdateTimer.start();
     }
 
     Component
@@ -302,6 +354,18 @@ Item
         anchors.verticalCenter: parent.verticalCenter
         z: 3
     }
+    Timer
+    {
+        id: delayedUpdateTimer
+
+        interval: 250
+        repeat: false
+        onTriggered:
+        {
+            update();
+        }
+    }
+
     Behavior on currentZoomRealistic
     {
         enabled: animateZoom

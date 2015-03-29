@@ -46,30 +46,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>Hide Labels</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Show Labels</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Hide Orbits</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Show Orbits</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Realistic Orbits</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Simplified Orbits</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Solar System</source>
         <translation></translation>
     </message>
@@ -84,6 +60,57 @@
     <message>
         <source>Animation Speed</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>SettingsPage</name>
+    <message>
+        <source>Settings</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Show Pluto</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>simplified</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>realistic</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Show planet names</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Show planet orbits</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Show inclination of Pluto</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Display offset to Earth&apos;s ecliptic orbital plane.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Orbits are drawn to scale.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Style</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Orbits are depicted as regular circles.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -19,7 +19,7 @@ Item
             color: Theme.primaryColor
             font.family: Theme.fontFamily
             font.pixelSize: Theme.fontSizeLarge
-            text: Qt.formatDate(app.date, "dd")
+            text: Qt.formatDate(settings.date, "dd")
         }
         Label
         {
@@ -37,7 +37,7 @@ Item
             color: Theme.primaryColor
             font.family: Theme.fontFamily
             font.pixelSize: Theme.fontSizeLarge
-            text: Qt.formatDate(app.date, "MMM")
+            text: Qt.formatDate(settings.date, "MMM")
         }
         Label
         {
@@ -55,7 +55,7 @@ Item
             color: Theme.primaryColor
             font.family: Theme.fontFamily
             font.pixelSize: Theme.fontSizeLarge
-            text: Qt.formatDate(app.date, "yyyy")
+            text: Qt.formatDate(settings.date, "yyyy")
         }
     }
 }

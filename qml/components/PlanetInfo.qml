@@ -6,20 +6,28 @@ QtObject
     // general configuration
 
     property string name
+    property bool isDwarfPlanet: false
+    property bool useInPlanetDistanceList: true
+
     property string imageSource
     property real imageZoomedInScale: 1.0
     property real imageZoomedOutScale: 1.0
-    property bool useInPlanetDistanceList: true
+
+    property int idxWithDwarfPlanets
+    property int idxWithoutDwarfPlanets
+    property bool visible: true
 
     // -----------------------------------------------------------------------
     // orbit visualization parameters
 
     property color orbitColor
     property real orbitAlpha: 0.4
-    property real orbitSimplifiedRadius
+    property real orbitSimplifiedRadiusWithDwarfPlanets
+    property real orbitSimplifiedRadiusWithoutDwarfPlanets
+    property real orbitSimplifiedRadius: showDwarfPlanets ? orbitSimplifiedRadiusWithDwarfPlanets : orbitSimplifiedRadiusWithoutDwarfPlanets
     property real orbitPerihelion: a1 * (1.0 - e1)
     property real orbitAphelion: a1 * (1.0 + e1)
-    property real orbitProjectionFactor: Math.cos(i1  * Math.PI / 180)
+    property real orbitProjectionFactor: Math.cos(i1  * Math.PI / 180) // adjust orbit dimensions according to inclination
     property real orbitOffset: simplifiedOrbits ? 0.0 : ((orbitAphelion - orbitPerihelion) / 2.0) * au * orbitProjectionFactor
     property real orbitA: simplifiedOrbits ? orbitSimplifiedRadius : positionCorrectionFactorX * a1 * au * orbitProjectionFactor
     property real orbitB: simplifiedOrbits ? orbitSimplifiedRadius : positionCorrectionFactorY * a1 * au * Math.sqrt(1.0 - e1 * e1)
@@ -58,7 +66,7 @@ QtObject
     property real o2
 
     // -----------------------------------------------------------------------
-    // result of position is multiplied by these factors. slightly improve planet image and orbit alignment
+    // result of position calculation is multiplied by these factors. slightly improves planet image and orbit alignment
 
     property real positionCorrectionFactorX: 1
     property real positionCorrectionFactorY: 1
@@ -75,5 +83,4 @@ QtObject
 
     property real currentShadowRotation: Math.atan2(calculatedY + calculatedZ, calculatedX) * 180 / Math.PI;
     property real currentOpacityFactor: simplifiedOrbits ? 1.0 : (1.0 - ((1.0 - currentZoom) * (1.0 - imageZoomedOutScale) + currentZoom * (1.0 - imageZoomedInScale)))
-
 }

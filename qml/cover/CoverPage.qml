@@ -45,17 +45,17 @@ CoverBackground
         if (currentDate.getDate() != solarSystem.date.getDate() || currentDate.getMonth() != solarSystem.date.getMonth())
         {
             solarSystem.date = currentDate;
-            solarSystem.update();
+            solarSystem.updatePlanetPositions();
         }
         solarSystem.paintOrbits();
 
-        refreshDistance();
+        refreshPlanetDistance();
     }
 
-    function refreshDistance()
+    function refreshPlanetDistance()
     {
-        var result = solarSystem.getDistanceToEarth(app.distancePlanetIdx);
-        labelName.text = qsTr("Distance to %1").arg(solarSystem.planetInfos[app.distancePlanetIdx].name);
+        var result = solarSystem.getDistanceToEarth(settings.distancePlanetIdx);
+        labelName.text = qsTr("Distance to %1").arg(solarSystem.planetInfos[settings.distancePlanetIdx].name);
         labelDistance.text = result[0].toFixed(2) + " AU";
         if (result[1] === 1)
         {
@@ -71,12 +71,12 @@ CoverBackground
 
     function selectPreviousPlanet()
     {
-        while (app.distancePlanetIdx > 0)
+        while (settings.distancePlanetIdx > 0)
         {
-            --app.distancePlanetIdx;
-            if (solarSystem.planetInfos[app.distancePlanetIdx].useInPlanetDistanceList)
+            --settings.distancePlanetIdx;
+            if (solarSystem.planetInfos[settings.distancePlanetIdx].useInPlanetDistanceList)
             {
-                refreshDistance();
+                refreshPlanetDistance();
                 break;
             }
         }
@@ -84,20 +84,17 @@ CoverBackground
 
     function selectNextPlanet()
     {
-        while (app.distancePlanetIdx < solarSystem.planetInfos.length - 1)
+        while (settings.distancePlanetIdx < solarSystem.planetInfos.length - 1)
         {
-            ++app.distancePlanetIdx;
-            if (solarSystem.planetInfos[app.distancePlanetIdx].useInPlanetDistanceList)
+            ++settings.distancePlanetIdx;
+            if (solarSystem.planetInfos[settings.distancePlanetIdx].useInPlanetDistanceList)
             {
-                refreshDistance();
+                refreshPlanetDistance();
                 break;
             }
         }
     }
 
-    Component.onCompleted:
-    {
-    }
     onCoverActiveChanged:
     {
         if (coverActive)
@@ -118,8 +115,9 @@ CoverBackground
             width: parent.width
             height: width
             orbitThickness: 2
-            showOrbits: app.showOrbits
+            showOrbits: settings.showOrbits
             showLabels: false
+            showDwarfPlanets: settings.showDwarfPlanets
             animateSun: false
             radiusBorderOffset: Theme.paddingMedium
             imageScale: 0.6

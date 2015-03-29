@@ -8,9 +8,10 @@ Item
     property alias size: image.height
 
     x: planetInfo.calculatedX * currentZoom
-    y: planetInfo.calculatedY * currentZoom + planetInfo.calculatedZ * currentZoom
+    y: planetInfo.calculatedY * currentZoom + (showZPosition ? planetInfo.calculatedZ * currentZoom : 0.0)
     scale: imageScale * planetInfo.currentOpacityFactor
     opacity: imageOpacity * planetInfo.currentOpacityFactor
+    visible: planetInfo.visible
 
     Image
     {
@@ -34,6 +35,7 @@ Item
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: planetInfo.calculatedZ > 0.0 ? -height : 0
+        visible: showZPosition
 
         Rectangle
         {
