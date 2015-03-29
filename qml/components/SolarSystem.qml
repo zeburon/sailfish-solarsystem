@@ -166,7 +166,7 @@ Item
             imageSource: "../gfx/pluto.png"
             imageZoomedInScale: 0.0
             isDwarfPlanet: true
-            orbitColor: "#73a7fe"
+            orbitColor: "#bd9d4d"
             positionCorrectionFactorX: 1.021
             positionCorrectionFactorY: 0.982
             a1: 39.48686035; a2: 0.00449751
