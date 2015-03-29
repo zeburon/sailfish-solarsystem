@@ -10,10 +10,14 @@ var au;
 // precision of iterate function
 var numIterations = 3;
 
+// -----------------------------------------------------------------------
+
 function deg2rad(angle)
 {
     return angle * Math.PI / 180.0;
 }
+
+// -----------------------------------------------------------------------
 
 function mod2pi(angle)
 {
@@ -25,6 +29,8 @@ function mod2pi(angle)
     return result;
 }
 
+// -----------------------------------------------------------------------
+
 function isDateValid(d)
 {
     if (Object.prototype.toString.call(d) !== "[object Date]")
@@ -33,6 +39,8 @@ function isDateValid(d)
     }
     return !isNaN(d.getTime());
 }
+
+// -----------------------------------------------------------------------
 
 function setDate(newDate)
 {
@@ -43,11 +51,15 @@ function setDate(newDate)
     centuriesSinceJ2000 = daysSinceJ2000 / 36525;
 }
 
+// -----------------------------------------------------------------------
+
 function setOrbitParameters(newAu, newSimplified)
 {
     au = newAu;
     simplified = newSimplified;
 }
+
+// -----------------------------------------------------------------------
 
 function iterate(m, e)
 {
@@ -60,6 +72,8 @@ function iterate(m, e)
     }
     return ea;
 }
+
+// -----------------------------------------------------------------------
 
 function calculateEclipticCoordinates(planet)
 {
@@ -89,6 +103,8 @@ function calculateEclipticCoordinates(planet)
     return [xEcliptic * planet.positionCorrectionFactorX, yEcliptic * planet.positionCorrectionFactorY, zEcliptic];
 }
 
+// -----------------------------------------------------------------------
+
 function updatePlanetPosition(planet)
 {
     var eclipticCoordinates = calculateEclipticCoordinates(planet);
@@ -110,6 +126,8 @@ function updatePlanetPosition(planet)
     planet.calculatedY = Math.round(-y);
     planet.calculatedZ = Math.round(z);
 }
+
+// -----------------------------------------------------------------------
 
 function getDistanceBetweenPlanets(planet1, planet2)
 {

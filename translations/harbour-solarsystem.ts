@@ -97,10 +97,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>Display offset to Earth&apos;s ecliptic orbital plane.</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Orbits are drawn to scale.</source>
         <translation></translation>
     </message>
@@ -110,7 +106,11 @@
     </message>
     <message>
         <source>Orbits are depicted as regular circles.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Display distance to ecliptic via y-axis.</source>
+        <translation></translation>
     </message>
 </context>
 <context>

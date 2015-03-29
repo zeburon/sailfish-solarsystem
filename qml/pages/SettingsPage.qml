@@ -9,10 +9,14 @@ Page
 {
     id: page
 
+    // -----------------------------------------------------------------------
+
     function refresh()
     {
         orbitStyleComboBox.currentIndex = settings.simplifiedOrbits ? 0 : 1;
     }
+
+    // -----------------------------------------------------------------------
 
     SilicaFlickable
     {
@@ -102,7 +106,7 @@ Page
             TextSwitch
             {
                 text: qsTr("Show inclination of Pluto")
-                description: qsTr("Display offset to Earth's ecliptic orbital plane.")
+                description: qsTr("Display distance to ecliptic via y-axis.")
                 checked: settings.showZPosition
                 enabled: !settings.simplifiedOrbits && settings.showDwarfPlanets
                 onCheckedChanged:

@@ -39,6 +39,8 @@ CoverBackground
 
     property bool coverActive: status === Cover.Active
 
+    // -----------------------------------------------------------------------
+
     function refresh()
     {
         var currentDate = new Date(Date.now());
@@ -51,6 +53,8 @@ CoverBackground
 
         refreshPlanetDistance();
     }
+
+    // -----------------------------------------------------------------------
 
     function refreshPlanetDistance()
     {
@@ -69,6 +73,8 @@ CoverBackground
         }
     }
 
+    // -----------------------------------------------------------------------
+
     function selectPreviousPlanet()
     {
         while (settings.distancePlanetIdx > 0)
@@ -82,6 +88,8 @@ CoverBackground
         }
     }
 
+    // -----------------------------------------------------------------------
+
     function selectNextPlanet()
     {
         while (settings.distancePlanetIdx < solarSystem.planetInfos.length - 1)
@@ -94,6 +102,8 @@ CoverBackground
             }
         }
     }
+
+    // -----------------------------------------------------------------------
 
     onCoverActiveChanged:
     {

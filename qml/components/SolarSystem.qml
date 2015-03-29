@@ -178,13 +178,19 @@ Item
         }
     ]
 
+    // -----------------------------------------------------------------------
+
     signal clicked()
+
+    // -----------------------------------------------------------------------
 
     function update()
     {
         paintOrbits();
         updatePlanetPositions();
     }
+
+    // -----------------------------------------------------------------------
 
     function updatePlanetPositions()
     {
@@ -196,10 +202,14 @@ Item
         }
     }
 
+    // -----------------------------------------------------------------------
+
     function paintOrbits()
     {
         orbits.requestPaint();
     }
+
+    // -----------------------------------------------------------------------
 
     function getDistanceToEarth(planetIdx)
     {
@@ -221,6 +231,8 @@ Item
         return result;
     }
 
+    // -----------------------------------------------------------------------
+
     function setPlanetIndices()
     {
         for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
@@ -241,6 +253,8 @@ Item
         }
     }
 
+    // -----------------------------------------------------------------------
+
     function setPlanetVisibilityProperties()
     {
         for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
@@ -259,6 +273,8 @@ Item
         }
     }
 
+    // -----------------------------------------------------------------------
+
     function createPlanetComponents()
     {
         // automatically sort images and labels by creating planets in reverse order
@@ -270,6 +286,8 @@ Item
             var planetLabel = planetLabelComponent.createObject(labels, {"planetInfo": planetInfo, "yOffset": planetImage.size});
         }
     }
+
+    // -----------------------------------------------------------------------
 
     Component.onCompleted:
     {

@@ -1,5 +1,7 @@
 var finishedLoading = false;
 
+// -----------------------------------------------------------------------
+
 function startInit()
 {
     getDatabase().transaction(function(tx)
@@ -8,10 +10,14 @@ function startInit()
     });
 }
 
+// -----------------------------------------------------------------------
+
 function finishInit()
 {
     finishedLoading = true;
 }
+
+// -----------------------------------------------------------------------
 
 function destroyData()
 {
@@ -21,10 +27,14 @@ function destroyData()
     });
 }
 
+// -----------------------------------------------------------------------
+
 function getDatabase()
 {
     return LocalStorage.openDatabaseSync("harbour-solarsystem", "1.0", "StorageDatabase", 100000);
 }
+
+// -----------------------------------------------------------------------
 
 function setValue(name, value)
 {
@@ -44,6 +54,8 @@ function setValue(name, value)
     });
     return true;
 }
+
+// -----------------------------------------------------------------------
 
 function getValue(name)
 {

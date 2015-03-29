@@ -18,6 +18,8 @@ QtObject
     property bool zoomedOut: false;           property string zoomedOutKey: "zoomedOut"
     property int distancePlanetIdx: 0;        property string distancePlanetIdxKey: "distancePlanetIdx"
 
+    // -----------------------------------------------------------------------
+
     function loadValues()
     {
         Storage.startInit();
@@ -68,10 +70,14 @@ QtObject
             distancePlanetIdx = storedDistancePlanetIdx;
     }
 
+    // -----------------------------------------------------------------------
+
     function startStoringValueChanges()
     {
         Storage.finishInit();
     }
+
+    // -----------------------------------------------------------------------
 
     onAnimationEnabledChanged:
     {

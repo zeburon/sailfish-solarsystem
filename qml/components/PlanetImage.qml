@@ -13,6 +13,8 @@ Item
     opacity: imageOpacity * planetInfo.currentOpacityFactor
     visible: planetInfo.visible
 
+    // -----------------------------------------------------------------------
+    // actual image
     Image
     {
         id: image
@@ -22,6 +24,9 @@ Item
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
     }
+
+    // -----------------------------------------------------------------------
+    // display distance to ecliptic
     Rectangle
     {
         id: zIndicator
@@ -50,6 +55,8 @@ Item
         }
     }
 
+    // -----------------------------------------------------------------------
+    // shadow rendering
     Item
     {
         id: shadow

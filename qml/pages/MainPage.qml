@@ -13,11 +13,15 @@ Page
     property bool animatingBackward: settings.animationEnabled && settings.animationDirection === -1
     property bool animatingForward: settings.animationEnabled && settings.animationDirection === 1
 
+    // -----------------------------------------------------------------------
+
     function init()
     {
         loadAnimationIncrement();
         solarSystem.updatePlanetPositions();
     }
+
+    // -----------------------------------------------------------------------
 
     function loadAnimationIncrement()
     {
@@ -27,16 +31,22 @@ Page
         animationIncrementSlider.value = Math.pow(s, 1.0 / 3.0);
     }
 
+    // -----------------------------------------------------------------------
+
     function saveAnimationIncrement()
     {
         var s = Math.pow(animationIncrementSlider.value, 3.0);
         settings.animationIncrement = Math.round(Globals.MIN_ANIMATION_INCREMENT * (1.0 - s) + Globals.MAX_ANIMATION_INCREMENT * s);
     }
 
+    // -----------------------------------------------------------------------
+
     function refresh()
     {
         solarSystem.paintOrbits();
     }
+
+    // -----------------------------------------------------------------------
 
     function selectDate()
     {
@@ -57,6 +67,8 @@ Page
         })
     }
 
+    // -----------------------------------------------------------------------
+
     function toggleZoom()
     {
         if (!settings.simplifiedOrbits)
@@ -64,6 +76,8 @@ Page
             settings.zoomedOut = !settings.zoomedOut;
         }
     }
+
+    // -----------------------------------------------------------------------
 
     onActiveChanged:
     {
@@ -83,7 +97,6 @@ Page
                 text: qsTr("About Solar System")
                 onClicked:
                 {
-                    //pageStack.push(Qt.resolvedUrl("AboutPage.qml"));
                     pageStack.push(aboutPage);
                 }
             }
@@ -92,7 +105,6 @@ Page
                 text: qsTr("Settings")
                 onClicked:
                 {
-                    //pageStack.push(Qt.resolvedUrl("SettingsPage.qml"));
                     pageStack.push(settingsPage);
                 }
             }

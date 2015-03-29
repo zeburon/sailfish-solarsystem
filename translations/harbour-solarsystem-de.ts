@@ -134,7 +134,7 @@
     </message>
     <message>
         <source>Display offset to Earth&apos;s ecliptic orbital plane.</source>
-        <translation>Abstand zur Ekliptik über Y-Achse visualisieren.</translation>
+        <translation type="vanished">Abstand zur Ekliptik über Y-Achse visualisieren.</translation>
     </message>
     <message>
         <source>Orbits are depicted as circles with uniform spacing.</source>
@@ -150,7 +150,11 @@
     </message>
     <message>
         <source>Orbits are depicted as regular circles.</source>
-        <translation type="unfinished"></translation>
+        <translation>Umlaufbahnen werden als reguläre Kreise angezeigt.</translation>
+    </message>
+    <message>
+        <source>Display distance to ecliptic via y-axis.</source>
+        <translation>Abstand zur Ekliptik über Y-Achse visualisieren.</translation>
     </message>
 </context>
 <context>
