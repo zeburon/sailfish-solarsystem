@@ -65,6 +65,11 @@ Page
         }
     }
 
+    onActiveChanged:
+    {
+        settings.animationEnabled = false;
+    }
+
     SilicaFlickable
     {
         anchors.fill: parent
