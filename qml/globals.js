@@ -1,4 +1,4 @@
-var VERSION                 = "1.0";
+var VERSION                 = "1.2";
 var MIN_ANIMATION_INCREMENT = 1;
 var MAX_ANIMATION_INCREMENT = 500;
 var ANIMATION_INTERVAL_MS   = 50
