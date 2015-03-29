@@ -58,14 +58,21 @@ CoverBackground
 
     function refreshPlanetDistance()
     {
+        // check if selected planet is still visible (e.g. dwarf planets are still enabled)
+        if (!solarSystem.planetInfos[settings.distancePlanetIdx].visible)
+            selectPreviousPlanet();
+
         var result = solarSystem.getDistanceToEarth(settings.distancePlanetIdx);
         labelName.text = qsTr("Distance to %1").arg(solarSystem.planetInfos[settings.distancePlanetIdx].name);
         labelDistance.text = result[0].toFixed(2) + " AU";
+
+        // distance is increasing
         if (result[1] === 1)
         {
             labelDirection.text = "↑";
             labelDirection.color = "red";
         }
+        // distance is decreasing
         else
         {
             labelDirection.text = "↓";
@@ -77,11 +84,14 @@ CoverBackground
 
     function selectPreviousPlanet()
     {
-        while (settings.distancePlanetIdx > 0)
+        var planetIdx = settings.distancePlanetIdx;
+        while (planetIdx > 0)
         {
-            --settings.distancePlanetIdx;
-            if (solarSystem.planetInfos[settings.distancePlanetIdx].useInPlanetDistanceList)
+            --planetIdx;
+            var planetInfo = solarSystem.planetInfos[planetIdx];
+            if (planetInfo.useInPlanetDistanceList && planetInfo.visible)
             {
+                settings.distancePlanetIdx = planetIdx;
                 refreshPlanetDistance();
                 break;
             }
@@ -92,11 +102,14 @@ CoverBackground
 
     function selectNextPlanet()
     {
-        while (settings.distancePlanetIdx < solarSystem.planetInfos.length - 1)
+        var planetIdx = settings.distancePlanetIdx;
+        while (planetIdx < solarSystem.planetInfos.length - 1)
         {
-            ++settings.distancePlanetIdx;
-            if (solarSystem.planetInfos[settings.distancePlanetIdx].useInPlanetDistanceList)
+            ++planetIdx;
+            var planetInfo = solarSystem.planetInfos[planetIdx];
+            if (planetInfo.useInPlanetDistanceList && planetInfo.visible)
             {
+                settings.distancePlanetIdx = planetIdx;
                 refreshPlanetDistance();
                 break;
             }
