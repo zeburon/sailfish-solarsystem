@@ -9,7 +9,9 @@ Page
 {
     id: page
 
-    property bool active: status === PageStatus.Active
+    // -----------------------------------------------------------------------
+
+    property bool pageActive: status === PageStatus.Active
     property bool animatingBackward: settings.animationEnabled && settings.animationDirection === -1
     property bool animatingForward: settings.animationEnabled && settings.animationDirection === 1
 
@@ -79,10 +81,12 @@ Page
 
     // -----------------------------------------------------------------------
 
-    onActiveChanged:
+    onPageActiveChanged:
     {
         settings.animationEnabled = false;
     }
+
+    // -----------------------------------------------------------------------
 
     SilicaFlickable
     {
@@ -179,7 +183,7 @@ Page
                 animationIncrement: settings.animationIncrement
                 simplifiedOrbits: settings.simplifiedOrbits
                 zoomedOut: settings.zoomedOut
-                animateSun: page.active && app.active
+                animateSun: pageActive && app.active
                 animateZoom: app.initialized
                 Component.onCompleted:
                 {
@@ -214,7 +218,7 @@ Page
                     icon.mirror: true
                     onClicked:
                     {
-                        if (!settings.animationEnabled || settings.animationDirection == -1)
+                        if (!settings.animationEnabled || settings.animationDirection === -1)
                             settings.animationEnabled = !settings.animationEnabled;
 
                         settings.animationDirection = -1;
@@ -261,7 +265,7 @@ Page
                     icon.source: animatingForward ? "image://theme/icon-l-pause" : "image://theme/icon-l-play"
                     onClicked:
                     {
-                        if (!settings.animationEnabled || settings.animationDirection == 1)
+                        if (!settings.animationEnabled || settings.animationDirection === 1)
                             settings.animationEnabled = !settings.animationEnabled;
 
                         settings.animationDirection = 1;

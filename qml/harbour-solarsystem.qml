@@ -9,11 +9,17 @@ ApplicationWindow
 {
     id: app
 
+    // -----------------------------------------------------------------------
+
     property bool active: Qt.application.state === Qt.ApplicationActive
     property bool initialized: false
 
-    initialPage: mainPage
+    // -----------------------------------------------------------------------
+
     cover: cover
+    initialPage: mainPage
+
+    // -----------------------------------------------------------------------
 
     Component.onCompleted:
     {
@@ -31,14 +37,20 @@ ApplicationWindow
     onActiveChanged:
     {
         settings.animationEnabled = false;
-        mainPage.refresh();
+        if (active)
+            mainPage.refresh();
     }
+
+    // -----------------------------------------------------------------------
 
     Settings
     {
         id: settings
     }
-
+    CoverPage
+    {
+        id: cover
+    }
     MainPage
     {
         id: mainPage
@@ -50,10 +62,5 @@ ApplicationWindow
     AboutPage
     {
         id: aboutPage
-    }
-
-    CoverPage
-    {
-        id: cover
     }
 }

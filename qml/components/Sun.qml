@@ -4,6 +4,8 @@ Item
 {
     property bool animated
 
+    // -----------------------------------------------------------------------
+
     Image
     {
         source: "../gfx/sun_light.png"

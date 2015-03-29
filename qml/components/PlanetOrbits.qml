@@ -6,6 +6,8 @@ Canvas
     property int lineThickness: 3
     property real zoom
 
+    // -----------------------------------------------------------------------
+
     onPaint:
     {
         var context = getContext("2d");
@@ -36,7 +38,6 @@ Canvas
             }
         }
     }
-
     onZoomChanged:
     {
         requestPaint();

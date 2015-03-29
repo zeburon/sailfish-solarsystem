@@ -7,6 +7,8 @@ Item
 {
     id: root
 
+    // -----------------------------------------------------------------------
+
     property date date
     property int animationIncrement: 5
     property bool simplifiedOrbits: true
@@ -308,6 +310,8 @@ Item
         delayedUpdateTimer.start();
     }
 
+    // -----------------------------------------------------------------------
+
     Component
     {
         id: planetImageComponent
@@ -383,6 +387,8 @@ Item
             update();
         }
     }
+
+    // -----------------------------------------------------------------------
 
     Behavior on currentZoomRealistic
     {

@@ -4,8 +4,12 @@ Item
 {
     id: root
 
+    // -----------------------------------------------------------------------
+
     property PlanetInfo planetInfo
     property alias size: image.height
+
+    // -----------------------------------------------------------------------
 
     x: planetInfo.calculatedX * currentZoom
     y: planetInfo.calculatedY * currentZoom + (showZPosition ? planetInfo.calculatedZ * currentZoom : 0.0)

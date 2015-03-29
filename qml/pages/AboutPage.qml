@@ -8,6 +8,8 @@ Page
 {
     id: page
 
+    // -----------------------------------------------------------------------
+
     Column
     {
         id: column
@@ -65,7 +67,6 @@ Page
             }
         }
     }
-
     Text
     {
         wrapMode: Text.WrapAtWordBoundaryOrAnywhere

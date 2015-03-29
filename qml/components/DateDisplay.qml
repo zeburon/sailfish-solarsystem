@@ -5,6 +5,8 @@ Item
 {
     height: yearLabel.height + Theme.paddingLarge
 
+    // -----------------------------------------------------------------------
+
     Row
     {
         anchors.centerIn: parent

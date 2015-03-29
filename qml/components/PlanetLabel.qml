@@ -6,10 +6,14 @@ Item
     property PlanetInfo planetInfo
     property real yOffset
 
+    // -----------------------------------------------------------------------
+
     x: planetInfo.calculatedX * currentZoom
     y: planetInfo.calculatedY * currentZoom + yOffset * 0.75
     opacity: planetInfo.currentOpacityFactor
     visible: planetInfo.visible
+
+    // -----------------------------------------------------------------------
 
     Label
     {
