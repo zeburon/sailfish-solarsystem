@@ -343,8 +343,7 @@ Item
         scale: imageScale * currentZoom
         animated: animateSun
         opacity: imageOpacity
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
+        anchors { centerIn: parent }
         z: 0
     }
     PlanetOrbits
@@ -355,7 +354,7 @@ Item
         planetInfos: root.planetInfos
         lineThickness: orbitThickness
         visible: showOrbits
-        anchors.fill: parent
+        anchors { fill: parent }
         z: 1
     }
     Item
@@ -363,8 +362,7 @@ Item
         id: images
 
         opacity: imageOpacity
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
+        anchors { centerIn: parent }
         z: 2
     }
     Item
@@ -372,8 +370,7 @@ Item
         id: labels
 
         visible: showLabels
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
+        anchors { centerIn: parent }
         z: 3
     }
     Timer
@@ -393,6 +390,7 @@ Item
     Behavior on currentZoomRealistic
     {
         enabled: animateZoom
+
         NumberAnimation { easing.type: Easing.InOutQuart; duration: 1000 }
     }
 }

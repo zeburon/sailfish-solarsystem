@@ -9,8 +9,7 @@ Item
     Image
     {
         source: "../gfx/sun_light.png"
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
+        anchors { centerIn: parent }
         opacity: 0.35
         scale: 2
 
@@ -25,8 +24,7 @@ Item
     Image
     {
         source: "../gfx/sun_flames.png"
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
+        anchors { centerIn: parent }
         opacity: 0.75
 
         SequentialAnimation on rotation
@@ -49,8 +47,7 @@ Item
     {
         source: "../gfx/sun_flares.png"
         opacity: 0.65
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
+        anchors { centerIn: parent }
 
         SequentialAnimation on rotation
         {
@@ -71,8 +68,7 @@ Item
     Image
     {
         source: "../gfx/sun_flames.png"
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
+        anchors { centerIn: parent }
         opacity: 0.35
         mirror: true
 

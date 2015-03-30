@@ -90,7 +90,7 @@ Page
 
     SilicaFlickable
     {
-        anchors.fill: parent
+        anchors { fill: parent }
         contentHeight: column.height
         visible: app.initialized
 
@@ -128,9 +128,7 @@ Page
                 {
                     id: zoomImage
 
-                    anchors.left: parent.left
-                    anchors.leftMargin: Theme.paddingLarge
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors { left: parent.left; leftMargin: Theme.paddingLarge; verticalCenter: parent.verticalCenter }
                     visible: !settings.simplifiedOrbits
                     source: settings.zoomedOut ? "image://theme/icon-camera-zoom-in" : "image://theme/icon-camera-zoom-out"
                 }
@@ -138,13 +136,11 @@ Page
                 {
                     id: zoomText
 
-                    anchors.left: zoomImage.right
-                    anchors.verticalCenter: zoomImage.verticalCenter
-                    anchors.margins: Theme.paddingSmall
+                    anchors { left: zoomImage.right; verticalCenter: zoomImage.verticalCenter; margins: Theme.paddingSmall }
                     text: qsTr("Click to toggle zoom")
                     visible: zoomImage.visible
                     color: Theme.secondaryHighlightColor
-                    font.pixelSize: Theme.fontSizeTiny
+                    font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
                     opacity: zoomTextTimeout.running ? 1 : 0
 
                     Behavior on opacity
@@ -155,13 +151,14 @@ Page
                 Timer
                 {
                     id: zoomTextTimeout
+
                     repeat: false
                     running: false
                     interval: 3000
                 }
                 MouseArea
                 {
-                    anchors.fill: parent
+                    anchors { fill: parent }
                     onClicked:
                     {
                         toggleZoom();
@@ -197,7 +194,7 @@ Page
 
                 MouseArea
                 {
-                    anchors.fill: parent
+                    anchors { fill: parent }
                     onClicked:
                     {
                         selectDate();
@@ -208,7 +205,7 @@ Page
             Row
             {
                 spacing: Theme.paddingLarge * 2
-                anchors.horizontalCenter: parent.horizontalCenter
+                anchors { horizontalCenter: parent.horizontalCenter }
 
                 PlayButton
                 {
@@ -240,8 +237,8 @@ Page
                     {
                         text: qsTr("Today")
                         color: Theme.secondaryHighlightColor
-                        font.pixelSize: Theme.fontSizeTiny
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
+                        anchors { horizontalCenter: parent.horizontalCenter }
                     }
                 }
                 PlayButton
@@ -257,7 +254,7 @@ Page
                 id: animationIncrementSlider
 
                 width: parent.width
-                anchors.horizontalCenter: parent.horizontalCenter
+                anchors { horizontalCenter: parent.horizontalCenter }
                 minimumValue: 0
                 maximumValue: 1
                 handleVisible: true

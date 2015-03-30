@@ -99,7 +99,7 @@ CoverBackground
 
     Column
     {
-        anchors.fill: parent
+        anchors { fill: parent }
         spacing: 0
 
         SolarSystem
@@ -123,8 +123,7 @@ CoverBackground
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
             color: Theme.highlightColor
-            font.family: Theme.fontFamily
-            font.pixelSize: Theme.fontSizeTiny
+            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
         }
         Label
         {
@@ -133,8 +132,7 @@ CoverBackground
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
             color: Theme.highlightColor
-            font.family: Theme.fontFamily
-            font.pixelSize: Theme.fontSizeSmall
+            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeSmall }
         }
         Label
         {
@@ -142,8 +140,7 @@ CoverBackground
 
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
-            font.family: Theme.fontFamily
-            font.pixelSize: Theme.fontSizeMedium
+            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeMedium }
             opacity: 0.9
         }
     }

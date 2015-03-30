@@ -9,7 +9,7 @@ Item
 
     Row
     {
-        anchors.centerIn: parent
+        anchors { centerIn: parent }
         spacing: Theme.paddingLarge * 0.8
 
         Label
@@ -19,15 +19,13 @@ Item
             width: 30
             horizontalAlignment: Text.AlignHCenter
             color: Theme.primaryColor
-            font.family: Theme.fontFamily
-            font.pixelSize: Theme.fontSizeLarge
+            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeLarge }
             text: Qt.formatDate(settings.date, "dd")
         }
         Label
         {
             color: Theme.secondaryColor
-            font.family: Theme.fontFamily
-            font.pixelSize: Theme.fontSizeLarge
+            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeLarge }
             text: "-"
         }
         Label
@@ -37,15 +35,13 @@ Item
             width: 50
             horizontalAlignment: Text.AlignHCenter
             color: Theme.primaryColor
-            font.family: Theme.fontFamily
-            font.pixelSize: Theme.fontSizeLarge
+            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeLarge }
             text: Qt.formatDate(settings.date, "MMM")
         }
         Label
         {
             color: Theme.secondaryColor
-            font.family: Theme.fontFamily
-            font.pixelSize: Theme.fontSizeLarge
+            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeLarge }
             text: "-"
         }
         Label
@@ -55,8 +51,7 @@ Item
             width: 70
             horizontalAlignment: Text.AlignHCenter
             color: Theme.primaryColor
-            font.family: Theme.fontFamily
-            font.pixelSize: Theme.fontSizeLarge
+            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeLarge }
             text: Qt.formatDate(settings.date, "yyyy")
         }
     }

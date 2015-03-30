@@ -21,8 +21,7 @@ Item
 
         text: planetInfo.name
         color: Theme.secondaryHighlightColor
-        font.pixelSize: Theme.fontSizeTiny
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
+        font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
+        anchors { centerIn: parent }
     }
 }

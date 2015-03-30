@@ -24,9 +24,8 @@ Item
         id: image
 
         source: planetInfo.imageSource
+        anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
         antialiasing: true
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
     }
 
     // -----------------------------------------------------------------------
@@ -41,9 +40,7 @@ Item
         height: Math.abs(planetInfo.calculatedZ * currentZoom)
         color: planetInfo.calculatedZ < 0.0 ? "green" : "red"
         opacity: 0.3
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: planetInfo.calculatedZ > 0.0 ? -height : 0
+        anchors { horizontalCenter: parent.horizontalCenter; top: parent.top; topMargin: planetInfo.calculatedZ > 0.0 ? -height : 0 }
         visible: showZPosition
 
         Rectangle
@@ -53,8 +50,7 @@ Item
             width: 8
             height: width
             radius: width / 2
-            anchors.verticalCenter: planetInfo.calculatedZ < 0 ? parent.bottom : parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors { verticalCenter: planetInfo.calculatedZ < 0 ? parent.bottom : parent.top; horizontalCenter: parent.horizontalCenter }
             color: parent.color
         }
     }
@@ -65,8 +61,7 @@ Item
     {
         id: shadow
 
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
+        anchors { centerIn: parent }
         rotation: planetInfo.currentShadowRotation
 
         Image
@@ -77,9 +72,7 @@ Item
             width: image.height + 2
             height: width
             source: "../gfx/shadow.png"
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.horizontalCenterOffset: 1
-            anchors.verticalCenter: parent.verticalCenter
+            anchors { centerIn: parent; horizontalCenterOffset: 1 }
             z: 2
         }
         Image
@@ -90,8 +83,7 @@ Item
             width: height * 3
             height: shadowOnPlanet.height
             source: "../gfx/shadow2.png"
-            anchors.left: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
+            anchors { left: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
             opacity: 0.6 * root.scale
             z: 1
         }
