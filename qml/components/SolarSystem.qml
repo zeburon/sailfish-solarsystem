@@ -2,6 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 import "../calculation.js" as Calculation
+import "../globals.js" as Globals
 
 Item
 {
@@ -9,6 +10,7 @@ Item
 
     // -----------------------------------------------------------------------
 
+    // settings
     property date date
     property int animationIncrement: 5
     property bool simplifiedOrbits: true
@@ -21,10 +23,9 @@ Item
     property real imageOpacity: 1.0
     property real imageScale: 1.0
     property int orbitThickness: 3
+    property bool animateZoom: false
 
-    property int realPlanetCount: 0
-    property int dwarfPlanetCount: 0
-
+    // orbit-related properties
     property real radiusSunOffset: Math.max(40, Math.min(width, height) / 20) * imageScale
     property real radiusBorderOffset: 15
     property real radiusRange: Math.min(width / 2, height / 2) - radiusBorderOffset - radiusSunOffset
@@ -32,9 +33,15 @@ Item
     property real radiusIncrementWithoutDwarfPlanets: radiusRange / (realPlanetCount - 1)
     property real au: earth.orbitSimplifiedRadius
 
+    // zoom-related properties
     property real currentZoom: simplifiedOrbits ? 1.0 : currentZoomRealistic
-    property real currentZoomRealistic: zoomedOut ? (showDwarfPlanets ? 0.059 : 0.08) : 1.0
-    property bool animateZoom: false
+    property real currentZoomRealistic: zoomedOut ? (showDwarfPlanets ? 0.063 : 0.08) : 1.0
+    property real currentOffsetX: simplifiedOrbits ? 0.0 : (zoomedOut && showDwarfPlanets ? -width / 14.0 : 0.0)
+    property real currentOffsetY: simplifiedOrbits ? 0.0 : (zoomedOut && showDwarfPlanets ? height / 16.0 : 0.0)
+
+    // list of planets
+    property int realPlanetCount: 0
+    property int dwarfPlanetCount: 0
 
     property list<PlanetInfo> planetInfos:
     [
@@ -391,6 +398,18 @@ Item
     {
         enabled: animateZoom
 
-        NumberAnimation { easing.type: Easing.InOutQuart; duration: 1000 }
+        NumberAnimation { easing.type: Easing.InOutQuart; duration: Globals.ZOOM_ANIMATION_DURATION_MS }
+    }
+    Behavior on currentOffsetX
+    {
+        enabled: animateZoom
+
+        NumberAnimation { easing.type: Easing.InOutQuart; duration: Globals.ZOOM_ANIMATION_DURATION_MS }
+    }
+    Behavior on currentOffsetY
+    {
+        enabled: animateZoom
+
+        NumberAnimation { easing.type: Easing.InOutQuart; duration: Globals.ZOOM_ANIMATION_DURATION_MS }
     }
 }

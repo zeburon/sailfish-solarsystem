@@ -166,25 +166,32 @@ Page
                 }
             }
 
-            SolarSystem
+            Item
             {
-                id: solarSystem
-
                 width: column.width
                 height: column.width
-                showLabels: settings.showLabels
-                showOrbits: settings.showOrbits
-                showDwarfPlanets: settings.showDwarfPlanets
-                showZPosition: settings.showZPosition
-                date: settings.date
-                animationIncrement: settings.animationIncrement
-                simplifiedOrbits: settings.simplifiedOrbits
-                zoomedOut: settings.zoomedOut
-                animateSun: pageActive && app.active
-                animateZoom: app.initialized
-                Component.onCompleted:
+
+                SolarSystem
                 {
-                    solarSystem.clicked.connect(toggleZoom);
+                    id: solarSystem
+
+                    anchors { centerIn: parent; horizontalCenterOffset: currentOffsetX; verticalCenterOffset: currentOffsetY }
+                    width: parent.width
+                    height: parent.height
+                    showLabels: settings.showLabels
+                    showOrbits: settings.showOrbits
+                    showDwarfPlanets: settings.showDwarfPlanets
+                    showZPosition: settings.showZPosition
+                    date: settings.date
+                    animationIncrement: settings.animationIncrement
+                    simplifiedOrbits: settings.simplifiedOrbits
+                    zoomedOut: settings.zoomedOut
+                    animateSun: pageActive && app.active
+                    animateZoom: app.initialized
+                    Component.onCompleted:
+                    {
+                        solarSystem.clicked.connect(toggleZoom);
+                    }
                 }
             }
 
