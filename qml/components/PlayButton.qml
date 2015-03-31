@@ -23,7 +23,7 @@ IconButton
         anchors { centerIn: parent }
         width: parent.width * 1.15
         height: width
-        opacity: playing ? 0.25 : 0.0
+        opacity: playing ? 0.35 : 0.0
 
         Behavior on opacity
         {
