@@ -3,6 +3,27 @@ import Sailfish.Silica 1.0
 
 Item
 {
+    signal dateSelected();
+
+    // -----------------------------------------------------------------------
+
+    function selectDate()
+    {
+        var dialog = pageStack.push("Sailfish.Silica.DatePickerDialog",
+        {
+            date: settings.date,
+            allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
+        })
+
+        dialog.accepted.connect(function()
+        {
+            settings.date = dialog.date;
+            dateSelected();
+        })
+    }
+
+    // -----------------------------------------------------------------------
+
     height: yearLabel.height + Theme.paddingLarge
 
     // -----------------------------------------------------------------------
@@ -53,6 +74,14 @@ Item
             color: Theme.primaryColor
             font { family: Theme.fontFamily; pixelSize: Theme.fontSizeLarge }
             text: Qt.formatDate(settings.date, "yyyy")
+        }
+    }
+    MouseArea
+    {
+        anchors { fill: parent }
+        onClicked:
+        {
+            selectDate();
         }
     }
 }

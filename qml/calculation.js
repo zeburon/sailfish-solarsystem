@@ -138,3 +138,14 @@ function getDistanceBetweenPlanets(planet1, planet2)
     var dz = eclipticCoordinates1[2] - eclipticCoordinates2[2];
     return Math.sqrt(dx * dx + dy * dy + dz * dz);
 }
+
+// -----------------------------------------------------------------------
+
+function getDistanceToSun(planet)
+{
+    var eclipticCoordinates = calculateEclipticCoordinates(planet);
+    var dx = eclipticCoordinates[0];
+    var dy = eclipticCoordinates[1];
+    var dz = eclipticCoordinates[2];
+    return Math.sqrt(dx * dx + dy * dy + dz * dz);
+}

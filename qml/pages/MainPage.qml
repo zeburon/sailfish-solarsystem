@@ -11,6 +11,7 @@ Page
 
     // -----------------------------------------------------------------------
 
+    property alias solarSystem: solarSystem
     property bool pageActive: status === PageStatus.Active
     property bool animatingBackward: settings.animationEnabled && settings.animationDirection === -1
     property bool animatingForward: settings.animationEnabled && settings.animationDirection === 1
@@ -28,27 +29,6 @@ Page
     function refresh()
     {
         solarSystem.paintOrbits();
-    }
-
-    // -----------------------------------------------------------------------
-
-    function selectDate()
-    {
-        if (pageStack.depth > 1)
-        {
-            // already selecting a date
-            return;
-        }
-        var dialog = pageStack.push("Sailfish.Silica.DatePickerDialog",
-        {
-            date: settings.date,
-            allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
-        })
-
-        dialog.accepted.connect(function()
-        {
-            settings.date = dialog.date;
-        })
     }
 
     // -----------------------------------------------------------------------
@@ -102,6 +82,15 @@ Page
                 onClicked:
                 {
                     pageStack.push(aboutPage);
+                }
+            }
+            MenuItem
+            {
+                text: qsTr("Planet Distances")
+                onClicked:
+                {
+                    distancePage.triggerUpdate();
+                    pageStack.push(distancePage);
                 }
             }
             MenuItem
@@ -198,15 +187,6 @@ Page
             DateDisplay
             {
                 width: column.width
-
-                MouseArea
-                {
-                    anchors { fill: parent }
-                    onClicked:
-                    {
-                        selectDate();
-                    }
-                }
             }
 
             Row

@@ -51,7 +51,8 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/components/DateDisplay.qml \
     qml/pages/SettingsPage.qml \
     qml/components/Settings.qml \
-    qml/components/PlayButton.qml
+    qml/components/PlayButton.qml \
+    qml/pages/DistancePage.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line

@@ -42,6 +42,7 @@ Item
     // list of planets
     property int realPlanetCount: 0
     property int dwarfPlanetCount: 0
+    property int visiblePlanetCount: showDwarfPlanets ? planetInfos.length : realPlanetCount
 
     property list<PlanetInfo> planetInfos:
     [
@@ -220,23 +221,53 @@ Item
 
     // -----------------------------------------------------------------------
 
+    function getDistanceBetweenPlanets(planetIdx1, planetIdx2)
+    {
+        var planet1 = planetInfos[planetIdx1];
+        var planet2 = planetInfos[planetIdx2];
+
+        var result = [0, 0];
+        var lastDate = new Date(date);
+        lastDate.setDate(lastDate.getDate() - 1);
+        Calculation.setDate(lastDate)
+        var lastDistance = Calculation.getDistanceBetweenPlanets(planet1, planet2);
+        Calculation.setDate(date);
+        var currentDistance = Calculation.getDistanceBetweenPlanets(planet1, planet2);
+        result[0] = currentDistance;
+        if (currentDistance > lastDistance)
+            result[1] = 1;
+        else
+            result[1] = -1;
+
+        return result;
+    }
+
+    // -----------------------------------------------------------------------
+
     function getDistanceToEarth(planetIdx)
     {
+        return getDistanceBetweenPlanets(planetIdx, earth.idxWithoutDwarfPlanets);
+    }
+
+    // -----------------------------------------------------------------------
+
+    function getDistanceToSun(planetIdx)
+    {
+        var planet = planetInfos[planetIdx];
+
         var result = [0, 0];
-        if (planetIdx >= 0 && planetIdx < planetInfos.length)
-        {
-            var lastDate = new Date(date);
-            lastDate.setDate(lastDate.getDate() - 1);
-            Calculation.setDate(lastDate)
-            var lastDistance = Calculation.getDistanceBetweenPlanets(planetInfos[planetIdx], earth);
-            Calculation.setDate(date);
-            var currentDistance = Calculation.getDistanceBetweenPlanets(planetInfos[planetIdx], earth);
-            result[0] = currentDistance;
-            if (currentDistance > lastDistance)
-                result[1] = 1;
-            else
-                result[1] = -1;
-        }
+        var lastDate = new Date(date);
+        lastDate.setDate(lastDate.getDate() - 1);
+        Calculation.setDate(lastDate)
+        var lastDistance = Calculation.getDistanceToSun(planet);
+        Calculation.setDate(date);
+        var currentDistance = Calculation.getDistanceToSun(planet);
+        result[0] = currentDistance;
+        if (currentDistance > lastDistance)
+            result[1] = 1;
+        else
+            result[1] = -1;
+
         return result;
     }
 
@@ -292,6 +323,11 @@ Item
             var planetInfo = planetInfos[planetIdx];
 
             var planetImage = planetImageComponent.createObject(images, {"planetInfo": planetInfo});
+            planetImage.zoom = Qt.binding(function() { return currentZoom });
+            planetImage.imageScale = Qt.binding(function() { return imageScale });
+            planetImage.imageOpacity = Qt.binding(function() { return imageOpacity });
+            planetImage.showZPosition = Qt.binding(function() { return showZPosition });
+
             var planetLabel = planetLabelComponent.createObject(labels, {"planetInfo": planetInfo, "yOffset": planetImage.size});
         }
     }

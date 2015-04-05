@@ -71,7 +71,7 @@ Page
     {
         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
         horizontalAlignment: Text.AlignHCenter
-        anchors { left: parent.left; right: parent.right; bottom: parent.bottom; margins: Theme.fontSizeSmall }
+        anchors { left: parent.left; right: parent.right; bottom: parent.bottom; margins: Theme.paddingSmall }
         color: Theme.secondaryHighlightColor
         font { family: Theme.fontFamily; pixelSize: Theme.fontSizeSmall }
         text: qsTr("Planet images based on photographs taken by NASA and ESA (public domain)")

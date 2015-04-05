@@ -55,6 +55,12 @@ ApplicationWindow
     {
         id: mainPage
     }
+    DistancePage
+    {
+        id: distancePage
+
+        solarSystem: mainPage.solarSystem
+    }
     SettingsPage
     {
         id: settingsPage

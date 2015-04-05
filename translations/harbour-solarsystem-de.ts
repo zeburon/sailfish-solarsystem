@@ -40,23 +40,26 @@
     </message>
 </context>
 <context>
+    <name>DistancePage</name>
+    <message>
+        <source>Planet Distances</source>
+        <translation>Entfernungen der Planeten</translation>
+    </message>
+    <message>
+        <source>All distances are in astronomical units (AU).
+1 AU is roughly the distance from earth to sun, or about 150 million kilometers.</source>
+        <translation>Werte in astronomischen Einheiten (AU).
+1 AU entspricht dem mittleren Abstand zwischen Erde und Sonne, ungefähr 150 Millionen Kilometer.</translation>
+    </message>
+    <message>
+        <source>red number: distance is increasing
+green number: distance is decreasing</source>
+        <translation>rote Zahl: zunehmende Entfernung
+grüne Zahl: abnehmende Entfernung</translation>
+    </message>
+</context>
+<context>
     <name>MainPage</name>
-    <message>
-        <source>Hide Labels</source>
-        <translation type="vanished">Beschriftungen ausblenden</translation>
-    </message>
-    <message>
-        <source>Show Labels</source>
-        <translation type="vanished">Beschriftungen einblenden</translation>
-    </message>
-    <message>
-        <source>Hide Orbits</source>
-        <translation type="vanished">Umlaufbahnen ausblenden</translation>
-    </message>
-    <message>
-        <source>Show Orbits</source>
-        <translation type="vanished">Umlaufbahnen einblenden</translation>
-    </message>
     <message>
         <source>Solar System</source>
         <translation>Sonnensystem</translation>
@@ -64,18 +67,6 @@
     <message>
         <source>Today</source>
         <translation>Heute</translation>
-    </message>
-    <message>
-        <source>Increment: %1 day(s)</source>
-        <translation type="vanished">Schrittweite: %1 Tag(e)</translation>
-    </message>
-    <message>
-        <source>Realistic Orbits</source>
-        <translation type="vanished">Realistische Umlaufbahnen</translation>
-    </message>
-    <message>
-        <source>Simplified Orbits</source>
-        <translation type="vanished">Vereinfachte Umlaufbahnen</translation>
     </message>
     <message>
         <source>About Solar System</source>
@@ -93,20 +84,16 @@
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
+    <message>
+        <source>Planet Distances</source>
+        <translation>Entfernungen der Planeten</translation>
+    </message>
 </context>
 <context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
         <translation>Einstellungen</translation>
-    </message>
-    <message>
-        <source>Show Labels</source>
-        <translation type="obsolete">Beschriftungen einblenden</translation>
-    </message>
-    <message>
-        <source>Show Orbits</source>
-        <translation type="obsolete">Umlaufbahnen einblenden</translation>
     </message>
     <message>
         <source>Show Pluto</source>
@@ -131,14 +118,6 @@
     <message>
         <source>Show inclination of Pluto</source>
         <translation>Neigung von Plutos Bahnebene einblenden</translation>
-    </message>
-    <message>
-        <source>Display offset to Earth&apos;s ecliptic orbital plane.</source>
-        <translation type="vanished">Abstand zur Ekliptik über Y-Achse visualisieren.</translation>
-    </message>
-    <message>
-        <source>Orbits are depicted as circles with uniform spacing.</source>
-        <translation type="vanished">Umlaufbahnen werden als reguläre Kreise angezeigt.</translation>
     </message>
     <message>
         <source>Orbits are drawn to scale.</source>
