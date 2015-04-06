@@ -14,6 +14,9 @@ Page
     function refresh()
     {
         orbitStyleComboBox.currentIndex = settings.simplifiedOrbits ? 0 : 1;
+
+        var dateFormatIdx = Globals.DATE_FORMATS.indexOf(settings.dateFormat);
+        dateFormatComboBox.currentIndex = dateFormatIdx;
     }
 
     // -----------------------------------------------------------------------
@@ -64,6 +67,28 @@ Page
                         return qsTr("Orbits are depicted as regular circles.");
                     else
                         return qsTr("Orbits are drawn to scale.");
+                }
+            }
+            ComboBox
+            {
+                id: dateFormatComboBox
+
+                label: qsTr("Date format")
+                menu: ContextMenu
+                {
+                    Repeater
+                    {
+                        model: Globals.DATE_FORMATS.length
+
+                        MenuItem
+                        {
+                            text: Globals.DATE_FORMATS[index]
+                            onClicked:
+                            {
+                                settings.dateFormat = text;
+                            }
+                        }
+                    }
                 }
             }
             Item

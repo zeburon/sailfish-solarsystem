@@ -3,6 +3,16 @@ import Sailfish.Silica 1.0
 
 Item
 {
+    property string dateFormat: settings.dateFormat
+    property int dayLabelWidth: 30; property string dayLabelFormat: "dd"
+    property int monthLabelWidth: 50; property string monthLabelFormat: "MMM"
+    property int yearLabelWidth: 70; property string yearLabelFormat: "yyyy"
+
+    property var labelWidths: [50, 50, 50]
+    property var labelFormats: ["", "", ""]
+
+    // -----------------------------------------------------------------------
+
     signal dateSelected();
 
     // -----------------------------------------------------------------------
@@ -24,7 +34,57 @@ Item
 
     // -----------------------------------------------------------------------
 
+    function updateDateFormat()
+    {
+        var dateFormatParts = dateFormat.split("-");
+        if (dateFormatParts.length === 3)
+        {
+            // note: values in a var array do not emit the 'changed' signal
+            // however, changing the entire array at once does the trick.
+            var newLabelWidths = labelWidths;
+            var newLabelFormats = labelFormats;
+
+            for(var idx = 0; idx < 3; ++idx)
+            {
+                switch (dateFormatParts[idx])
+                {
+                    case "dd":
+                    {
+                        labelWidths[idx] = dayLabelWidth;
+                        labelFormats[idx] = dayLabelFormat;
+                        break;
+                    }
+                    case "mmm":
+                    {
+                        labelWidths[idx] = monthLabelWidth;
+                        labelFormats[idx] = monthLabelFormat;
+                        break;
+                    }
+                    case "yyyy":
+                    {
+                        labelWidths[idx] = yearLabelWidth;
+                        labelFormats[idx] = yearLabelFormat;
+                        break;
+                    }
+                }
+            }
+
+            labelWidths = newLabelWidths;
+            labelFormats = newLabelFormats;
+        }
+        else
+        {
+            console.log("illegal date format: " + dateFormat);
+        }
+    }
+
+    // -----------------------------------------------------------------------
+
     height: yearLabel.height + Theme.paddingLarge
+    onDateFormatChanged:
+    {
+        updateDateFormat();
+    }
 
     // -----------------------------------------------------------------------
 
@@ -37,11 +97,11 @@ Item
         {
             id: dayLabel
 
-            width: 30
+            width: labelWidths[0]
             horizontalAlignment: Text.AlignHCenter
             color: Theme.primaryColor
             font { family: Theme.fontFamily; pixelSize: Theme.fontSizeLarge }
-            text: Qt.formatDate(settings.date, "dd")
+            text: Qt.formatDate(settings.date, labelFormats[0])
         }
         Label
         {
@@ -53,11 +113,11 @@ Item
         {
             id: monthLabel
 
-            width: 50
+            width: labelWidths[1]
             horizontalAlignment: Text.AlignHCenter
             color: Theme.primaryColor
             font { family: Theme.fontFamily; pixelSize: Theme.fontSizeLarge }
-            text: Qt.formatDate(settings.date, "MMM")
+            text: Qt.formatDate(settings.date, labelFormats[1])
         }
         Label
         {
@@ -69,11 +129,11 @@ Item
         {
             id: yearLabel
 
-            width: 70
+            width: labelWidths[2]
             horizontalAlignment: Text.AlignHCenter
             color: Theme.primaryColor
             font { family: Theme.fontFamily; pixelSize: Theme.fontSizeLarge }
-            text: Qt.formatDate(settings.date, "yyyy")
+            text: Qt.formatDate(settings.date, labelFormats[2])
         }
     }
     MouseArea

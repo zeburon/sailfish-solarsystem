@@ -133,6 +133,10 @@ green number: distance is decreasing</source>
         <source>Display distance to ecliptic via y-axis.</source>
         <translation></translation>
     </message>
+    <message>
+        <source>Date format</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>SolarSystem</name>

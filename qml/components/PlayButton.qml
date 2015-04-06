@@ -6,6 +6,8 @@ IconButton
     property bool playing
     property int direction
 
+    // -----------------------------------------------------------------------
+
     icon.source: playing ? "image://theme/icon-l-pause" : "image://theme/icon-l-play"
     onClicked:
     {
@@ -14,6 +16,8 @@ IconButton
 
         settings.animationDirection = direction;
     }
+
+    // -----------------------------------------------------------------------
 
     Image
     {

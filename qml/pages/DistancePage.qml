@@ -32,7 +32,6 @@ Page
             showShadowBehindPlanet: false
         }
     }
-
     Component
     {
         id: planetDistanceComponent
@@ -89,6 +88,8 @@ Page
             }
         }
     }
+
+    // -----------------------------------------------------------------------
 
     Column
     {

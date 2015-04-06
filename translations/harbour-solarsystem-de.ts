@@ -135,6 +135,10 @@ grüne Zahl: abnehmende Entfernung</translation>
         <source>Display distance to ecliptic via y-axis.</source>
         <translation>Abstand zur Ekliptik über Y-Achse visualisieren.</translation>
     </message>
+    <message>
+        <source>Date format</source>
+        <translation>Datumsformat</translation>
+    </message>
 </context>
 <context>
     <name>SolarSystem</name>
