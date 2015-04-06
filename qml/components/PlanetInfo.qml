@@ -36,34 +36,34 @@ QtObject
     // orbital elements
 
     // semi-major axis
-    property real a1
-    property real a2
+    property real a1 // au
+    property real a2 // au / century
 
     // eccentricity
     property real e1
-    property real e2
+    property real e2 // / century
 
     // inclination
-    property real i1
-    property real i2
+    property real i1 // degrees
+    property real i2 // degrees / century
 
     // mean anomaly
-    property real l1
-    property real l2
+    property real l1 // degrees
+    property real l2 // degrees / century
 
     // additional terms of the mean anomaly
-    property real b
-    property real c
-    property real s
-    property real f
+    property real b // degrees
+    property real c // degrees
+    property real s // degrees
+    property real f // degrees
 
     // argument of perihelion
-    property real w1
-    property real w2
+    property real w1 // degrees
+    property real w2 // degrees / century
 
     // longitude of ascending node
-    property real o1
-    property real o2
+    property real o1 // degrees
+    property real o2 // degrees / century
 
     // -----------------------------------------------------------------------
     // result of position calculation is multiplied by these factors. slightly improves planet image and orbit alignment
