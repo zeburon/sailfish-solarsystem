@@ -2,6 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 import "../components"
+import "../globals.js" as Globals
 
 CoverBackground
 {
@@ -41,13 +42,13 @@ CoverBackground
         if (result[1] === 1)
         {
             labelDirection.text = "↑";
-            labelDirection.color = "red";
+            labelDirection.color = Globals.DISTANCE_INCREASING_COLOR;
         }
         // distance is decreasing
         else
         {
             labelDirection.text = "↓";
-            labelDirection.color = "green";
+            labelDirection.color = Globals.DISTANCE_DECREASING_COLOR;
         }
     }
 

@@ -2,6 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 import "../components"
+import "../globals.js" as Globals
 
 Page
 {
@@ -52,9 +53,9 @@ Page
 
                 planetDistanceText.text = result[0].toFixed(2);
                 if (result[1] === 1)
-                    planetDistanceText.color = "red";
+                    planetDistanceText.color = Globals.DISTANCE_INCREASING_COLOR;
                 else
-                    planetDistanceText.color = "green";
+                    planetDistanceText.color = Globals.DISTANCE_DECREASING_COLOR;
             }
 
             width: planetImageSize
@@ -74,7 +75,7 @@ Page
                 radius: width / 2
                 color: "#ffdd00"
                 visible: showDistanceToSun
-                opacity: 0.15 * (1.0 - (planetIdx1 / (solarSystem.visiblePlanetCount - 1)) * 0.75)
+                opacity: 0.175 * (1.0 - (planetIdx1 / (solarSystem.visiblePlanetCount - 1)) * 0.5)
             }
 
             Text
