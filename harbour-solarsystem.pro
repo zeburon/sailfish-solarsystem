@@ -57,5 +57,6 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
 # to disable building translations every time, comment out the
 # following CONFIG line
 CONFIG += sailfishapp_i18n
-TRANSLATIONS += translations/harbour-solarsystem-de.ts
+TRANSLATIONS += translations/harbour-solarsystem-de.ts \
+    translations/harbour-solarsystem-sv.ts
 
