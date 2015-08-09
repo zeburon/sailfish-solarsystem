@@ -86,7 +86,7 @@ Gröna siffror: Avståndet minskar</translation>
     </message>
     <message>
         <source>Planet Distances</source>
-        <translation>Planetavstånd</translation>
+        <translation type="vanished">Planetavstånd</translation>
     </message>
 </context>
 <context>

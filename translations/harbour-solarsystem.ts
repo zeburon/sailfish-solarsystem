@@ -82,10 +82,6 @@ green number: distance is decreasing</source>
         <source>Settings</source>
         <translation></translation>
     </message>
-    <message>
-        <source>Planet Distances</source>
-        <translation></translation>
-    </message>
 </context>
 <context>
     <name>SettingsPage</name>

@@ -72,15 +72,19 @@ QtObject
     property real positionCorrectionFactorY: 1
 
     // -----------------------------------------------------------------------
-    // result of last calculation
+    // result of calculation
 
-    property real calculatedX
-    property real calculatedY
-    property real calculatedZ
+    property var eclipticCoordinates: []
+    property var oldEclipticCoordinates: []
+
+    // -----------------------------------------------------------------------
+    // result of last calculation - transformed into visual representation
+
+    property var displayedCoordinates: []
 
     // -----------------------------------------------------------------------
     // dynamic parameters used for displaying the current state
 
-    property real currentShadowRotation: Math.atan2(calculatedY + calculatedZ, calculatedX) * 180 / Math.PI;
+    property real currentShadowRotation: Math.atan2(displayedCoordinates[1] + displayedCoordinates[2], displayedCoordinates[0]) * 180 / Math.PI;
     property real currentOpacityFactor: simplifiedOrbits ? 1.0 : (1.0 - ((1.0 - currentZoom) * (1.0 - imageZoomedOutScale) + currentZoom * (1.0 - imageZoomedInScale)))
 }

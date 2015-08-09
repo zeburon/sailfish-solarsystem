@@ -15,6 +15,7 @@ Page
     property bool pageActive: status === PageStatus.Active
     property bool animatingBackward: settings.animationEnabled && settings.animationDirection === -1
     property bool animatingForward: settings.animationEnabled && settings.animationDirection === 1
+    property bool busy: pageStack.acceptAnimationRunning
 
     // -----------------------------------------------------------------------
 
@@ -29,6 +30,13 @@ Page
     function refresh()
     {
         solarSystem.paintOrbits();
+    }
+
+    // -----------------------------------------------------------------------
+
+    function stopAnimation()
+    {
+        settings.animationEnabled = false;
     }
 
     // -----------------------------------------------------------------------
@@ -63,7 +71,15 @@ Page
 
     onPageActiveChanged:
     {
-        settings.animationEnabled = false;
+        stopAnimation();
+        if (pageActive)
+        {
+            pageStack.pushAttached(distancePage);
+        }
+    }
+    Component.onCompleted:
+    {
+        distancePage.updated.connect(stopAnimation);
     }
 
     // -----------------------------------------------------------------------
@@ -82,15 +98,6 @@ Page
                 onClicked:
                 {
                     pageStack.push(aboutPage);
-                }
-            }
-            MenuItem
-            {
-                text: qsTr("Planet Distances")
-                onClicked:
-                {
-                    distancePage.triggerUpdate();
-                    pageStack.push(distancePage);
                 }
             }
             MenuItem

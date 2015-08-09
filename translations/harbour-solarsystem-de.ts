@@ -86,7 +86,7 @@ grüne Zahl: abnehmende Entfernung</translation>
     </message>
     <message>
         <source>Planet Distances</source>
-        <translation>Entfernungen der Planeten</translation>
+        <translation type="vanished">Entfernungen der Planeten</translation>
     </message>
 </context>
 <context>

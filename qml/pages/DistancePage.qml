@@ -13,10 +13,33 @@ Page
     property SolarSystem solarSystem
     property bool pageActive: status === PageStatus.Active
     property int planetImageSize: column.width / (solarSystem.visiblePlanetCount + 1)
+    property var planetDistanceItems: []
 
     // -----------------------------------------------------------------------
 
-    signal triggerUpdate()
+    signal updated()
+
+    // -----------------------------------------------------------------------
+
+    function updateDistances()
+    {
+        solarSystem.prepareDistanceCoordinates();
+        for (var idx = 0; idx < planetDistanceItems.length; ++idx)
+        {
+            planetDistanceItems[idx].update();
+        }
+        updated();
+    }
+
+    // -----------------------------------------------------------------------
+
+    onVisibleChanged:
+    {
+        if (visible)
+        {
+            updateDistances();
+        }
+    }
 
     // -----------------------------------------------------------------------
 
@@ -28,6 +51,8 @@ Page
         {
             width: planetImageSize
             height: planetImageSize
+            x: 0
+            y: 0
             scale: 1.0
             opacity: 1.0
             showShadowBehindPlanet: false
@@ -39,18 +64,20 @@ Page
 
         Item
         {
-            property int planetIdx1
-            property int planetIdx2
-            property bool showDistanceToSun: planetIdx1 === planetIdx2
+            property int planetIdxX
+            property int planetIdxY
+            property bool showDistanceToSun: planetIdxX === planetIdxY
 
-            function updateDistance()
+            function update()
             {
+                // fetch distance value
                 var result;
                 if (showDistanceToSun)
-                    result = solarSystem.getDistanceToSun(planetIdx1);
+                    result = solarSystem.getDistanceToSun(planetIdxX);
                 else
-                    result = solarSystem.getDistanceBetweenPlanets(planetIdx1, planetIdx2);
+                    result = solarSystem.getDistanceBetweenPlanets(planetIdxX, planetIdxY);
 
+                // apply new value
                 planetDistanceText.text = result[0].toFixed(2);
                 if (result[1] === 1)
                     planetDistanceText.color = Globals.DISTANCE_INCREASING_COLOR;
@@ -60,13 +87,9 @@ Page
 
             width: planetImageSize
             height: planetImageSize
-            visible: solarSystem.planetInfos[planetIdx1].visible && solarSystem.planetInfos[planetIdx2].visible
+            visible: solarSystem.planetInfos[planetIdxX].visible && solarSystem.planetInfos[planetIdxY].visible
 
-            Component.onCompleted:
-            {
-                page.triggerUpdate.connect(updateDistance);
-            }
-
+            // yellow background to highlight distance to sun fields
             Rectangle
             {
                 id: planetDistanceBackground
@@ -75,9 +98,10 @@ Page
                 radius: width / 2
                 color: "#ffdd00"
                 visible: showDistanceToSun
-                opacity: 0.175 * (1.0 - (planetIdx1 / (solarSystem.visiblePlanetCount - 1)) * 0.5)
+                opacity: 0.175 * (1.0 - (planetIdxX / (solarSystem.visiblePlanetCount - 1)) * 0.5)
             }
 
+            // distance in AU
             Text
             {
                 id: planetDistanceText
@@ -106,10 +130,9 @@ Page
         DateDisplay
         {
             width: column.width
-
             Component.onCompleted:
             {
-                dateSelected.connect(page.triggerUpdate);
+                dateSelected.connect(page.updateDistances);
             }
         }
         Grid
@@ -131,17 +154,22 @@ Page
             {
                 var planetCount = solarSystem.planetInfos.length;
 
+                // horizontal header
                 for (var headerIdx = 0; headerIdx < planetCount; ++headerIdx)
                 {
                     planetImageComponent.createObject(grid, {"planetInfo": solarSystem.planetInfos[headerIdx], "shadowRotation": 0});
                 }
 
-                for (var planetIdx = 0; planetIdx < planetCount; ++planetIdx)
+                for (var planetIdxY = 0; planetIdxY < planetCount; ++planetIdxY)
                 {
-                    planetImageComponent.createObject(grid, {"planetInfo": solarSystem.planetInfos[planetIdx], "shadowRotation": 90});
-                    for (var otherPlanetIdx = 0; otherPlanetIdx < planetCount; ++otherPlanetIdx)
+                    // vertical header
+                    planetImageComponent.createObject(grid, {"planetInfo": solarSystem.planetInfos[planetIdxY], "shadowRotation": 90});
+
+                    // distance items for planet with index planetIdxY
+                    for (var planetIdxX = 0; planetIdxX < planetCount; ++planetIdxX)
                     {
-                        planetDistanceComponent.createObject(grid, {"planetIdx1": planetIdx, "planetIdx2": otherPlanetIdx});
+                        var item = planetDistanceComponent.createObject(grid, {"planetIdxX": planetIdxX, "planetIdxY": planetIdxY});
+                        planetDistanceItems.push(item);
                     }
                 }
             }

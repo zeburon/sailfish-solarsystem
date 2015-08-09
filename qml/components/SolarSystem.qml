@@ -204,11 +204,13 @@ Item
 
     function updatePlanetPositions()
     {
-        Calculation.setOrbitParameters(au, simplifiedOrbits);
         Calculation.setDate(date);
+        Calculation.setOrbitParameters(au, simplifiedOrbits);
+
         for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
         {
-            Calculation.updatePlanetPosition(planetInfos[planetIdx]);
+            Calculation.updateEclipticCoordinates(planetInfos[planetIdx]);
+            Calculation.updateDisplayedCoordinates(planetInfos[planetIdx]);
         }
     }
 
@@ -221,25 +223,31 @@ Item
 
     // -----------------------------------------------------------------------
 
+    function prepareDistanceCoordinates()
+    {
+        var lastDate = new Date(date);
+        lastDate.setDate(lastDate.getDate() - 1);
+        Calculation.setDate(lastDate)
+
+        for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
+        {
+            Calculation.updateOldEclipticCoordinates(planetInfos[planetIdx]);
+        }
+
+        Calculation.setDate(date);
+    }
+
+    // -----------------------------------------------------------------------
+
     function getDistanceBetweenPlanets(planetIdx1, planetIdx2)
     {
         var planet1 = planetInfos[planetIdx1];
         var planet2 = planetInfos[planetIdx2];
 
-        var result = [0, 0];
-        var lastDate = new Date(date);
-        lastDate.setDate(lastDate.getDate() - 1);
-        Calculation.setDate(lastDate)
-        var lastDistance = Calculation.getDistanceBetweenPlanets(planet1, planet2);
-        Calculation.setDate(date);
-        var currentDistance = Calculation.getDistanceBetweenPlanets(planet1, planet2);
-        result[0] = currentDistance;
-        if (currentDistance > lastDistance)
-            result[1] = 1;
-        else
-            result[1] = -1;
+        var oldDistance = Calculation.getDistanceBetweenPlanets(planet1, planet2, true);
+        var currentDistance = Calculation.getDistanceBetweenPlanets(planet1, planet2, false);
 
-        return result;
+        return [currentDistance, currentDistance > oldDistance ? 1 : -1];
     }
 
     // -----------------------------------------------------------------------
@@ -255,20 +263,10 @@ Item
     {
         var planet = planetInfos[planetIdx];
 
-        var result = [0, 0];
-        var lastDate = new Date(date);
-        lastDate.setDate(lastDate.getDate() - 1);
-        Calculation.setDate(lastDate)
-        var lastDistance = Calculation.getDistanceToSun(planet);
-        Calculation.setDate(date);
-        var currentDistance = Calculation.getDistanceToSun(planet);
-        result[0] = currentDistance;
-        if (currentDistance > lastDistance)
-            result[1] = 1;
-        else
-            result[1] = -1;
+        var oldDistance = Calculation.getDistanceToSun(planet, true);
+        var currentDistance = Calculation.getDistanceToSun(planet, false);
 
-        return result;
+        return [currentDistance, currentDistance > oldDistance ? 1 : -1];
     }
 
     // -----------------------------------------------------------------------

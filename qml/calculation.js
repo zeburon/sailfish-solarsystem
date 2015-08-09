@@ -105,9 +105,23 @@ function calculateEclipticCoordinates(planet)
 
 // -----------------------------------------------------------------------
 
-function updatePlanetPosition(planet)
+function updateEclipticCoordinates(planet)
 {
-    var eclipticCoordinates = calculateEclipticCoordinates(planet);
+    planet.eclipticCoordinates = calculateEclipticCoordinates(planet);
+}
+
+// -----------------------------------------------------------------------
+
+function updateOldEclipticCoordinates(planet)
+{
+    planet.oldEclipticCoordinates = calculateEclipticCoordinates(planet);
+}
+
+// -----------------------------------------------------------------------
+
+function updateDisplayedCoordinates(planet)
+{
+    var eclipticCoordinates = planet.eclipticCoordinates;
     var x, y, z;
     if (simplified)
     {
@@ -122,17 +136,15 @@ function updatePlanetPosition(planet)
         y = au * eclipticCoordinates[1];
         z = au * eclipticCoordinates[2];
     }
-    planet.calculatedX = Math.round(x);
-    planet.calculatedY = Math.round(-y);
-    planet.calculatedZ = Math.round(z);
+    planet.displayedCoordinates = [Math.round(x), Math.round(-y), Math.round(z)];
 }
 
 // -----------------------------------------------------------------------
 
-function getDistanceBetweenPlanets(planet1, planet2)
+function getDistanceBetweenPlanets(planet1, planet2, useOldCoordinates)
 {
-    var eclipticCoordinates1 = calculateEclipticCoordinates(planet1);
-    var eclipticCoordinates2 = calculateEclipticCoordinates(planet2);
+    var eclipticCoordinates1 = useOldCoordinates ? planet1.oldEclipticCoordinates : planet1.eclipticCoordinates;
+    var eclipticCoordinates2 = useOldCoordinates ? planet2.oldEclipticCoordinates : planet2.eclipticCoordinates;
     var dx = eclipticCoordinates1[0] - eclipticCoordinates2[0];
     var dy = eclipticCoordinates1[1] - eclipticCoordinates2[1];
     var dz = eclipticCoordinates1[2] - eclipticCoordinates2[2];
@@ -141,9 +153,9 @@ function getDistanceBetweenPlanets(planet1, planet2)
 
 // -----------------------------------------------------------------------
 
-function getDistanceToSun(planet)
+function getDistanceToSun(planet, useOldCoordinates)
 {
-    var eclipticCoordinates = calculateEclipticCoordinates(planet);
+    var eclipticCoordinates = useOldCoordinates ? planet.oldEclipticCoordinates : planet.eclipticCoordinates;
     var dx = eclipticCoordinates[0];
     var dy = eclipticCoordinates[1];
     var dz = eclipticCoordinates[2];

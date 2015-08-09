@@ -14,11 +14,14 @@ Item
     property bool showZPosition: false
     property bool showShadowBehindPlanet: true
     property real shadowRotation: planetInfo.currentShadowRotation
+    property real displayedX: planetInfo.displayedCoordinates[0]
+    property real displayedY: planetInfo.displayedCoordinates[1]
+    property real displayedZ: planetInfo.displayedCoordinates[2]
 
     // -----------------------------------------------------------------------
 
-    x: planetInfo.calculatedX * zoom
-    y: planetInfo.calculatedY * zoom + (showZPosition ? planetInfo.calculatedZ * zoom : 0.0)
+    x: displayedX * zoom
+    y: displayedY * zoom + (showZPosition ? displayedZ * zoom : 0.0)
     scale: imageScale * planetInfo.currentOpacityFactor
     opacity: imageOpacity * planetInfo.currentOpacityFactor
     visible: planetInfo.visible
@@ -43,10 +46,10 @@ Item
         width: 4
         radius: 2
         z: -1
-        height: Math.abs(planetInfo.calculatedZ * zoom)
-        color: planetInfo.calculatedZ < 0.0 ? "green" : "red"
+        height: Math.abs(displayedZ * zoom)
+        color: displayedZ < 0.0 ? "green" : "red"
         opacity: 0.3
-        anchors { horizontalCenter: parent.horizontalCenter; top: parent.top; topMargin: planetInfo.calculatedZ > 0.0 ? -height : 0 }
+        anchors { horizontalCenter: parent.horizontalCenter; top: parent.top; topMargin: displayedZ > 0.0 ? -height : 0 }
         visible: showZPosition
 
         Rectangle
@@ -56,7 +59,7 @@ Item
             width: 8
             height: width
             radius: width / 2
-            anchors { verticalCenter: planetInfo.calculatedZ < 0 ? parent.bottom : parent.top; horizontalCenter: parent.horizontalCenter }
+            anchors { verticalCenter: displayedZ < 0 ? parent.bottom : parent.top; horizontalCenter: parent.horizontalCenter }
             color: parent.color
         }
     }
