@@ -100,7 +100,7 @@ function calculateEclipticCoordinates(planet)
     var yEcliptic = (Math.cos(ww) * Math.sin(o) + Math.sin(ww) * Math.cos(o) * Math.cos(i)) * x + (-Math.sin(ww) * Math.sin(o) + Math.cos(ww) * Math.cos(o) * Math.cos(i)) * y;
     var zEcliptic = (Math.sin(ww) * Math.sin(i)) * x + (Math.cos(ww)* Math.sin(i)) * y;
 
-    return [xEcliptic * planet.positionCorrectionFactorX, yEcliptic * planet.positionCorrectionFactorY, zEcliptic];
+    return [xEcliptic * planet.orbitCorrectionFactorX, yEcliptic * planet.orbitCorrectionFactorY, zEcliptic];
 }
 
 // -----------------------------------------------------------------------

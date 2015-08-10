@@ -43,6 +43,7 @@ Page
 
     // -----------------------------------------------------------------------
 
+    // image used by horizontal & vertical headers
     Component
     {
         id: planetImageComponent
@@ -58,6 +59,7 @@ Page
             showShadowBehindPlanet: false
         }
     }
+    // distance label
     Component
     {
         id: planetDistanceComponent

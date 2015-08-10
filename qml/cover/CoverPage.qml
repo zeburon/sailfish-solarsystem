@@ -23,12 +23,12 @@ CoverBackground
             solarSystem.updatePlanetPositions();
         }
         solarSystem.paintOrbits();
-        refreshPlanetDistance();
+        updatePlanetDistance();
     }
 
     // -----------------------------------------------------------------------
 
-    function refreshPlanetDistance()
+    function updatePlanetDistance()
     {
         // check if selected planet is still visible (e.g. dwarf planets are still enabled)
         if (!solarSystem.planetInfos[settings.distancePlanetIdx].visible)
@@ -64,7 +64,7 @@ CoverBackground
             if (planetInfo.useInPlanetDistanceList && planetInfo.visible)
             {
                 settings.distancePlanetIdx = planetIdx;
-                refreshPlanetDistance();
+                updatePlanetDistance();
                 break;
             }
         }
@@ -82,7 +82,7 @@ CoverBackground
             if (planetInfo.useInPlanetDistanceList && planetInfo.visible)
             {
                 settings.distancePlanetIdx = planetIdx;
-                refreshPlanetDistance();
+                updatePlanetDistance();
                 break;
             }
         }
@@ -145,6 +145,8 @@ CoverBackground
             opacity: 0.9
         }
     }
+
+    // cover actions: select planet for distance calculation
     CoverActionList
     {
         CoverAction

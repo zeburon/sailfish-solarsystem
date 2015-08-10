@@ -19,12 +19,14 @@ Item
 
     function selectDate()
     {
+        // open dialog
         var dialog = pageStack.push("Sailfish.Silica.DatePickerDialog",
         {
             date: settings.date,
             allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
         })
 
+        // handle accept event
         dialog.accepted.connect(function()
         {
             settings.date = dialog.date;
@@ -34,48 +36,47 @@ Item
 
     // -----------------------------------------------------------------------
 
-    function updateDateFormat()
+    function applyDateFormat()
     {
         var dateFormatParts = dateFormat.split("-");
-        if (dateFormatParts.length === 3)
-        {
-            // note: values in a var array do not emit the 'changed' signal
-            // however, changing the entire array at once does the trick.
-            var newLabelWidths = labelWidths;
-            var newLabelFormats = labelFormats;
-
-            for(var idx = 0; idx < 3; ++idx)
-            {
-                switch (dateFormatParts[idx])
-                {
-                    case "dd":
-                    {
-                        labelWidths[idx] = dayLabelWidth;
-                        labelFormats[idx] = dayLabelFormat;
-                        break;
-                    }
-                    case "mmm":
-                    {
-                        labelWidths[idx] = monthLabelWidth;
-                        labelFormats[idx] = monthLabelFormat;
-                        break;
-                    }
-                    case "yyyy":
-                    {
-                        labelWidths[idx] = yearLabelWidth;
-                        labelFormats[idx] = yearLabelFormat;
-                        break;
-                    }
-                }
-            }
-
-            labelWidths = newLabelWidths;
-            labelFormats = newLabelFormats;
-        }
-        else
+        if (dateFormatParts.length !== 3)
         {
             console.log("illegal date format: " + dateFormat);
+            return;
         }
+
+        // note: values in a var array do not emit the 'changed' signal
+        // however, changing the entire array at once does the trick.
+        var newLabelWidths = labelWidths;
+        var newLabelFormats = labelFormats;
+
+        for(var idx = 0; idx < 3; ++idx)
+        {
+            switch (dateFormatParts[idx])
+            {
+                case "dd":
+                {
+                    labelWidths[idx] = dayLabelWidth;
+                    labelFormats[idx] = dayLabelFormat;
+                    break;
+                }
+                case "mmm":
+                {
+                    labelWidths[idx] = monthLabelWidth;
+                    labelFormats[idx] = monthLabelFormat;
+                    break;
+                }
+                case "yyyy":
+                {
+                    labelWidths[idx] = yearLabelWidth;
+                    labelFormats[idx] = yearLabelFormat;
+                    break;
+                }
+            }
+        }
+
+        labelWidths = newLabelWidths;
+        labelFormats = newLabelFormats;
     }
 
     // -----------------------------------------------------------------------
@@ -83,7 +84,7 @@ Item
     height: yearLabel.height + Theme.paddingLarge
     onDateFormatChanged:
     {
-        updateDateFormat();
+        applyDateFormat();
     }
 
     // -----------------------------------------------------------------------

@@ -177,8 +177,8 @@ Item
             imageZoomedInScale: 0.0
             isDwarfPlanet: true
             orbitColor: "#bd9d4d"
-            positionCorrectionFactorX: 1.021
-            positionCorrectionFactorY: 0.982
+            orbitCorrectionFactorX: 1.021
+            orbitCorrectionFactorY: 0.982
             a1: 39.48686035; a2: 0.00449751
             e1: 0.24885238; e2: 0.00006016
             i1: 17.14104260; i2: 0.00000501
@@ -194,10 +194,62 @@ Item
 
     // -----------------------------------------------------------------------
 
-    function update()
+    function initPlanetIndices()
     {
-        paintOrbits();
-        updatePlanetPositions();
+        for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
+        {
+            var planetInfo = planetInfos[planetIdx];
+
+            planetInfo.idxWithDwarfPlanets = planetIdx;
+            if (planetInfo.isDwarfPlanet)
+            {
+                ++dwarfPlanetCount;
+            }
+            else
+            {
+                planetInfo.idxWithoutDwarfPlanets = realPlanetCount;
+                ++realPlanetCount;
+            }
+        }
+    }
+
+    // -----------------------------------------------------------------------
+
+    function initPlanetVisibilityProperties()
+    {
+        for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
+        {
+            var planetInfo = planetInfos[planetIdx];
+
+            // set simplified orbits
+            planetInfo.orbitSimplifiedRadiusWithDwarfPlanets = Qt.binding(function() { return radiusSunOffset + radiusIncrementWithDwarfPlanets * planetInfo.idxWithDwarfPlanets });
+            planetInfo.orbitSimplifiedRadiusWithoutDwarfPlanets = Qt.binding(function() { return radiusSunOffset + radiusIncrementWithoutDwarfPlanets * planetInfo.idxWithoutDwarfPlanets });
+
+            // set visibility
+            if (planetInfo.isDwarfPlanet)
+            {
+                planetInfo.visible = Qt.binding(function() { return showDwarfPlanets });
+            }
+        }
+    }
+
+    // -----------------------------------------------------------------------
+
+    function createPlanetComponents()
+    {
+        // automatically sort images and labels by creating planets in reverse order
+        for (var planetIdx = planetInfos.length - 1; planetIdx >= 0; --planetIdx)
+        {
+            var planetInfo = planetInfos[planetIdx];
+
+            var planetImage = planetImageComponent.createObject(images, {"planetInfo": planetInfo});
+            planetImage.zoom = Qt.binding(function() { return currentZoom });
+            planetImage.imageScale = Qt.binding(function() { return imageScale });
+            planetImage.imageOpacity = Qt.binding(function() { return imageOpacity });
+            planetImage.showZPosition = Qt.binding(function() { return showZPosition });
+
+            var planetLabel = planetLabelComponent.createObject(labels, {"planetInfo": planetInfo, "yOffset": planetImage.size});
+        }
     }
 
     // -----------------------------------------------------------------------
@@ -271,71 +323,10 @@ Item
 
     // -----------------------------------------------------------------------
 
-    function setPlanetIndices()
-    {
-        for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
-        {
-            var planetInfo = planetInfos[planetIdx];
-
-            // set indices
-            planetInfo.idxWithDwarfPlanets = planetIdx;
-            if (planetInfo.isDwarfPlanet)
-            {
-                ++dwarfPlanetCount;
-            }
-            else
-            {
-                planetInfo.idxWithoutDwarfPlanets = realPlanetCount;
-                ++realPlanetCount;
-            }
-        }
-    }
-
-    // -----------------------------------------------------------------------
-
-    function setPlanetVisibilityProperties()
-    {
-        for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
-        {
-            var planetInfo = planetInfos[planetIdx];
-
-            // set simplified orbits
-            planetInfo.orbitSimplifiedRadiusWithDwarfPlanets = Qt.binding(function() { return radiusSunOffset + radiusIncrementWithDwarfPlanets * planetInfo.idxWithDwarfPlanets });
-            planetInfo.orbitSimplifiedRadiusWithoutDwarfPlanets = Qt.binding(function() { return radiusSunOffset + radiusIncrementWithoutDwarfPlanets * planetInfo.idxWithoutDwarfPlanets });
-
-            // set visibility
-            if (planetInfo.isDwarfPlanet)
-            {
-                planetInfo.visible = Qt.binding(function() { return showDwarfPlanets });
-            }
-        }
-    }
-
-    // -----------------------------------------------------------------------
-
-    function createPlanetComponents()
-    {
-        // automatically sort images and labels by creating planets in reverse order
-        for (var planetIdx = planetInfos.length - 1; planetIdx >= 0; --planetIdx)
-        {
-            var planetInfo = planetInfos[planetIdx];
-
-            var planetImage = planetImageComponent.createObject(images, {"planetInfo": planetInfo});
-            planetImage.zoom = Qt.binding(function() { return currentZoom });
-            planetImage.imageScale = Qt.binding(function() { return imageScale });
-            planetImage.imageOpacity = Qt.binding(function() { return imageOpacity });
-            planetImage.showZPosition = Qt.binding(function() { return showZPosition });
-
-            var planetLabel = planetLabelComponent.createObject(labels, {"planetInfo": planetInfo, "yOffset": planetImage.size});
-        }
-    }
-
-    // -----------------------------------------------------------------------
-
     Component.onCompleted:
     {
-        setPlanetIndices();
-        setPlanetVisibilityProperties();
+        initPlanetIndices();
+        initPlanetVisibilityProperties();
         createPlanetComponents();
     }
     onDateChanged:
@@ -425,7 +416,8 @@ Item
         repeat: false
         onTriggered:
         {
-            update();
+            paintOrbits();
+            updatePlanetPositions();
         }
     }
 

@@ -38,10 +38,10 @@ Item
     }
 
     // -----------------------------------------------------------------------
-    // display distance to ecliptic
+    // visualization of distance to ecliptic
     Rectangle
     {
-        id: zIndicator
+        id: zIndicatorLine
 
         width: 4
         radius: 2

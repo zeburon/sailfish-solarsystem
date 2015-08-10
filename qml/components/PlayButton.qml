@@ -29,6 +29,7 @@ IconButton
         height: width
         opacity: playing ? 0.35 : 0.0
 
+        // fade in/out
         Behavior on opacity
         {
             NumberAnimation
@@ -38,6 +39,7 @@ IconButton
                 duration: 200
             }
         }
+        // rotate while playing
         SequentialAnimation on rotation
         {
             running: true

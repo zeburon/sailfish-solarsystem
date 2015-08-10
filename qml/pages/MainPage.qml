@@ -27,6 +27,24 @@ Page
 
     // -----------------------------------------------------------------------
 
+    function loadAnimationIncrement()
+    {
+        var diff = Globals.MAX_ANIMATION_INCREMENT - Globals.MIN_ANIMATION_INCREMENT;
+        var s = (settings.animationIncrement - Globals.MIN_ANIMATION_INCREMENT) / diff;
+        s = Math.max(0.0, Math.min(1.0, s));
+        animationIncrementSlider.value = Math.pow(s, 1.0 / Globals.ANIMATION_EXPONENT);
+    }
+
+    // -----------------------------------------------------------------------
+
+    function saveAnimationIncrement()
+    {
+        var s = Math.pow(animationIncrementSlider.value, Globals.ANIMATION_EXPONENT);
+        settings.animationIncrement = Math.round(Globals.MIN_ANIMATION_INCREMENT * (1.0 - s) + Globals.MAX_ANIMATION_INCREMENT * s);
+    }
+
+    // -----------------------------------------------------------------------
+
     function refresh()
     {
         solarSystem.paintOrbits();
@@ -47,24 +65,6 @@ Page
         {
             settings.zoomedOut = !settings.zoomedOut;
         }
-    }
-
-    // -----------------------------------------------------------------------
-
-    function loadAnimationIncrement()
-    {
-        var diff = Globals.MAX_ANIMATION_INCREMENT - Globals.MIN_ANIMATION_INCREMENT;
-        var s = (settings.animationIncrement - Globals.MIN_ANIMATION_INCREMENT) / diff;
-        s = Math.max(0.0, Math.min(1.0, s));
-        animationIncrementSlider.value = Math.pow(s, 1.0 / 3.0);
-    }
-
-    // -----------------------------------------------------------------------
-
-    function saveAnimationIncrement()
-    {
-        var s = Math.pow(animationIncrementSlider.value, 3.0);
-        settings.animationIncrement = Math.round(Globals.MIN_ANIMATION_INCREMENT * (1.0 - s) + Globals.MAX_ANIMATION_INCREMENT * s);
     }
 
     // -----------------------------------------------------------------------
@@ -262,7 +262,7 @@ Page
     }
     Timer
     {
-        id: timer
+        id: animationTimer
 
         interval: Globals.ANIMATION_INTERVAL_MS
         running: settings.animationEnabled

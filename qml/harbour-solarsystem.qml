@@ -29,7 +29,7 @@ ApplicationWindow
         settings.startStoringValueChanges();
         initialized = true;
 
-        // refresh pages
+        // update / redraw contents
         cover.refresh();
         mainPage.refresh();
         settingsPage.refresh();

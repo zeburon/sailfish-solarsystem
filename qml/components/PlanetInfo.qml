@@ -27,10 +27,16 @@ QtObject
     property real orbitSimplifiedRadius: showDwarfPlanets ? orbitSimplifiedRadiusWithDwarfPlanets : orbitSimplifiedRadiusWithoutDwarfPlanets
     property real orbitPerihelion: a1 * (1.0 - e1)
     property real orbitAphelion: a1 * (1.0 + e1)
-    property real orbitProjectionFactor: Math.cos(i1  * Math.PI / 180) // adjust orbit dimensions according to inclination
     property real orbitOffset: simplifiedOrbits ? 0.0 : ((orbitAphelion - orbitPerihelion) / 2.0) * au * orbitProjectionFactor
-    property real orbitA: simplifiedOrbits ? orbitSimplifiedRadius : positionCorrectionFactorX * a1 * au * orbitProjectionFactor
-    property real orbitB: simplifiedOrbits ? orbitSimplifiedRadius : positionCorrectionFactorY * a1 * au * Math.sqrt(1.0 - e1 * e1)
+    property real orbitA: simplifiedOrbits ? orbitSimplifiedRadius : orbitCorrectionFactorX * a1 * au * orbitProjectionFactor
+    property real orbitB: simplifiedOrbits ? orbitSimplifiedRadius : orbitCorrectionFactorY * a1 * au * Math.sqrt(1.0 - e1 * e1)
+
+    // adjust orbit dimensions according to inclination
+    property real orbitProjectionFactor: Math.cos(i1  * Math.PI / 180)
+
+    // adjust to improve planet image and orbit alignment
+    property real orbitCorrectionFactorX: 1
+    property real orbitCorrectionFactorY: 1
 
     // -----------------------------------------------------------------------
     // orbital elements
@@ -66,20 +72,12 @@ QtObject
     property real o2 // degrees / century
 
     // -----------------------------------------------------------------------
-    // result of position calculation is multiplied by these factors. slightly improves planet image and orbit alignment
-
-    property real positionCorrectionFactorX: 1
-    property real positionCorrectionFactorY: 1
-
-    // -----------------------------------------------------------------------
     // result of calculation
 
     property var eclipticCoordinates: []
     property var oldEclipticCoordinates: []
 
-    // -----------------------------------------------------------------------
-    // result of last calculation - transformed into visual representation
-
+    // ecliptic coordinates transformed into visual representation
     property var displayedCoordinates: []
 
     // -----------------------------------------------------------------------

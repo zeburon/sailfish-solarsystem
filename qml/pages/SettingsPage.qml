@@ -37,6 +37,8 @@ Page
             {
                 title: qsTr("Settings")
             }
+
+            // orbit style: simplified or realistic
             ComboBox
             {
                 id: orbitStyleComboBox
@@ -69,6 +71,8 @@ Page
                         return qsTr("Orbits are drawn to scale.");
                 }
             }
+
+            // date format
             ComboBox
             {
                 id: dateFormatComboBox
@@ -91,11 +95,14 @@ Page
                     }
                 }
             }
+
             Item
             {
                 width: 1
                 height: Theme.paddingLarge * 2
             }
+
+            // optional information
             TextSwitch
             {
                 text: qsTr("Show planet names")
@@ -114,11 +121,14 @@ Page
                     settings.showOrbits = checked;
                 }
             }
+
             Item
             {
                 width: 1
                 height: Theme.paddingLarge * 2
             }
+
+            // pluto settings
             TextSwitch
             {
                 text: qsTr("Show Pluto")
