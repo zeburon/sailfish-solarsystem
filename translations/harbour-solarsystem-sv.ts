@@ -84,10 +84,6 @@ Gröna siffror: Avståndet minskar</translation>
         <source>Settings</source>
         <translation>Inställningar</translation>
     </message>
-    <message>
-        <source>Planet Distances</source>
-        <translation type="vanished">Planetavstånd</translation>
-    </message>
 </context>
 <context>
     <name>SettingsPage</name>
