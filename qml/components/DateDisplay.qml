@@ -8,8 +8,8 @@ Item
     property int monthLabelWidth: 50; property string monthLabelFormat: "MMM"
     property int yearLabelWidth: 70; property string yearLabelFormat: "yyyy"
 
-    property var labelWidths: [50, 50, 50]
-    property var labelFormats: ["", "", ""]
+    property var labelWidths: []
+    property var labelFormats: []
 
     // -----------------------------------------------------------------------
 
@@ -47,36 +47,42 @@ Item
 
         // note: values in a var array do not emit the 'changed' signal
         // however, changing the entire array at once does the trick.
-        var newLabelWidths = labelWidths;
-        var newLabelFormats = labelFormats;
-
+        var newLabelWidths = [0, 0, 0];
+        var newLabelFormats = ["", "", ""];
         for(var idx = 0; idx < 3; ++idx)
         {
             switch (dateFormatParts[idx])
             {
                 case "dd":
                 {
-                    labelWidths[idx] = dayLabelWidth;
-                    labelFormats[idx] = dayLabelFormat;
+                    newLabelWidths[idx] = dayLabelWidth;
+                    newLabelFormats[idx] = dayLabelFormat;
                     break;
                 }
                 case "mmm":
                 {
-                    labelWidths[idx] = monthLabelWidth;
-                    labelFormats[idx] = monthLabelFormat;
+                    newLabelWidths[idx] = monthLabelWidth;
+                    newLabelFormats[idx] = monthLabelFormat;
                     break;
                 }
                 case "yyyy":
                 {
-                    labelWidths[idx] = yearLabelWidth;
-                    labelFormats[idx] = yearLabelFormat;
+                    newLabelWidths[idx] = yearLabelWidth;
+                    newLabelFormats[idx] = yearLabelFormat;
                     break;
                 }
             }
         }
-
         labelWidths = newLabelWidths;
         labelFormats = newLabelFormats;
+    }
+
+    // -----------------------------------------------------------------------
+
+    function getDateString(format)
+    {
+        var str = Qt.formatDate(settings.date, format);
+        return str.substring(0, format.length);
     }
 
     // -----------------------------------------------------------------------
@@ -102,7 +108,7 @@ Item
             horizontalAlignment: Text.AlignHCenter
             color: Theme.primaryColor
             font { family: Theme.fontFamily; pixelSize: Theme.fontSizeLarge }
-            text: Qt.formatDate(settings.date, labelFormats[0])
+            text: getDateString(labelFormats[0])
         }
         Label
         {
@@ -118,7 +124,7 @@ Item
             horizontalAlignment: Text.AlignHCenter
             color: Theme.primaryColor
             font { family: Theme.fontFamily; pixelSize: Theme.fontSizeLarge }
-            text: Qt.formatDate(settings.date, labelFormats[1])
+            text: getDateString(labelFormats[1])
         }
         Label
         {
@@ -134,7 +140,7 @@ Item
             horizontalAlignment: Text.AlignHCenter
             color: Theme.primaryColor
             font { family: Theme.fontFamily; pixelSize: Theme.fontSizeLarge }
-            text: Qt.formatDate(settings.date, labelFormats[2])
+            text: getDateString(labelFormats[2])
         }
     }
     MouseArea
