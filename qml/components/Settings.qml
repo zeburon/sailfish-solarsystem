@@ -3,6 +3,7 @@ import QtQuick.LocalStorage 2.0
 
 import "../storage.js" as Storage
 import "../globals.js" as Globals
+import "../calculation.js" as Calculation
 
 QtObject
 {
@@ -49,7 +50,13 @@ QtObject
         // load date
         var storedDate = Storage.getValue(dateKey);
         if (storedDate)
+        {
             date = new Date(storedDate);
+
+            // check if stored date is actually valid
+            if (!Calculation.isDateValid(date))
+                date = new Date(Date.now());
+        }
 
         // load dateFormat
         var storedDateFormat = Storage.getValue(dateFormatKey);
