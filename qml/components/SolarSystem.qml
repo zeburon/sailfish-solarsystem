@@ -243,12 +243,7 @@ Item
             var planetInfo = planetInfos[planetIdx];
 
             var planetImage = planetImageComponent.createObject(images, {"planetInfo": planetInfo});
-            planetImage.zoom = Qt.binding(function() { return currentZoom });
-            planetImage.imageScale = Qt.binding(function() { return imageScale });
-            planetImage.imageOpacity = Qt.binding(function() { return imageOpacity });
-            planetImage.showZPosition = Qt.binding(function() { return showZPosition });
-
-            var planetLabel = planetLabelComponent.createObject(labels, {"planetInfo": planetInfo, "yOffset": planetImage.size});
+            var planetLabel = planetLabelComponent.createObject(labels, {"planetInfo": planetInfo, "yOffset": planetImage.size * 0.75});
         }
     }
 

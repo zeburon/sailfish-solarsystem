@@ -7,11 +7,12 @@ Item
     property real yOffset
     property real displayedX: planetInfo.displayedCoordinates[0]
     property real displayedY: planetInfo.displayedCoordinates[1]
+    property real displayedZ: planetInfo.displayedCoordinates[2]
 
     // -----------------------------------------------------------------------
 
     x: displayedX * currentZoom
-    y: displayedY * currentZoom + yOffset * 0.75
+    y: displayedY * currentZoom + yOffset + (showZPosition ? displayedZ * currentZoom : 0.0)
     opacity: planetInfo.currentOpacityFactor
     visible: planetInfo.visible
 

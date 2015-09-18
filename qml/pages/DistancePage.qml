@@ -12,8 +12,12 @@ Page
 
     property SolarSystem solarSystem
     property bool pageActive: status === PageStatus.Active
-    property int planetImageSize: column.width / (solarSystem.visiblePlanetCount + 1)
     property var planetDistanceItems: []
+
+    // properties used by PlanetImage items
+    property int planetImageSize: column.width / (solarSystem.visiblePlanetCount + 1)
+    property real currentZoom: 1.0
+    property bool showZPosition: false
 
     // -----------------------------------------------------------------------
 

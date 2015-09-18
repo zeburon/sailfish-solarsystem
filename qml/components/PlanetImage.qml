@@ -8,20 +8,17 @@ Item
 
     property PlanetInfo planetInfo
     property alias size: image.height
-    property real zoom: 1.0
-    property real imageScale: 1.0
-    property real imageOpacity: 1.0
-    property bool showZPosition: false
     property bool showShadowBehindPlanet: true
-    property real shadowRotation: planetInfo.currentShadowRotation
+
     property real displayedX: planetInfo.displayedCoordinates[0]
     property real displayedY: planetInfo.displayedCoordinates[1]
     property real displayedZ: planetInfo.displayedCoordinates[2]
+    property real displayedShadowRotation: planetInfo.currentShadowRotation
 
     // -----------------------------------------------------------------------
 
-    x: displayedX * zoom
-    y: displayedY * zoom + (showZPosition ? displayedZ * zoom : 0.0)
+    x: displayedX * currentZoom
+    y: displayedY * currentZoom + (showZPosition ? displayedZ * currentZoom : 0.0)
     scale: imageScale * planetInfo.currentOpacityFactor
     opacity: imageOpacity * planetInfo.currentOpacityFactor
     visible: planetInfo.visible
@@ -46,7 +43,7 @@ Item
         width: 4
         radius: 2
         z: -1
-        height: Math.abs(displayedZ * zoom)
+        height: Math.abs(displayedZ * currentZoom)
         color: displayedZ < 0.0 ? "green" : "red"
         opacity: 0.3
         anchors { horizontalCenter: parent.horizontalCenter; top: parent.top; topMargin: displayedZ > 0.0 ? -height : 0 }
@@ -71,7 +68,7 @@ Item
         id: shadow
 
         anchors { centerIn: parent }
-        rotation: shadowRotation
+        rotation: displayedShadowRotation
 
         Image
         {
