@@ -107,14 +107,14 @@ function calculateEclipticCoordinates(planet)
 
 function updateEclipticCoordinates(planet)
 {
-    planet.eclipticCoordinates = calculateEclipticCoordinates(planet);
+    planet.eclipticCoordinates = calculateEclipticCoordinates(planet.planetInfo);
 }
 
 // -----------------------------------------------------------------------
 
 function updateOldEclipticCoordinates(planet)
 {
-    planet.oldEclipticCoordinates = calculateEclipticCoordinates(planet);
+    planet.oldEclipticCoordinates = calculateEclipticCoordinates(planet.planetInfo);
 }
 
 // -----------------------------------------------------------------------

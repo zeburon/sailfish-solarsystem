@@ -31,7 +31,7 @@ Item
     property real radiusRange: Math.min(width / 2, height / 2) - radiusBorderOffset - radiusSunOffset
     property real radiusIncrementWithDwarfPlanets: radiusRange / (planetInfos.length - 1)
     property real radiusIncrementWithoutDwarfPlanets: radiusRange / (realPlanetCount - 1)
-    property real au: earth.orbitSimplifiedRadius
+    property real auSize
 
     // zoom-related properties
     property real currentZoom: simplifiedOrbits ? 1.0 : currentZoomRealistic
@@ -40,210 +40,55 @@ Item
     property real currentOffsetY: simplifiedOrbits ? 0.0 : (zoomedOut && showDwarfPlanets ? height / 16.0 : 0.0)
 
     // list of planets
-    property int realPlanetCount: 0
-    property int dwarfPlanetCount: 0
-    property int visiblePlanetCount: showDwarfPlanets ? planetInfos.length : realPlanetCount
-
-    property list<PlanetInfo> planetInfos:
-    [
-        PlanetInfo
-        {
-            id: mercury
-
-            name: qsTr("Mercury")
-            imageSource: "../gfx/mercury.png"
-            imageZoomedOutScale: 0.0
-            orbitColor: "#8d8d8d"
-            a1: 0.38709843; a2: 0.00000000
-            e1: 0.20563661; e2: 0.00002123
-            i1: 7.00559432; i2: -0.00590158
-            l1: 252.25166724; l2: 149472.67486623
-            w1: 77.45771895; w2: 0.15940013
-            o1: 48.33961819; o2: -0.12214182
-        },
-        PlanetInfo
-        {
-            id: venus
-
-            name: qsTr("Venus")
-            imageSource: "../gfx/venus.png"
-            imageZoomedOutScale: 0.1
-            orbitColor: "#e8bb79"
-            a1: 0.72332102; a2: -0.00000026
-            e1: 0.00676399; e2: -0.00005107
-            i1: 3.39777545; i2: 0.00043494
-            l1: 181.97970850; l2: 58517.81560260
-            w1: 131.76755713; w2: 0.05679648
-            o1: 76.67261496; o2: -0.27274174
-        },
-        PlanetInfo
-        {
-            id: earth
-
-            name: qsTr("Earth")
-            imageSource: "../gfx/earth.png"
-            imageZoomedOutScale: 0.2
-            useInPlanetDistanceList: false
-            orbitColor: "#ffffff"
-            orbitAlpha: 0.55
-            a1: 1.00000018; a2: -0.00000003
-            e1: 0.01673163; e2: -0.00003661
-            i1: -0.00054346; i2: -0.01337178
-            l1: 100.46691572; l2: 35999.37306329
-            w1: 102.93005885; w2: 0.31795260
-            o1: -5.11260389; o2: -0.24123856
-        },
-        PlanetInfo
-        {
-            id: mars
-
-            name: qsTr("Mars")
-            imageSource: "../gfx/mars.png"
-            imageZoomedOutScale: 0.3
-            orbitColor: "#e58e5c"
-            a1: 1.52371243; a2: 0.00000097
-            e1: 0.09336511; e2: 0.00009149
-            i1: 1.85181869; i2: -0.00724757
-            l1: -4.56813164; l2: 19140.29934243
-            w1: -23.91744784;  w2: 0.45223625
-            o1: 49.71320984; o2: -0.26852431
-        },
-        PlanetInfo
-        {
-            id: jupiter
-
-            name: qsTr("Jupiter")
-            imageSource: "../gfx/jupiter.png"
-            imageZoomedInScale: 0.0
-            orbitColor: "#e4d6cd"
-            a1: 5.20248019; a2: -0.00002864
-            e1: 0.04853590; e2: 0.00018026
-            i1: 1.29861416; i2: -0.00322699
-            l1: 34.33479152; l2: 3034.90371757; b: -0.00012452; c: 0.06064060; s: -0.35635438; f: 38.35125000
-            w1: 14.27495244; w2: 0.18199196
-            o1: 100.29282654; o2: 0.13024619
-        },
-        PlanetInfo
-        {
-            id: saturn
-
-            name: qsTr("Saturn")
-            imageSource: "../gfx/saturn.png"
-            imageZoomedInScale: 0.0
-            orbitColor: "#e3c9a3"
-            a1: 9.54149883; a2: -0.00003065
-            e1: 0.05550825; e2: -0.00032044
-            i1: 2.49424102; i2: 0.00451969
-            l1: 50.07571329; l2: 1222.11494724; b: 0.00025899; c: 0.13434469; s: 0.87320147; f: 38.35125000
-            w1: 92.86136063; w2: 0.54179478
-            o1: 113.63998702; o2: -0.25015002
-        },
-        PlanetInfo
-        {
-            id: uranus
-
-            name: qsTr("Uranus")
-            imageSource: "../gfx/uranus.png"
-            imageZoomedInScale: 0.0
-            orbitColor: "#c2e5eb"
-            a1: 19.18797948; a2: -0.00020455
-            e1: 0.04685740; e2: -0.00001550
-            i1: 0.77298127; i2: -0.00180155
-            l1: 314.20276625; l2: 428.49512595; b: 0.00058331; c: -0.97731848; s: 0.17689245; f: 7.67025000
-            w1: 172.43404441; w2: 0.09266985
-            o1: 73.96250215; o2: 0.05739699
-        },
-        PlanetInfo
-        {
-            id: neptune
-
-            name: qsTr("Neptune")
-            imageSource: "../gfx/neptune.png"
-            imageZoomedInScale: 0.0
-            orbitColor: "#73a7fe"
-            a1: 30.06952752; a2: 0.00006447
-            e1: 0.00895439; e2: 0.00000818
-            i1: 1.77005520; i2: 0.00022400
-            l1: 304.22289287; l2: 218.46515314; b: -0.00041348; c: 0.68346318; s: -0.10162547; f: 7.67025000
-            w1: 46.68158724; w2: 0.01009938
-            o1: 131.78635853; o2: -0.00606302
-        },
-        PlanetInfo
-        {
-            id: pluto
-
-            name: qsTr("Pluto")
-            imageSource: "../gfx/pluto.png"
-            imageZoomedInScale: 0.0
-            isDwarfPlanet: true
-            orbitColor: "#b08764"
-            orbitCorrectionFactorX: 1.021
-            orbitCorrectionFactorY: 0.982
-            a1: 39.48686035; a2: 0.00449751
-            e1: 0.24885238; e2: 0.00006016
-            i1: 17.14104260; i2: 0.00000501
-            l1: 238.96535011; l2: 145.18042903; b: -0.01262724
-            w1: 224.09702598; w2: -0.00968827
-            o1: 110.30167986; o2: -0.00809981
-        }
-    ]
+    property bool initialized: false
+    property var planetCalculationResults: []
 
     // -----------------------------------------------------------------------
 
-    signal clicked()
+    signal clickedOnPlanet(var planetInfo)
+    signal clickedOnEmptySpace()
 
     // -----------------------------------------------------------------------
 
-    function initPlanetIndices()
+    function init()
     {
-        for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
-        {
-            var planetInfo = planetInfos[planetIdx];
+        initPlanetCalculationResults();
+        createPlanetItems();
+        initialized = true;
 
-            planetInfo.idxWithDwarfPlanets = planetIdx;
-            if (planetInfo.isDwarfPlanet)
-            {
-                ++dwarfPlanetCount;
-            }
-            else
-            {
-                planetInfo.idxWithoutDwarfPlanets = realPlanetCount;
-                ++realPlanetCount;
-            }
-        }
+        updatePlanetPositions();
     }
 
     // -----------------------------------------------------------------------
 
-    function initPlanetVisibilityProperties()
+    function initPlanetCalculationResults()
     {
         for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
         {
             var planetInfo = planetInfos[planetIdx];
-
-            // set simplified orbits
-            planetInfo.orbitSimplifiedRadiusWithDwarfPlanets = Qt.binding(function() { return radiusSunOffset + radiusIncrementWithDwarfPlanets * planetInfo.idxWithDwarfPlanets });
-            planetInfo.orbitSimplifiedRadiusWithoutDwarfPlanets = Qt.binding(function() { return radiusSunOffset + radiusIncrementWithoutDwarfPlanets * planetInfo.idxWithoutDwarfPlanets });
-
-            // set visibility
-            if (planetInfo.isDwarfPlanet)
-            {
-                planetInfo.visible = Qt.binding(function() { return showDwarfPlanets });
-            }
+            var planetCalculationResult = planetCalculationResultComponent.createObject(null, {"planetInfo": planetInfo});
+            planetCalculationResult.orbitSimplifiedRadiusWithDwarfPlanets = Qt.binding(function() { return radiusSunOffset + radiusIncrementWithDwarfPlanets * planetInfo.idxWithDwarfPlanets });
+            planetCalculationResult.orbitSimplifiedRadiusWithoutDwarfPlanets = Qt.binding(function() { return radiusSunOffset + radiusIncrementWithoutDwarfPlanets * planetInfo.idxWithoutDwarfPlanets });
+            planetCalculationResults.push(planetCalculationResult);
         }
+
+        auSize = Qt.binding(function() { return planetCalculationResults[earth.idxWithDwarfPlanets].orbitSimplifiedRadius; });
     }
 
     // -----------------------------------------------------------------------
 
-    function createPlanetComponents()
+    function createPlanetItems()
     {
         // automatically sort images and labels by creating planets in reverse order
-        for (var planetIdx = planetInfos.length - 1; planetIdx >= 0; --planetIdx)
+        for (var planetIdx = planetCalculationResults.length - 1; planetIdx >= 0; --planetIdx)
         {
-            var planetInfo = planetInfos[planetIdx];
+            var planetCalculationResult = planetCalculationResults[planetIdx];
+            var planetInfo = planetCalculationResult.planetInfo;
 
-            var planetImage = planetImageComponent.createObject(images, {"planetInfo": planetInfo});
-            var planetLabel = planetLabelComponent.createObject(labels, {"planetInfo": planetInfo, "yOffset": planetImage.size * 0.75});
+            var planetImage = planetImageComponent.createObject(images, {"planetInfo": planetInfo, "planetCalculationResult": planetCalculationResult});
+            planetImage.clicked.connect(root.clickedOnPlanet);
+
+            var planetLabel = planetLabelComponent.createObject(labels, {"planetInfo": planetInfo, "planetCalculationResult": planetCalculationResult, "yOffset": planetImage.imageHeight * 0.75});
         }
     }
 
@@ -251,13 +96,17 @@ Item
 
     function updatePlanetPositions()
     {
-        Calculation.setDate(date);
-        Calculation.setOrbitParameters(au, simplifiedOrbits);
+        if (!initialized)
+            return;
 
-        for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
+        Calculation.setDate(date);
+        Calculation.setOrbitParameters(auSize, simplifiedOrbits);
+
+        for (var planetIdx = 0; planetIdx < planetCalculationResults.length; ++planetIdx)
         {
-            Calculation.updateEclipticCoordinates(planetInfos[planetIdx]);
-            Calculation.updateDisplayedCoordinates(planetInfos[planetIdx]);
+            var planetCalculationResult = planetCalculationResults[planetIdx];
+            Calculation.updateEclipticCoordinates(planetCalculationResult);
+            Calculation.updateDisplayedCoordinates(planetCalculationResult);
         }
     }
 
@@ -275,10 +124,9 @@ Item
         var lastDate = new Date(date);
         lastDate.setDate(lastDate.getDate() - 1);
         Calculation.setDate(lastDate)
-
-        for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
+        for (var planetIdx = 0; planetIdx < planetCalculationResults.length; ++planetIdx)
         {
-            Calculation.updateOldEclipticCoordinates(planetInfos[planetIdx]);
+            Calculation.updateOldEclipticCoordinates(planetCalculationResults[planetIdx]);
         }
 
         Calculation.setDate(date);
@@ -288,8 +136,8 @@ Item
 
     function getDistanceBetweenPlanets(planetIdx1, planetIdx2)
     {
-        var planet1 = planetInfos[planetIdx1];
-        var planet2 = planetInfos[planetIdx2];
+        var planet1 = planetCalculationResults[planetIdx1];
+        var planet2 = planetCalculationResults[planetIdx2];
 
         var oldDistance = Calculation.getDistanceBetweenPlanets(planet1, planet2, true);
         var currentDistance = Calculation.getDistanceBetweenPlanets(planet1, planet2, false);
@@ -308,7 +156,7 @@ Item
 
     function getDistanceToSun(planetIdx)
     {
-        var planet = planetInfos[planetIdx];
+        var planet = planetCalculationResults[planetIdx];
 
         var oldDistance = Calculation.getDistanceToSun(planet, true);
         var currentDistance = Calculation.getDistanceToSun(planet, false);
@@ -318,12 +166,6 @@ Item
 
     // -----------------------------------------------------------------------
 
-    Component.onCompleted:
-    {
-        initPlanetIndices();
-        initPlanetVisibilityProperties();
-        createPlanetComponents();
-    }
     onDateChanged:
     {
         updatePlanetPositions();
@@ -341,10 +183,55 @@ Item
 
     Component
     {
+        id: planetCalculationResultComponent
+
+        PlanetCalculationResult
+        {
+        }
+    }
+    Component
+    {
         id: planetImageComponent
 
         PlanetImage
         {
+            property PlanetCalculationResult planetCalculationResult
+            property real displayedX: planetCalculationResult.displayedCoordinates[0]
+            property real displayedY: planetCalculationResult.displayedCoordinates[1]
+            property real displayedZ: planetCalculationResult.displayedCoordinates[2]
+            property real displayedShadowRotation: planetCalculationResult.currentShadowRotation
+
+            x: displayedX * root.currentZoom
+            y: displayedY * root.currentZoom + (root.showZPosition ? displayedZ * root.currentZoom : 0.0)
+            scale: root.imageScale * planetCalculationResult.currentOpacityFactor
+            opacity: root.imageOpacity * planetCalculationResult.currentOpacityFactor
+
+            // -----------------------------------------------------------------------
+            // visualization of distance to ecliptic
+            Rectangle
+            {
+                id: zIndicatorLine
+
+                width: 4
+                radius: 2
+                z: -1
+                height: Math.abs(displayedZ * root.currentZoom)
+                color: displayedZ < 0.0 ? "green" : "red"
+                opacity: 0.3
+                anchors { horizontalCenter: parent.horizontalCenter; top: parent.top; topMargin: displayedZ > 0.0 ? -height : 0 }
+                visible: root.showZPosition
+
+                Rectangle
+                {
+                    id: zIndicatorBase
+
+                    width: 8
+                    height: width
+                    radius: width / 2
+                    anchors { verticalCenter: displayedZ < 0 ? parent.bottom : parent.top; horizontalCenter: parent.horizontalCenter }
+                    color: parent.color
+                }
+            }
         }
     }
     Component
@@ -353,6 +240,14 @@ Item
 
         PlanetLabel
         {
+            property PlanetCalculationResult planetCalculationResult
+            property real displayedX: planetCalculationResult.displayedCoordinates[0]
+            property real displayedY: planetCalculationResult.displayedCoordinates[1]
+            property real displayedZ: planetCalculationResult.displayedCoordinates[2]
+
+            x: displayedX * root.currentZoom
+            y: displayedY * root.currentZoom + (root.showZPosition ? displayedZ * root.currentZoom : 0.0)
+            opacity: planetCalculationResult.currentOpacityFactor
         }
     }
 
@@ -363,7 +258,7 @@ Item
         anchors.fill: parent
         onClicked:
         {
-            root.clicked();
+            root.clickedOnEmptySpace();
         }
     }
     Sun
@@ -376,12 +271,12 @@ Item
         anchors { centerIn: parent }
         z: 0
     }
-    PlanetOrbits
+    OrbitPainter
     {
         id: orbits
 
         zoom: root.currentZoom
-        planetInfos: root.planetInfos
+        planetCalculationResults: root.planetCalculationResults
         lineThickness: orbitThickness
         visible: showOrbits
         anchors { fill: parent }

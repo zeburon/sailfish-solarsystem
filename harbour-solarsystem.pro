@@ -23,18 +23,10 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     rpm/harbour-solarsystem.yaml \
     translations/*.ts \
     harbour-solarsystem.desktop \
-    qml/gfx/venus.png \
-    qml/gfx/uranus.png \
     qml/gfx/sun_light.png \
     qml/gfx/sun_flares.png \
     qml/gfx/sun_flames.png \
     qml/gfx/shadow.png \
-    qml/gfx/saturn.png \
-    qml/gfx/neptune.png \
-    qml/gfx/mercury.png \
-    qml/gfx/mars.png \
-    qml/gfx/jupiter.png \
-    qml/gfx/earth.png \
     qml/components/Sun.qml \
     qml/pages/MainPage.qml \
     qml/pages/AboutPage.qml \
@@ -45,14 +37,33 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/components/PlanetLabel.qml \
     qml/gfx/shadow2.png \
     qml/components/PlanetInfo.qml \
-    qml/components/PlanetOrbits.qml \
     qml/globals.js \
-    qml/gfx/pluto.png \
     qml/components/DateDisplay.qml \
     qml/pages/SettingsPage.qml \
     qml/components/Settings.qml \
     qml/components/PlayButton.qml \
-    qml/pages/DistancePage.qml
+    qml/pages/DistancePage.qml \
+    qml/pages/PlanetDetailsPage.qml \
+    qml/gfx/s_earth.png \
+    qml/gfx/s_jupiter.png \
+    qml/gfx/s_mars.png \
+    qml/gfx/s_mercury.png \
+    qml/gfx/s_neptune.png \
+    qml/gfx/s_pluto.png \
+    qml/gfx/s_saturn.png \
+    qml/gfx/s_uranus.png \
+    qml/gfx/s_venus.png \
+    qml/components/PlanetCalculationResult.qml \
+    qml/components/OrbitPainter.qml \
+    qml/gfx/m_earth.png \
+    qml/gfx/m_jupiter.png \
+    qml/gfx/m_mars.png \
+    qml/gfx/m_mercury.png \
+    qml/gfx/m_neptune.png \
+    qml/gfx/m_pluto.png \
+    qml/gfx/m_saturn.png \
+    qml/gfx/m_uranus.png \
+    qml/gfx/m_venus.png
 
 # to disable building translations every time, comment out the
 # following CONFIG line

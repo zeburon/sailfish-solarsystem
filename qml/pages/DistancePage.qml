@@ -15,9 +15,7 @@ Page
     property var planetDistanceItems: []
 
     // properties used by PlanetImage items
-    property int planetImageSize: column.width / (solarSystem.visiblePlanetCount + 1)
-    property real currentZoom: 1.0
-    property bool showZPosition: false
+    property int planetImageSize: column.width / (visiblePlanetCount + 1)
 
     // -----------------------------------------------------------------------
 
@@ -56,10 +54,6 @@ Page
         {
             width: planetImageSize
             height: planetImageSize
-            x: 0
-            y: 0
-            scale: 1.0
-            opacity: 1.0
             showShadowBehindPlanet: false
         }
     }
@@ -93,7 +87,7 @@ Page
 
             width: planetImageSize
             height: planetImageSize
-            visible: solarSystem.planetInfos[planetIdxX].visible && solarSystem.planetInfos[planetIdxY].visible
+            visible: planetInfos[planetIdxX].visible && planetInfos[planetIdxY].visible
 
             // yellow background to highlight distance to sun fields
             Rectangle
@@ -104,7 +98,7 @@ Page
                 radius: width / 2
                 color: "#ffdd00"
                 visible: showDistanceToSun
-                opacity: 0.175 * (1.0 - (planetIdxX / (solarSystem.visiblePlanetCount - 1)) * 0.5)
+                opacity: 0.175 * (1.0 - (planetIdxX / (visiblePlanetCount - 1)) * 0.5)
             }
 
             // distance in AU
@@ -146,7 +140,7 @@ Page
             id: grid
 
             width: parent.width
-            columns: solarSystem.visiblePlanetCount + 1
+            columns: visiblePlanetCount + 1
             spacing: 0
 
             Sun
@@ -158,18 +152,18 @@ Page
 
             Component.onCompleted:
             {
-                var planetCount = solarSystem.planetInfos.length;
+                var planetCount = planetInfos.length;
 
                 // horizontal header
                 for (var headerIdx = 0; headerIdx < planetCount; ++headerIdx)
                 {
-                    planetImageComponent.createObject(grid, {"planetInfo": solarSystem.planetInfos[headerIdx], "shadowRotation": 0});
+                    planetImageComponent.createObject(grid, {"planetInfo": planetInfos[headerIdx], "shadowRotation": 0});
                 }
 
                 for (var planetIdxY = 0; planetIdxY < planetCount; ++planetIdxY)
                 {
                     // vertical header
-                    planetImageComponent.createObject(grid, {"planetInfo": solarSystem.planetInfos[planetIdxY], "shadowRotation": 90});
+                    planetImageComponent.createObject(grid, {"planetInfo": planetInfos[planetIdxY], "shadowRotation": 90});
 
                     // distance items for planet with index planetIdxY
                     for (var planetIdxX = 0; planetIdxX < planetCount; ++planetIdxX)

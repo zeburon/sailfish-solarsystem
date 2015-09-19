@@ -14,6 +14,13 @@ CoverBackground
 
     // -----------------------------------------------------------------------
 
+    function init()
+    {
+        solarSystem.init();
+    }
+
+    // -----------------------------------------------------------------------
+
     function refresh()
     {
         var currentDate = new Date(Date.now());
@@ -23,6 +30,7 @@ CoverBackground
             solarSystem.updatePlanetPositions();
         }
         solarSystem.paintOrbits();
+        solarSystem.prepareDistanceCoordinates();
         updatePlanetDistance();
     }
 
@@ -31,11 +39,11 @@ CoverBackground
     function updatePlanetDistance()
     {
         // check if selected planet is still visible (e.g. dwarf planets are still enabled)
-        if (!solarSystem.planetInfos[settings.distancePlanetIdx].visible)
+        if (!planetInfos[settings.distancePlanetIdx].visible)
             selectPreviousPlanet();
 
         var result = solarSystem.getDistanceToEarth(settings.distancePlanetIdx);
-        labelName.text = qsTr("Distance to %1").arg(solarSystem.planetInfos[settings.distancePlanetIdx].name);
+        labelName.text = qsTr("Distance to %1").arg(planetInfos[settings.distancePlanetIdx].name);
         labelDistance.text = result[0].toFixed(2) + " AU";
 
         // distance is increasing
@@ -60,8 +68,8 @@ CoverBackground
         while (planetIdx > 0)
         {
             --planetIdx;
-            var planetInfo = solarSystem.planetInfos[planetIdx];
-            if (planetInfo.useInPlanetDistanceList && planetInfo.visible)
+            var planetInfo = planetInfos[planetIdx];
+            if (planetInfo !== earth && planetInfo.visible)
             {
                 settings.distancePlanetIdx = planetIdx;
                 updatePlanetDistance();
@@ -75,11 +83,11 @@ CoverBackground
     function selectNextPlanet()
     {
         var planetIdx = settings.distancePlanetIdx;
-        while (planetIdx < solarSystem.planetInfos.length - 1)
+        while (planetIdx < planetInfos.length - 1)
         {
             ++planetIdx;
-            var planetInfo = solarSystem.planetInfos[planetIdx];
-            if (planetInfo.useInPlanetDistanceList && planetInfo.visible)
+            var planetInfo = planetInfos[planetIdx];
+            if (planetInfo !== earth && planetInfo.visible)
             {
                 settings.distancePlanetIdx = planetIdx;
                 updatePlanetDistance();

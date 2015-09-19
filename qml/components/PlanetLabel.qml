@@ -5,15 +5,9 @@ Item
 {
     property PlanetInfo planetInfo
     property real yOffset
-    property real displayedX: planetInfo.displayedCoordinates[0]
-    property real displayedY: planetInfo.displayedCoordinates[1]
-    property real displayedZ: planetInfo.displayedCoordinates[2]
 
     // -----------------------------------------------------------------------
 
-    x: displayedX * currentZoom
-    y: displayedY * currentZoom + yOffset + (showZPosition ? displayedZ * currentZoom : 0.0)
-    opacity: planetInfo.currentOpacityFactor
     visible: planetInfo.visible
 
     // -----------------------------------------------------------------------
@@ -25,6 +19,6 @@ Item
         text: planetInfo.name
         color: Theme.secondaryHighlightColor
         font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
-        anchors { centerIn: parent }
+        anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter; verticalCenterOffset: yOffset }
     }
 }

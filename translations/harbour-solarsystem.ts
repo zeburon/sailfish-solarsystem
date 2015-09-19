@@ -84,6 +84,61 @@ green number: distance is decreasing</source>
     </message>
 </context>
 <context>
+    <name>PlanetDetailsPage</name>
+    <message>
+        <source>Radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Orbital Period</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Orbital Velocity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mass</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Density</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Surface Gravity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Escape Velocity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Average Distance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation Period</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minimum Distance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum Distance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Satellite Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
@@ -135,42 +190,42 @@ green number: distance is decreasing</source>
     </message>
 </context>
 <context>
-    <name>SolarSystem</name>
+    <name>harbour-solarsystem</name>
     <message>
         <source>Mercury</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Venus</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Earth</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Mars</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Jupiter</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Saturn</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Uranus</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Neptune</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Pluto</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

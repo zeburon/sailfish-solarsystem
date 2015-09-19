@@ -22,7 +22,7 @@ Page
     function init()
     {
         loadAnimationIncrement();
-        solarSystem.updatePlanetPositions();
+        solarSystem.init();
     }
 
     // -----------------------------------------------------------------------
@@ -65,6 +65,14 @@ Page
         {
             settings.zoomedOut = !settings.zoomedOut;
         }
+    }
+
+    // -----------------------------------------------------------------------
+
+    function showPlanetDetailsPage(planetInfo)
+    {
+        planetDetailsPage.planetInfo = planetInfo;
+        pageStack.push(planetDetailsPage);
     }
 
     // -----------------------------------------------------------------------
@@ -186,7 +194,8 @@ Page
                     animateZoom: app.initialized
                     Component.onCompleted:
                     {
-                        solarSystem.clicked.connect(toggleZoom);
+                        solarSystem.clickedOnEmptySpace.connect(toggleZoom);
+                        solarSystem.clickedOnPlanet.connect(showPlanetDetailsPage);
                     }
                 }
             }

@@ -2,7 +2,7 @@ import QtQuick 2.0
 
 Canvas
 {
-    property list<PlanetInfo> planetInfos
+    property var planetCalculationResults
     property int lineThickness: 3
     property real zoom
 
@@ -13,27 +13,27 @@ Canvas
         var context = getContext("2d");
         context.reset();
 
-        for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
+        for (var planetIdx = 0; planetIdx < planetCalculationResults.length; ++planetIdx)
         {
-            var planetInfo = planetInfos[planetIdx];
-            if (planetInfo.visible)
+            var planetCalculationResult = planetCalculationResults[planetIdx];
+            if (planetCalculationResult.planetInfo.visible)
             {
-                var rot = -planetInfo.w1 * Math.PI / 180.0;
-                var offset = -planetInfo.orbitOffset * zoom
-                var a = planetInfo.orbitA * zoom
-                var b = planetInfo.orbitB * zoom
+                var rotation = -planetCalculationResult.planetInfo.w1 * Math.PI / 180.0;
+                var offset = -planetCalculationResult.orbitOffset * zoom
+                var a = planetCalculationResult.orbitA * zoom
+                var b = planetCalculationResult.orbitB * zoom
 
                 context.save();
                 context.translate(width / 2.0, height / 2.0);
-                context.rotate(rot);
+                context.rotate(rotation);
                 context.translate(offset, 0.0);
                 context.scale(1.0, b / a);
                 context.beginPath();
                 context.arc(0.0, 0.0, a, 0.0, 2.0 * Math.PI);
                 context.restore();
-                context.globalAlpha = planetInfo.orbitAlpha * planetInfo.currentOpacityFactor;
+                context.globalAlpha = planetCalculationResult.currentOpacityFactor;
                 context.lineWidth = lineThickness;
-                context.strokeStyle = planetInfo.orbitColor;
+                context.strokeStyle = planetCalculationResult.planetInfo.orbitColor;
                 context.stroke();
             }
         }

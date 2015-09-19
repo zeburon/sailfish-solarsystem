@@ -86,6 +86,61 @@ Gröna siffror: Avståndet minskar</translation>
     </message>
 </context>
 <context>
+    <name>PlanetDetailsPage</name>
+    <message>
+        <source>Radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Orbital Period</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Orbital Velocity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mass</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Density</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Surface Gravity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Escape Velocity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Average Distance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation Period</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minimum Distance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum Distance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Satellite Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
@@ -137,42 +192,42 @@ Gröna siffror: Avståndet minskar</translation>
     </message>
 </context>
 <context>
-    <name>SolarSystem</name>
+    <name>harbour-solarsystem</name>
     <message>
         <source>Mercury</source>
-        <translation>Merkurius</translation>
+        <translation type="unfinished">Merkurius</translation>
     </message>
     <message>
         <source>Venus</source>
-        <translation>Venus</translation>
+        <translation type="unfinished">Venus</translation>
     </message>
     <message>
         <source>Earth</source>
-        <translation>Jorden</translation>
+        <translation type="unfinished">Jorden</translation>
     </message>
     <message>
         <source>Mars</source>
-        <translation>Mars</translation>
+        <translation type="unfinished">Mars</translation>
     </message>
     <message>
         <source>Jupiter</source>
-        <translation>Jupiter</translation>
+        <translation type="unfinished">Jupiter</translation>
     </message>
     <message>
         <source>Saturn</source>
-        <translation>Saturnus</translation>
+        <translation type="unfinished">Saturnus</translation>
     </message>
     <message>
         <source>Uranus</source>
-        <translation>Uranus</translation>
+        <translation type="unfinished">Uranus</translation>
     </message>
     <message>
         <source>Neptune</source>
-        <translation>Neptunus</translation>
+        <translation type="unfinished">Neptunus</translation>
     </message>
     <message>
         <source>Pluto</source>
-        <translation>Pluto</translation>
+        <translation type="unfinished">Pluto</translation>
     </message>
 </context>
 </TS>

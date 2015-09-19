@@ -7,20 +7,19 @@ Item
     // -----------------------------------------------------------------------
 
     property PlanetInfo planetInfo
-    property alias size: image.height
     property bool showShadowBehindPlanet: true
-
-    property real displayedX: planetInfo.displayedCoordinates[0]
-    property real displayedY: planetInfo.displayedCoordinates[1]
-    property real displayedZ: planetInfo.displayedCoordinates[2]
-    property real displayedShadowRotation: planetInfo.currentShadowRotation
+    property real shadowRotation: 0
+    property int clickAreaSize: 50
+    property alias imageWidth: image.width
+    property alias imageHeight: image.height
+    property bool small: true
 
     // -----------------------------------------------------------------------
 
-    x: displayedX * currentZoom
-    y: displayedY * currentZoom + (showZPosition ? displayedZ * currentZoom : 0.0)
-    scale: imageScale * planetInfo.currentOpacityFactor
-    opacity: imageOpacity * planetInfo.currentOpacityFactor
+    signal clicked(var planet)
+
+    // -----------------------------------------------------------------------
+
     visible: planetInfo.visible
 
     // -----------------------------------------------------------------------
@@ -29,35 +28,19 @@ Item
     {
         id: image
 
-        source: planetInfo.imageSource
+        source: (small ? planetInfo.smallImageSource : planetInfo.mediumImageSource)
         anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
         antialiasing: true
-    }
 
-    // -----------------------------------------------------------------------
-    // visualization of distance to ecliptic
-    Rectangle
-    {
-        id: zIndicatorLine
-
-        width: 4
-        radius: 2
-        z: -1
-        height: Math.abs(displayedZ * currentZoom)
-        color: displayedZ < 0.0 ? "green" : "red"
-        opacity: 0.3
-        anchors { horizontalCenter: parent.horizontalCenter; top: parent.top; topMargin: displayedZ > 0.0 ? -height : 0 }
-        visible: showZPosition
-
-        Rectangle
+        MouseArea
         {
-            id: zIndicatorBase
-
-            width: 8
-            height: width
-            radius: width / 2
-            anchors { verticalCenter: displayedZ < 0 ? parent.bottom : parent.top; horizontalCenter: parent.horizontalCenter }
-            color: parent.color
+            anchors { centerIn: parent }
+            width: clickAreaSize
+            height: clickAreaSize
+            onClicked:
+            {
+                root.clicked(planetInfo);
+            }
         }
     }
 
@@ -68,7 +51,7 @@ Item
         id: shadow
 
         anchors { centerIn: parent }
-        rotation: displayedShadowRotation
+        rotation: shadowRotation
 
         Image
         {

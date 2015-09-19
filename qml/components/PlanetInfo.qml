@@ -7,34 +7,18 @@ QtObject
 
     property string name
     property bool isDwarfPlanet: false
-    property bool useInPlanetDistanceList: true
-
-    property string imageSource
-    property real imageZoomedInScale: 1.0
-    property real imageZoomedOutScale: 1.0
+    property bool visible: true
 
     property int idxWithDwarfPlanets
     property int idxWithoutDwarfPlanets
-    property bool visible: true
 
-    // -----------------------------------------------------------------------
-    // orbit visualization parameters
-
-    property color orbitColor
-    property real orbitAlpha: 0.4
-    property real orbitSimplifiedRadiusWithDwarfPlanets
-    property real orbitSimplifiedRadiusWithoutDwarfPlanets
-    property real orbitSimplifiedRadius: showDwarfPlanets ? orbitSimplifiedRadiusWithDwarfPlanets : orbitSimplifiedRadiusWithoutDwarfPlanets
-    property real orbitPerihelion: a1 * (1.0 - e1)
-    property real orbitAphelion: a1 * (1.0 + e1)
-    property real orbitOffset: simplifiedOrbits ? 0.0 : ((orbitAphelion - orbitPerihelion) / 2.0) * au * orbitProjectionFactor
-    property real orbitA: simplifiedOrbits ? orbitSimplifiedRadius : orbitCorrectionFactorX * a1 * au * orbitProjectionFactor
-    property real orbitB: simplifiedOrbits ? orbitSimplifiedRadius : orbitCorrectionFactorY * a1 * au * Math.sqrt(1.0 - e1 * e1)
-
-    // adjust orbit dimensions according to inclination
-    property real orbitProjectionFactor: Math.cos(i1  * Math.PI / 180)
+    property string smallImageSource
+    property real smallImageScaleZoomedIn: 1.0
+    property real smallImageScaleZoomedOut: 1.0
+    property string mediumImageSource
 
     // adjust to improve planet image and orbit alignment
+    property color orbitColor
     property real orbitCorrectionFactorX: 1
     property real orbitCorrectionFactorY: 1
 
@@ -72,17 +56,20 @@ QtObject
     property real o2 // degrees / century
 
     // -----------------------------------------------------------------------
-    // result of calculation
+    // detailed information
 
-    property var eclipticCoordinates: []
-    property var oldEclipticCoordinates: []
+    property real orbitAverageDistance: a1 * (1 + Math.pow(e1, 2) / 2)
+    property real orbitPerihelion: a1 * (1.0 - e1)
+    property real orbitAphelion: a1 * (1.0 + e1)
+    property real orbitalPeriod: 360 / (l2 / 100) // years
+    property real orbitalVelocity: ((2 * Math.PI * a1 * 1.4960e11) / (orbitalPeriod * 365.25 * 24 * 3600)) * (1 - (1 * Math.pow(e1, 2)) / 4 - (3 * Math.pow(e1, 4)) / 64 - (5 * Math.pow(e1, 6)) / 256 - (175 * Math.pow(e1, 8)) / 16384) // m / s
+    property real rotationPeriod // days
+    property int satelliteCount
+    property real radius // km
+    property real volume // km³
+    property real mass // kg
+    property real density: mass / volume // kg / km³
+    property real surfaceGravity: (6.67e-11 * mass) / Math.pow(radius * 1000, 2) // m / s²
+    property real escapeVelocity: Math.sqrt((2 * 6.67e-11 * mass) / (radius * 1000)) // m / s
 
-    // ecliptic coordinates transformed into visual representation
-    property var displayedCoordinates: []
-
-    // -----------------------------------------------------------------------
-    // dynamic parameters used for displaying the current state
-
-    property real currentShadowRotation: Math.atan2(displayedCoordinates[1] + displayedCoordinates[2], displayedCoordinates[0]) * 180 / Math.PI;
-    property real currentOpacityFactor: simplifiedOrbits ? 1.0 : (1.0 - ((1.0 - currentZoom) * (1.0 - imageZoomedOutScale) + currentZoom * (1.0 - imageZoomedInScale)))
 }
