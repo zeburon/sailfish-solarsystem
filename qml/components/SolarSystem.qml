@@ -29,7 +29,7 @@ Item
     property real radiusSunOffset: Math.max(40, Math.min(width, height) / 20) * imageScale
     property real radiusBorderOffset: 15
     property real radiusRange: Math.min(width / 2, height / 2) - radiusBorderOffset - radiusSunOffset
-    property real radiusIncrementWithDwarfPlanets: radiusRange / (planetInfos.length - 1)
+    property real radiusIncrementWithDwarfPlanets: radiusRange / (planetConfigs.length - 1)
     property real radiusIncrementWithoutDwarfPlanets: radiusRange / (realPlanetCount - 1)
     property real auSize
 
@@ -41,18 +41,18 @@ Item
 
     // list of planets
     property bool initialized: false
-    property var planetCalculationResults: []
+    property var planetPositions: []
 
     // -----------------------------------------------------------------------
 
-    signal clickedOnPlanet(var planetInfo)
+    signal clickedOnPlanet(var planetConfig)
     signal clickedOnEmptySpace()
 
     // -----------------------------------------------------------------------
 
     function init()
     {
-        initPlanetCalculationResults();
+        initPlanetPositions();
         createPlanetItems();
         initialized = true;
 
@@ -61,18 +61,18 @@ Item
 
     // -----------------------------------------------------------------------
 
-    function initPlanetCalculationResults()
+    function initPlanetPositions()
     {
-        for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
+        for (var planetIdx = 0; planetIdx < planetConfigs.length; ++planetIdx)
         {
-            var planetInfo = planetInfos[planetIdx];
-            var planetCalculationResult = planetCalculationResultComponent.createObject(null, {"planetInfo": planetInfo});
-            planetCalculationResult.orbitSimplifiedRadiusWithDwarfPlanets = Qt.binding(function() { return radiusSunOffset + radiusIncrementWithDwarfPlanets * planetInfo.idxWithDwarfPlanets });
-            planetCalculationResult.orbitSimplifiedRadiusWithoutDwarfPlanets = Qt.binding(function() { return radiusSunOffset + radiusIncrementWithoutDwarfPlanets * planetInfo.idxWithoutDwarfPlanets });
-            planetCalculationResults.push(planetCalculationResult);
+            var planetConfig = planetConfigs[planetIdx];
+            var planetPosition = planetPositionComponent.createObject(null, {"planetConfig": planetConfig});
+            planetPosition.orbitSimplifiedRadiusWithDwarfPlanets = Qt.binding(function() { return radiusSunOffset + radiusIncrementWithDwarfPlanets * planetConfig.idxWithDwarfPlanets });
+            planetPosition.orbitSimplifiedRadiusWithoutDwarfPlanets = Qt.binding(function() { return radiusSunOffset + radiusIncrementWithoutDwarfPlanets * planetConfig.idxWithoutDwarfPlanets });
+            planetPositions.push(planetPosition);
         }
 
-        auSize = Qt.binding(function() { return planetCalculationResults[earth.idxWithDwarfPlanets].orbitSimplifiedRadius; });
+        auSize = Qt.binding(function() { return planetPositions[earth.idxWithDwarfPlanets].orbitSimplifiedRadius; });
     }
 
     // -----------------------------------------------------------------------
@@ -80,15 +80,15 @@ Item
     function createPlanetItems()
     {
         // automatically sort images and labels by creating planets in reverse order
-        for (var planetIdx = planetCalculationResults.length - 1; planetIdx >= 0; --planetIdx)
+        for (var planetIdx = planetPositions.length - 1; planetIdx >= 0; --planetIdx)
         {
-            var planetCalculationResult = planetCalculationResults[planetIdx];
-            var planetInfo = planetCalculationResult.planetInfo;
+            var planetPosition = planetPositions[planetIdx];
+            var planetConfig = planetPosition.planetConfig;
 
-            var planetImage = planetImageComponent.createObject(images, {"planetInfo": planetInfo, "planetCalculationResult": planetCalculationResult});
+            var planetImage = planetImageComponent.createObject(images, {"planetConfig": planetConfig, "planetPosition": planetPosition});
             planetImage.clicked.connect(root.clickedOnPlanet);
 
-            var planetLabel = planetLabelComponent.createObject(labels, {"planetInfo": planetInfo, "planetCalculationResult": planetCalculationResult, "yOffset": planetImage.imageHeight * 0.75});
+            var planetLabel = planetLabelComponent.createObject(labels, {"planetConfig": planetConfig, "planetPosition": planetPosition, "yOffset": planetImage.imageHeight * 0.75});
         }
     }
 
@@ -102,11 +102,11 @@ Item
         Calculation.setDate(date);
         Calculation.setOrbitParameters(auSize, simplifiedOrbits);
 
-        for (var planetIdx = 0; planetIdx < planetCalculationResults.length; ++planetIdx)
+        for (var planetIdx = 0; planetIdx < planetPositions.length; ++planetIdx)
         {
-            var planetCalculationResult = planetCalculationResults[planetIdx];
-            Calculation.updateEclipticCoordinates(planetCalculationResult);
-            Calculation.updateDisplayedCoordinates(planetCalculationResult);
+            var planetPosition = planetPositions[planetIdx];
+            Calculation.updateEclipticCoordinates(planetPosition);
+            Calculation.updateDisplayedCoordinates(planetPosition);
         }
     }
 
@@ -124,9 +124,9 @@ Item
         var lastDate = new Date(date);
         lastDate.setDate(lastDate.getDate() - 1);
         Calculation.setDate(lastDate)
-        for (var planetIdx = 0; planetIdx < planetCalculationResults.length; ++planetIdx)
+        for (var planetIdx = 0; planetIdx < planetPositions.length; ++planetIdx)
         {
-            Calculation.updateOldEclipticCoordinates(planetCalculationResults[planetIdx]);
+            Calculation.updateOldEclipticCoordinates(planetPositions[planetIdx]);
         }
 
         Calculation.setDate(date);
@@ -136,13 +136,13 @@ Item
 
     function getDistanceBetweenPlanets(planetIdx1, planetIdx2)
     {
-        var planet1 = planetCalculationResults[planetIdx1];
-        var planet2 = planetCalculationResults[planetIdx2];
+        var planetPosition1 = planetPositions[planetIdx1];
+        var planetPosition2 = planetPositions[planetIdx2];
 
-        var oldDistance = Calculation.getDistanceBetweenPlanets(planet1, planet2, true);
-        var currentDistance = Calculation.getDistanceBetweenPlanets(planet1, planet2, false);
+        var oldDistance = Calculation.getDistanceBetweenPlanets(planetPosition1, planetPosition2, true);
+        var newDistance = Calculation.getDistanceBetweenPlanets(planetPosition1, planetPosition2, false);
 
-        return [currentDistance, currentDistance > oldDistance ? 1 : -1];
+        return [newDistance, newDistance > oldDistance ? 1 : -1];
     }
 
     // -----------------------------------------------------------------------
@@ -156,12 +156,12 @@ Item
 
     function getDistanceToSun(planetIdx)
     {
-        var planet = planetCalculationResults[planetIdx];
+        var planetPosition = planetPositions[planetIdx];
 
-        var oldDistance = Calculation.getDistanceToSun(planet, true);
-        var currentDistance = Calculation.getDistanceToSun(planet, false);
+        var oldDistance = Calculation.getDistanceToSun(planetPosition, true);
+        var newDistance = Calculation.getDistanceToSun(planetPosition, false);
 
-        return [currentDistance, currentDistance > oldDistance ? 1 : -1];
+        return [newDistance, newDistance > oldDistance ? 1 : -1];
     }
 
     // -----------------------------------------------------------------------
@@ -183,9 +183,9 @@ Item
 
     Component
     {
-        id: planetCalculationResultComponent
+        id: planetPositionComponent
 
-        PlanetCalculationResult
+        PlanetPosition
         {
         }
     }
@@ -195,16 +195,16 @@ Item
 
         PlanetImage
         {
-            property PlanetCalculationResult planetCalculationResult
-            property real displayedX: planetCalculationResult.displayedCoordinates[0]
-            property real displayedY: planetCalculationResult.displayedCoordinates[1]
-            property real displayedZ: planetCalculationResult.displayedCoordinates[2]
-            property real displayedShadowRotation: planetCalculationResult.currentShadowRotation
+            property PlanetPosition planetPosition
+            property real displayedX: planetPosition.displayedCoordinates[0]
+            property real displayedY: planetPosition.displayedCoordinates[1]
+            property real displayedZ: planetPosition.displayedCoordinates[2]
+            property real displayedShadowRotation: planetPosition.displayedShadowRotation
 
             x: displayedX * root.currentZoom
             y: displayedY * root.currentZoom + (root.showZPosition ? displayedZ * root.currentZoom : 0.0)
-            scale: root.imageScale * planetCalculationResult.currentOpacityFactor
-            opacity: root.imageOpacity * planetCalculationResult.currentOpacityFactor
+            scale: root.imageScale * planetPosition.displayedOpacity
+            opacity: root.imageOpacity * planetPosition.displayedOpacity
 
             // -----------------------------------------------------------------------
             // visualization of distance to ecliptic
@@ -240,14 +240,14 @@ Item
 
         PlanetLabel
         {
-            property PlanetCalculationResult planetCalculationResult
-            property real displayedX: planetCalculationResult.displayedCoordinates[0]
-            property real displayedY: planetCalculationResult.displayedCoordinates[1]
-            property real displayedZ: planetCalculationResult.displayedCoordinates[2]
+            property PlanetPosition planetPosition
+            property real displayedX: planetPosition.displayedCoordinates[0]
+            property real displayedY: planetPosition.displayedCoordinates[1]
+            property real displayedZ: planetPosition.displayedCoordinates[2]
 
             x: displayedX * root.currentZoom
             y: displayedY * root.currentZoom + (root.showZPosition ? displayedZ * root.currentZoom : 0.0)
-            opacity: planetCalculationResult.currentOpacityFactor
+            opacity: planetPosition.displayedOpacity
         }
     }
 
@@ -276,7 +276,7 @@ Item
         id: orbits
 
         zoom: root.currentZoom
-        planetCalculationResults: root.planetCalculationResults
+        planetPositions: root.planetPositions
         lineThickness: orbitThickness
         visible: showOrbits
         anchors { fill: parent }

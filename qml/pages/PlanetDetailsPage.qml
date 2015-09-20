@@ -11,7 +11,7 @@ Page
     // -----------------------------------------------------------------------
 
     property bool pageActive: status === PageStatus.Active
-    property PlanetInfo planetInfo
+    property PlanetConfig planetConfig
 
     // -----------------------------------------------------------------------
 
@@ -41,14 +41,14 @@ Page
 
             PageHeader
             {
-                title: planetInfo.name
+                title: planetConfig.name
 
                 PlanetImage
                 {
                     id: planetImage
 
                     small: false
-                    planetInfo: page.planetInfo
+                    planetConfig: page.planetConfig
                     anchors { left: parent.left; leftMargin: Theme.paddingLarge + imageWidth / 2; verticalCenter: parent.verticalCenter }
                     showShadowBehindPlanet: false
                     shadowRotation: 180
@@ -63,7 +63,7 @@ Page
             }
             Label
             {
-                text: planetInfo.orbitAverageDistance + " AU"
+                text: planetConfig.orbitAverageDistance + " AU"
                 color: Theme.secondaryColor
                 font { family: Theme.fontFamily; pixelSize: Theme.fontSizeMedium }
             }
@@ -76,7 +76,7 @@ Page
             }
             Label
             {
-                text: planetInfo.orbitPerihelion + " AU"
+                text: planetConfig.orbitPerihelion + " AU"
                 color: Theme.secondaryColor
                 font { family: Theme.fontFamily; pixelSize: Theme.fontSizeMedium }
             }
@@ -89,7 +89,7 @@ Page
             }
             Label
             {
-                text: planetInfo.orbitAphelion + " AU"
+                text: planetConfig.orbitAphelion + " AU"
                 color: Theme.secondaryColor
                 font { family: Theme.fontFamily; pixelSize: Theme.fontSizeMedium }
             }
@@ -102,7 +102,7 @@ Page
             }
             Label
             {
-                text: planetInfo.orbitalPeriod + " a"
+                text: planetConfig.orbitalPeriod + " a"
                 color: Theme.secondaryColor
                 font { family: Theme.fontFamily; pixelSize: Theme.fontSizeMedium }
             }
@@ -115,7 +115,7 @@ Page
             }
             Label
             {
-                text: planetInfo.orbitalVelocity + " m / s"
+                text: planetConfig.orbitalVelocity + " m / s"
                 color: Theme.secondaryColor
                 font { family: Theme.fontFamily; pixelSize: Theme.fontSizeMedium }
             }
@@ -128,7 +128,7 @@ Page
             }
             Label
             {
-                text: planetInfo.rotationPeriod + " days"
+                text: planetConfig.rotationPeriod + " days"
                 color: Theme.secondaryColor
                 font { family: Theme.fontFamily; pixelSize: Theme.fontSizeMedium }
             }
@@ -141,7 +141,7 @@ Page
             }
             Label
             {
-                text: planetInfo.radius + " km"
+                text: planetConfig.radius + " km"
                 color: Theme.secondaryColor
                 font { family: Theme.fontFamily; pixelSize: Theme.fontSizeMedium }
             }
@@ -154,7 +154,7 @@ Page
             }
             Label
             {
-                text: planetInfo.volume.toFixed(2) + " km³"
+                text: planetConfig.volume.toFixed(2) + " km³"
                 color: Theme.secondaryColor
                 font { family: Theme.fontFamily; pixelSize: Theme.fontSizeMedium }
             }
@@ -167,7 +167,7 @@ Page
             }
             Label
             {
-                text: planetInfo.mass.toFixed(2) + " kg"
+                text: planetConfig.mass.toFixed(2) + " kg"
                 color: Theme.secondaryColor
                 font { family: Theme.fontFamily; pixelSize: Theme.fontSizeMedium }
             }
@@ -180,7 +180,7 @@ Page
             }
             Label
             {
-                text: planetInfo.density.toFixed(2) + " kg / km³"
+                text: planetConfig.density.toFixed(2) + " kg / km³"
                 color: Theme.secondaryColor
                 font { family: Theme.fontFamily; pixelSize: Theme.fontSizeMedium }
             }
@@ -193,7 +193,7 @@ Page
             }
             Label
             {
-                text: planetInfo.surfaceGravity.toFixed(2) + " m / s²"
+                text: planetConfig.surfaceGravity.toFixed(2) + " m / s²"
                 color: Theme.secondaryColor
                 font { family: Theme.fontFamily; pixelSize: Theme.fontSizeMedium }
             }
@@ -206,7 +206,7 @@ Page
             }
             Label
             {
-                text: planetInfo.escapeVelocity.toFixed(2) + " m / s"
+                text: planetConfig.escapeVelocity.toFixed(2) + " m / s"
                 color: Theme.secondaryColor
                 font { family: Theme.fontFamily; pixelSize: Theme.fontSizeMedium }
             }
@@ -219,7 +219,7 @@ Page
             }
             Label
             {
-                text: planetInfo.satelliteCount
+                text: planetConfig.satelliteCount
                 color: Theme.secondaryColor
                 font { family: Theme.fontFamily; pixelSize: Theme.fontSizeMedium }
             }

@@ -75,19 +75,19 @@ function iterate(m, e)
 
 // -----------------------------------------------------------------------
 
-function calculateEclipticCoordinates(planet)
+function calculateEclipticCoordinates(planetConfig)
 {
-    var a = planet.a1 + centuriesSinceJ2000 * planet.a2;
-    var e = planet.e1 + centuriesSinceJ2000 * planet.e2;
-    var i = deg2rad(planet.i1 + centuriesSinceJ2000 * planet.i2);
-    var l = deg2rad(planet.l1 + centuriesSinceJ2000 * planet.l2);
-    var w = deg2rad(planet.w1 + centuriesSinceJ2000 * planet.w2);
-    var o = deg2rad(planet.o1 + centuriesSinceJ2000 * planet.o2);
+    var a = planetConfig.a1 + centuriesSinceJ2000 * planetConfig.a2;
+    var e = planetConfig.e1 + centuriesSinceJ2000 * planetConfig.e2;
+    var i = deg2rad(planetConfig.i1 + centuriesSinceJ2000 * planetConfig.i2);
+    var l = deg2rad(planetConfig.l1 + centuriesSinceJ2000 * planetConfig.l2);
+    var w = deg2rad(planetConfig.w1 + centuriesSinceJ2000 * planetConfig.w2);
+    var o = deg2rad(planetConfig.o1 + centuriesSinceJ2000 * planetConfig.o2);
 
-    var b = deg2rad(planet.b);
-    var c = deg2rad(planet.c);
-    var s = deg2rad(planet.s);
-    var f = deg2rad(planet.f);
+    var b = deg2rad(planetConfig.b);
+    var c = deg2rad(planetConfig.c);
+    var s = deg2rad(planetConfig.s);
+    var f = deg2rad(planetConfig.f);
 
     var ww = w - o;
     var m = mod2pi(l - w  + b * centuriesSinceJ2000 * centuriesSinceJ2000 + c * Math.cos(f * centuriesSinceJ2000) + s * Math.sin(f * centuriesSinceJ2000));
@@ -100,34 +100,34 @@ function calculateEclipticCoordinates(planet)
     var yEcliptic = (Math.cos(ww) * Math.sin(o) + Math.sin(ww) * Math.cos(o) * Math.cos(i)) * x + (-Math.sin(ww) * Math.sin(o) + Math.cos(ww) * Math.cos(o) * Math.cos(i)) * y;
     var zEcliptic = (Math.sin(ww) * Math.sin(i)) * x + (Math.cos(ww)* Math.sin(i)) * y;
 
-    return [xEcliptic * planet.orbitCorrectionFactorX, yEcliptic * planet.orbitCorrectionFactorY, zEcliptic];
+    return [xEcliptic * planetConfig.orbitCorrectionFactorX, yEcliptic * planetConfig.orbitCorrectionFactorY, zEcliptic];
 }
 
 // -----------------------------------------------------------------------
 
-function updateEclipticCoordinates(planet)
+function updateEclipticCoordinates(planetPosition)
 {
-    planet.eclipticCoordinates = calculateEclipticCoordinates(planet.planetInfo);
+    planetPosition.eclipticCoordinates = calculateEclipticCoordinates(planetPosition.planetConfig);
 }
 
 // -----------------------------------------------------------------------
 
-function updateOldEclipticCoordinates(planet)
+function updateOldEclipticCoordinates(planetPosition)
 {
-    planet.oldEclipticCoordinates = calculateEclipticCoordinates(planet.planetInfo);
+    planetPosition.oldEclipticCoordinates = calculateEclipticCoordinates(planetPosition.planetConfig);
 }
 
 // -----------------------------------------------------------------------
 
-function updateDisplayedCoordinates(planet)
+function updateDisplayedCoordinates(planetPosition)
 {
-    var eclipticCoordinates = planet.eclipticCoordinates;
+    var eclipticCoordinates = planetPosition.eclipticCoordinates;
     var x, y, z;
     if (simplified)
     {
         var angle = Math.atan2(eclipticCoordinates[1], eclipticCoordinates[0]);
-        x = planet.orbitSimplifiedRadius * Math.cos(angle);
-        y = planet.orbitSimplifiedRadius * Math.sin(angle);
+        x = planetPosition.orbitSimplifiedRadius * Math.cos(angle);
+        y = planetPosition.orbitSimplifiedRadius * Math.sin(angle);
         z = 0.0;
     }
     else
@@ -136,15 +136,15 @@ function updateDisplayedCoordinates(planet)
         y = au * eclipticCoordinates[1];
         z = au * eclipticCoordinates[2];
     }
-    planet.displayedCoordinates = [Math.round(x), Math.round(-y), Math.round(z)];
+    planetPosition.displayedCoordinates = [Math.round(x), Math.round(-y), Math.round(z)];
 }
 
 // -----------------------------------------------------------------------
 
-function getDistanceBetweenPlanets(planet1, planet2, useOldCoordinates)
+function getDistanceBetweenPlanets(planetPosition1, planetPosition2, useOldCoordinates)
 {
-    var eclipticCoordinates1 = useOldCoordinates ? planet1.oldEclipticCoordinates : planet1.eclipticCoordinates;
-    var eclipticCoordinates2 = useOldCoordinates ? planet2.oldEclipticCoordinates : planet2.eclipticCoordinates;
+    var eclipticCoordinates1 = useOldCoordinates ? planetPosition1.oldEclipticCoordinates : planetPosition1.eclipticCoordinates;
+    var eclipticCoordinates2 = useOldCoordinates ? planetPosition2.oldEclipticCoordinates : planetPosition2.eclipticCoordinates;
     var dx = eclipticCoordinates1[0] - eclipticCoordinates2[0];
     var dy = eclipticCoordinates1[1] - eclipticCoordinates2[1];
     var dz = eclipticCoordinates1[2] - eclipticCoordinates2[2];
@@ -153,9 +153,9 @@ function getDistanceBetweenPlanets(planet1, planet2, useOldCoordinates)
 
 // -----------------------------------------------------------------------
 
-function getDistanceToSun(planet, useOldCoordinates)
+function getDistanceToSun(planetPosition, useOldCoordinates)
 {
-    var eclipticCoordinates = useOldCoordinates ? planet.oldEclipticCoordinates : planet.eclipticCoordinates;
+    var eclipticCoordinates = useOldCoordinates ? planetPosition.oldEclipticCoordinates : planetPosition.eclipticCoordinates;
     var dx = eclipticCoordinates[0];
     var dy = eclipticCoordinates[1];
     var dz = eclipticCoordinates[2];

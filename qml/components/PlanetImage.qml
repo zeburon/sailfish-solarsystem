@@ -6,7 +6,7 @@ Item
 
     // -----------------------------------------------------------------------
 
-    property PlanetInfo planetInfo
+    property PlanetConfig planetConfig
     property bool showShadowBehindPlanet: true
     property real shadowRotation: 0
     property int clickAreaSize: 50
@@ -16,11 +16,11 @@ Item
 
     // -----------------------------------------------------------------------
 
-    signal clicked(var planet)
+    signal clicked(var planetConfig)
 
     // -----------------------------------------------------------------------
 
-    visible: planetInfo.visible
+    visible: planetConfig.visible
 
     // -----------------------------------------------------------------------
     // actual image
@@ -28,7 +28,7 @@ Item
     {
         id: image
 
-        source: (small ? planetInfo.smallImageSource : planetInfo.mediumImageSource)
+        source: (small ? planetConfig.smallImageSource : planetConfig.mediumImageSource)
         anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
         antialiasing: true
 
@@ -39,7 +39,7 @@ Item
             height: clickAreaSize
             onClicked:
             {
-                root.clicked(planetInfo);
+                root.clicked(planetConfig);
             }
         }
     }

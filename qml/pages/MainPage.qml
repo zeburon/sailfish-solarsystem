@@ -69,9 +69,9 @@ Page
 
     // -----------------------------------------------------------------------
 
-    function showPlanetDetailsPage(planetInfo)
+    function showPlanetDetailsPage(planetConfig)
     {
-        planetDetailsPage.planetInfo = planetInfo;
+        planetDetailsPage.planetConfig = planetConfig;
         pageStack.push(planetDetailsPage);
     }
 

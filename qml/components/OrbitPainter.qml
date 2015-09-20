@@ -2,7 +2,7 @@ import QtQuick 2.0
 
 Canvas
 {
-    property var planetCalculationResults
+    property var planetPositions
     property int lineThickness: 3
     property real zoom
 
@@ -13,15 +13,15 @@ Canvas
         var context = getContext("2d");
         context.reset();
 
-        for (var planetIdx = 0; planetIdx < planetCalculationResults.length; ++planetIdx)
+        for (var planetIdx = 0; planetIdx < planetPositions.length; ++planetIdx)
         {
-            var planetCalculationResult = planetCalculationResults[planetIdx];
-            if (planetCalculationResult.planetInfo.visible)
+            var planetPosition = planetPositions[planetIdx];
+            if (planetPosition.planetConfig.visible)
             {
-                var rotation = -planetCalculationResult.planetInfo.w1 * Math.PI / 180.0;
-                var offset = -planetCalculationResult.orbitOffset * zoom
-                var a = planetCalculationResult.orbitA * zoom
-                var b = planetCalculationResult.orbitB * zoom
+                var rotation = -planetPosition.orbitRotationInRad;
+                var offset = -planetPosition.orbitOffset * zoom
+                var a = planetPosition.orbitA * zoom
+                var b = planetPosition.orbitB * zoom
 
                 context.save();
                 context.translate(width / 2.0, height / 2.0);
@@ -31,9 +31,9 @@ Canvas
                 context.beginPath();
                 context.arc(0.0, 0.0, a, 0.0, 2.0 * Math.PI);
                 context.restore();
-                context.globalAlpha = planetCalculationResult.currentOpacityFactor;
+                context.globalAlpha = planetPosition.displayedOpacity;
                 context.lineWidth = lineThickness;
-                context.strokeStyle = planetCalculationResult.planetInfo.orbitColor;
+                context.strokeStyle = planetPosition.planetConfig.orbitColor;
                 context.stroke();
             }
         }

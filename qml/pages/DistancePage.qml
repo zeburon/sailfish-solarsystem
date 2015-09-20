@@ -87,7 +87,7 @@ Page
 
             width: planetImageSize
             height: planetImageSize
-            visible: planetInfos[planetIdxX].visible && planetInfos[planetIdxY].visible
+            visible: planetConfigs[planetIdxX].visible && planetConfigs[planetIdxY].visible
 
             // yellow background to highlight distance to sun fields
             Rectangle
@@ -154,18 +154,18 @@ Page
 
             Component.onCompleted:
             {
-                var planetCount = planetInfos.length;
+                var planetCount = planetConfigs.length;
 
                 // horizontal header
                 for (var headerIdx = 0; headerIdx < planetCount; ++headerIdx)
                 {
-                    planetImageComponent.createObject(grid, {"planetInfo": planetInfos[headerIdx], "shadowRotation": 0});
+                    planetImageComponent.createObject(grid, {"planetConfig": planetConfigs[headerIdx], "shadowRotation": 0});
                 }
 
                 for (var planetIdxY = 0; planetIdxY < planetCount; ++planetIdxY)
                 {
                     // vertical header
-                    planetImageComponent.createObject(grid, {"planetInfo": planetInfos[planetIdxY], "shadowRotation": 90});
+                    planetImageComponent.createObject(grid, {"planetConfig": planetConfigs[planetIdxY], "shadowRotation": 90});
 
                     // distance items for planet with index planetIdxY
                     for (var planetIdxX = 0; planetIdxX < planetCount; ++planetIdxX)

@@ -36,7 +36,6 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/components/PlanetImage.qml \
     qml/components/PlanetLabel.qml \
     qml/gfx/shadow2.png \
-    qml/components/PlanetInfo.qml \
     qml/globals.js \
     qml/components/DateDisplay.qml \
     qml/pages/SettingsPage.qml \
@@ -53,7 +52,6 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/gfx/s_saturn.png \
     qml/gfx/s_uranus.png \
     qml/gfx/s_venus.png \
-    qml/components/PlanetCalculationResult.qml \
     qml/components/OrbitPainter.qml \
     qml/gfx/m_earth.png \
     qml/gfx/m_jupiter.png \
@@ -63,7 +61,9 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/gfx/m_pluto.png \
     qml/gfx/m_saturn.png \
     qml/gfx/m_uranus.png \
-    qml/gfx/m_venus.png
+    qml/gfx/m_venus.png \
+    qml/components/PlanetConfig.qml \
+    qml/components/PlanetPosition.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line

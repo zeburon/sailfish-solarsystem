@@ -18,10 +18,10 @@ ApplicationWindow
 
     property int realPlanetCount: 0
     property int dwarfPlanetCount: 0
-    property int visiblePlanetCount: settings.showDwarfPlanets ? planetInfos.length : realPlanetCount
-    property list<PlanetInfo> planetInfos:
+    property int visiblePlanetCount: settings.showDwarfPlanets ? planetConfigs.length : realPlanetCount
+    property list<PlanetConfig> planetConfigs:
     [
-        PlanetInfo
+        PlanetConfig
         {
             id: mercury
 
@@ -44,7 +44,7 @@ ApplicationWindow
             volume: 6.083e10
             mass: 3.3011e23
         },
-        PlanetInfo
+        PlanetConfig
         {
             id: venus
 
@@ -67,7 +67,7 @@ ApplicationWindow
             volume: 9.2843e11
             mass: 4.8675e24
         },
-        PlanetInfo
+        PlanetConfig
         {
             id: earth
 
@@ -90,7 +90,7 @@ ApplicationWindow
             volume: 1.08321e12
             mass: 5.97237e24
         },
-        PlanetInfo
+        PlanetConfig
         {
             id: mars
 
@@ -113,7 +113,7 @@ ApplicationWindow
             volume: 1.6318e11
             mass: 6.4171e23
         },
-        PlanetInfo
+        PlanetConfig
         {
             id: jupiter
 
@@ -136,7 +136,7 @@ ApplicationWindow
             volume: 1.4313e15
             mass: 1.8986e27
         },
-        PlanetInfo
+        PlanetConfig
         {
             id: saturn
 
@@ -159,7 +159,7 @@ ApplicationWindow
             volume: 8.2713e14
             mass: 5.6846e26
         },
-        PlanetInfo
+        PlanetConfig
         {
             id: uranus
 
@@ -182,7 +182,7 @@ ApplicationWindow
             volume: 6.833e13
             mass: 8.681e25
         },
-        PlanetInfo
+        PlanetConfig
         {
             id: neptune
 
@@ -205,7 +205,7 @@ ApplicationWindow
             volume: 6.254e13
             mass: 1.0243e26
         },
-        PlanetInfo
+        PlanetConfig
         {
             id: pluto
 
@@ -237,19 +237,19 @@ ApplicationWindow
 
     function initPlanetIndices()
     {
-        for (var planetIdx = 0; planetIdx < planetInfos.length; ++planetIdx)
+        for (var planetIdx = 0; planetIdx < planetConfigs.length; ++planetIdx)
         {
-            var planetInfo = planetInfos[planetIdx];
+            var PlanetConfig = planetConfigs[planetIdx];
 
-            planetInfo.idxWithDwarfPlanets = planetIdx;
-            if (planetInfo.isDwarfPlanet)
+            PlanetConfig.idxWithDwarfPlanets = planetIdx;
+            if (PlanetConfig.isDwarfPlanet)
             {
                 ++dwarfPlanetCount;
-                planetInfo.visible = Qt.binding(function() { return settings.showDwarfPlanets });
+                PlanetConfig.visible = Qt.binding(function() { return settings.showDwarfPlanets });
             }
             else
             {
-                planetInfo.idxWithoutDwarfPlanets = realPlanetCount;
+                PlanetConfig.idxWithoutDwarfPlanets = realPlanetCount;
                 ++realPlanetCount;
             }
         }
@@ -310,7 +310,7 @@ ApplicationWindow
     {
         id: planetDetailsPage
 
-        planetInfo: planetInfos[0]
+        planetConfig: planetConfigs[0]
     }
     SettingsPage
     {

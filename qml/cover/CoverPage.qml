@@ -39,11 +39,11 @@ CoverBackground
     function updatePlanetDistance()
     {
         // check if selected planet is still visible (e.g. dwarf planets are still enabled)
-        if (!planetInfos[settings.distancePlanetIdx].visible)
+        if (!planetConfigs[settings.distancePlanetIdx].visible)
             selectPreviousPlanet();
 
         var result = solarSystem.getDistanceToEarth(settings.distancePlanetIdx);
-        labelName.text = qsTr("Distance to %1").arg(planetInfos[settings.distancePlanetIdx].name);
+        labelName.text = qsTr("Distance to %1").arg(planetConfigs[settings.distancePlanetIdx].name);
         labelDistance.text = result[0].toFixed(2) + " AU";
 
         // distance is increasing
@@ -68,8 +68,8 @@ CoverBackground
         while (planetIdx > 0)
         {
             --planetIdx;
-            var planetInfo = planetInfos[planetIdx];
-            if (planetInfo !== earth && planetInfo.visible)
+            var planetConfig = planetConfigs[planetIdx];
+            if (planetConfig !== earth && planetConfig.visible)
             {
                 settings.distancePlanetIdx = planetIdx;
                 updatePlanetDistance();
@@ -83,11 +83,11 @@ CoverBackground
     function selectNextPlanet()
     {
         var planetIdx = settings.distancePlanetIdx;
-        while (planetIdx < planetInfos.length - 1)
+        while (planetIdx < planetConfigs.length - 1)
         {
             ++planetIdx;
-            var planetInfo = planetInfos[planetIdx];
-            if (planetInfo !== earth && planetInfo.visible)
+            var planetConfig = planetConfigs[planetIdx];
+            if (planetConfig !== earth && planetConfig.visible)
             {
                 settings.distancePlanetIdx = planetIdx;
                 updatePlanetDistance();
