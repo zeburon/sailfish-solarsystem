@@ -7,3 +7,4 @@ var ZOOM_ANIMATION_DURATION_MS = 1000;
 var DATE_FORMATS               = ["dd-mmm-yyyy", "mmm-dd-yyyy", "yyyy-mmm-dd", "yyyy-dd-mmm"];
 var DISTANCE_INCREASING_COLOR  = "red";
 var DISTANCE_DECREASING_COLOR  = "green";
+var PLANET_CLICK_AREA_SIZE     = 50;

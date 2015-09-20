@@ -86,8 +86,6 @@ Item
             var planetConfig = planetPosition.planetConfig;
 
             var planetImage = planetImageComponent.createObject(images, {"planetConfig": planetConfig, "planetPosition": planetPosition});
-            planetImage.clicked.connect(root.clickedOnPlanet);
-
             var planetLabel = planetLabelComponent.createObject(labels, {"planetConfig": planetConfig, "planetPosition": planetPosition, "yOffset": planetImage.imageHeight * 0.75});
         }
     }
@@ -166,6 +164,37 @@ Item
 
     // -----------------------------------------------------------------------
 
+    function click(mouseX, mouseY)
+    {
+        var closestPlanetConfig;
+        var minDistance = 99999;
+
+        for (var planetIdx = 0; planetIdx < images.children.length; ++planetIdx)
+        {
+            var planetImage = images.children[planetIdx];
+
+            var dx = planetImage.x + width / 2 - mouseX;
+            var dy = planetImage.y + height / 2 - mouseY;
+            var distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < minDistance && distance < Globals.PLANET_CLICK_AREA_SIZE)
+            {
+                closestPlanetConfig = planetImage.planetConfig;
+                minDistance = distance;
+            }
+        }
+
+        if (closestPlanetConfig !== undefined)
+        {
+            clickedOnPlanet(closestPlanetConfig);
+        }
+        else
+        {
+            clickedOnEmptySpace();
+        }
+    }
+
+    // -----------------------------------------------------------------------
+
     onDateChanged:
     {
         updatePlanetPositions();
@@ -198,7 +227,7 @@ Item
             property PlanetPosition planetPosition
             property real displayedX: planetPosition.displayedCoordinates[0]
             property real displayedY: planetPosition.displayedCoordinates[1]
-            property real displayedZ: planetPosition.displayedCoordinates[2]
+            property real displayedZ: planetPosition.displayedCoordinates[2] * 0.75
             property real displayedShadowRotation: planetPosition.displayedShadowRotation
 
             x: displayedX * root.currentZoom
@@ -244,7 +273,7 @@ Item
             property PlanetPosition planetPosition
             property real displayedX: planetPosition.displayedCoordinates[0]
             property real displayedY: planetPosition.displayedCoordinates[1]
-            property real displayedZ: planetPosition.displayedCoordinates[2]
+            property real displayedZ: planetPosition.displayedCoordinates[2] * 0.75
 
             x: displayedX * root.currentZoom
             y: displayedY * root.currentZoom + ((root.showZPosition && planetPosition.planetConfig.orbitCanShowZPosition) ? displayedZ * root.currentZoom : 0.0)
@@ -254,14 +283,6 @@ Item
 
     // -----------------------------------------------------------------------
 
-    MouseArea
-    {
-        anchors.fill: parent
-        onClicked:
-        {
-            root.clickedOnEmptySpace();
-        }
-    }
     Sun
     {
         id: sun

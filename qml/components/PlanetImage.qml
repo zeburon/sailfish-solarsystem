@@ -10,14 +10,9 @@ Item
     property bool showShadowOnPlanet: true
     property bool showShadowBehindPlanet: true
     property real shadowRotation: 0
-    property int clickAreaSize: 50
     property alias imageWidth: image.width
     property alias imageHeight: image.height
     property bool small: true
-
-    // -----------------------------------------------------------------------
-
-    signal clicked(var planetConfig)
 
     // -----------------------------------------------------------------------
 
@@ -32,17 +27,6 @@ Item
         source: (small ? planetConfig.smallImageSource : planetConfig.mediumImageSource)
         anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
         antialiasing: true
-
-        MouseArea
-        {
-            anchors { centerIn: parent }
-            width: clickAreaSize
-            height: clickAreaSize
-            onClicked:
-            {
-                root.clicked(planetConfig);
-            }
-        }
     }
 
     // -----------------------------------------------------------------------

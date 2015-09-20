@@ -200,6 +200,16 @@ Page
                         solarSystem.clickedOnPlanet.connect(showPlanetDetailsPage);
                     }
                 }
+
+                MouseArea
+                {
+                    anchors { fill: parent }
+                    onClicked:
+                    {
+                        var solarSystemCoordinates = parent.mapToItem(solarSystem, mouse.x, mouse.y);
+                        solarSystem.click(solarSystemCoordinates.x, solarSystemCoordinates.y);
+                    }
+                }
             }
 
             // labels displaying the selected date
