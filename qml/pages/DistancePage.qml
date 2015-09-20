@@ -135,6 +135,8 @@ Page
                 dateSelected.connect(page.updateDistances);
             }
         }
+
+        // table displaying distance values. sun is in top-left corner, distance to sun in diagonal
         Grid
         {
             id: grid
@@ -174,6 +176,8 @@ Page
                 }
             }
         }
+
+        // footer with additional information
         Text
         {
             width: parent.width

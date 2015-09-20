@@ -290,10 +290,12 @@ ApplicationWindow
     {
         id: settings
     }
+
     CoverPage
     {
         id: coverPage
     }
+
     MainPage
     {
         id: mainPage

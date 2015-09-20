@@ -2,7 +2,6 @@ import QtQuick 2.0
 
 QtObject
 {
-
     property PlanetInfo planetInfo
 
     // -----------------------------------------------------------------------
@@ -32,5 +31,4 @@ QtObject
 
     property real currentShadowRotation: Math.atan2(displayedCoordinates[1] + displayedCoordinates[2], displayedCoordinates[0]) * 180 / Math.PI;
     property real currentOpacityFactor: simplifiedOrbits ? 1.0 : (1.0 - ((1.0 - currentZoom) * (1.0 - planetInfo.smallImageScaleZoomedOut) + currentZoom * (1.0 - planetInfo.smallImageScaleZoomedIn)))
-
 }

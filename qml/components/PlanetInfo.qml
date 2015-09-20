@@ -71,5 +71,4 @@ QtObject
     property real density: mass / volume // kg / km³
     property real surfaceGravity: (6.67e-11 * mass) / Math.pow(radius * 1000, 2) // m / s²
     property real escapeVelocity: Math.sqrt((2 * 6.67e-11 * mass) / (radius * 1000)) // m / s
-
 }

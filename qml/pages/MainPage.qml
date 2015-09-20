@@ -124,6 +124,7 @@ Page
             width: page.width
             spacing: Theme.paddingSmall
 
+            // header: title and zoom button
             PageHeader
             {
                 title: qsTr("Solar System")
@@ -170,6 +171,7 @@ Page
                 }
             }
 
+            // the main solar system item
             Item
             {
                 width: column.width
@@ -200,11 +202,13 @@ Page
                 }
             }
 
+            // labels displaying the selected date
             DateDisplay
             {
                 width: column.width
             }
 
+            // animation controls: start/stop animation and jump to current date
             Row
             {
                 spacing: Theme.paddingLarge * 2
@@ -252,6 +256,7 @@ Page
                     playing: animatingForward
                 }
             }
+            // set animation speed
             Slider
             {
                 id: animationIncrementSlider
@@ -269,6 +274,8 @@ Page
             }
         }
     }
+
+    // animation timer: if triggered, update time and solar system
     Timer
     {
         id: animationTimer
