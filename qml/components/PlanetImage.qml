@@ -12,7 +12,9 @@ Item
     property real shadowRotation: 0
     property alias imageWidth: image.width
     property alias imageHeight: image.height
-    property bool small: true
+    property int totalWidth: Math.max(imageOnTop.width, image.width)
+    property int totalHeight: Math.max(imageOnTop.height, image.height)
+    property bool useSmallImage: true
 
     // -----------------------------------------------------------------------
 
@@ -24,7 +26,7 @@ Item
     {
         id: image
 
-        source: (small ? planetConfig.smallImageSource : planetConfig.mediumImageSource)
+        source: useSmallImage ? planetConfig.smallImageSource : planetConfig.mediumImageSource
         anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
         antialiasing: true
     }
@@ -71,7 +73,7 @@ Item
     {
         id: imageOnTop
 
-        source: (small ? planetConfig.smallImageOnTopSource : planetConfig.mediumImageOnTopSource)
+        source: (useSmallImage ? planetConfig.smallImageOnTopSource : planetConfig.mediumImageOnTopSource)
         anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
         antialiasing: true
     }

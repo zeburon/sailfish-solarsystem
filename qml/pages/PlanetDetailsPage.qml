@@ -88,9 +88,9 @@ Page
                 {
                     id: planetImage
 
-                    small: false
+                    useSmallImage: false
                     planetConfig: page.planetConfig
-                    anchors { left: parent.left; leftMargin: Theme.paddingLarge + imageWidth / 2; verticalCenter: parent.verticalCenter }
+                    anchors { left: parent.left; leftMargin: Theme.paddingLarge + totalWidth / 2; verticalCenter: parent.verticalCenter }
                     showShadowBehindPlanet: false
                     shadowRotation: 180
 
