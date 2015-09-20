@@ -96,14 +96,6 @@ grüne Zahl: abnehmende Entfernung</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Orbital Period</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Orbital Velocity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Mass</source>
         <translation type="unfinished"></translation>
     </message>
@@ -112,31 +104,67 @@ grüne Zahl: abnehmende Entfernung</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Surface Gravity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Escape Velocity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Average Distance</source>
+        <source>Distance to sun</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rotation Period</source>
+        <source>Average</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Minimum Distance</source>
+        <source>Minimum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Maximum Distance</source>
+        <source>Maximum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Satellite Count</source>
+        <source>Velocity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Eccentricity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Axial Tilt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gravity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inclination</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Surface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Physical characteristics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Orbital characteristics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rot. Period</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Orb. Period</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Satellites</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -7,6 +7,7 @@ Item
     // -----------------------------------------------------------------------
 
     property PlanetConfig planetConfig
+    property bool showShadowOnPlanet: true
     property bool showShadowBehindPlanet: true
     property real shadowRotation: 0
     property int clickAreaSize: 50
@@ -62,6 +63,7 @@ Item
             height: width
             source: "../gfx/shadow.png"
             anchors { centerIn: parent; horizontalCenterOffset: 1 }
+            visible: showShadowOnPlanet
             z: 2
         }
         Image
@@ -77,5 +79,16 @@ Item
             visible: showShadowBehindPlanet
             z: 1
         }
+    }
+
+    // -----------------------------------------------------------------------
+    // optional image rendered on top of everything (e.g. rings
+    Image
+    {
+        id: imageOnTop
+
+        source: (small ? planetConfig.smallImageOnTopSource : planetConfig.mediumImageOnTopSource)
+        anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
+        antialiasing: true
     }
 }

@@ -38,11 +38,13 @@ ApplicationWindow
             w1: 77.45771895; w2: 0.15940013
             o1: 48.33961819; o2: -0.12214182
 
+            axialTilt: 0.027
             rotationPeriod: 58.646
             satelliteCount: 0
             radius: 2439.7
             volume: 6.083e10
             mass: 3.3011e23
+            surface: 7.48e7
         },
         PlanetConfig
         {
@@ -61,11 +63,13 @@ ApplicationWindow
             w1: 131.76755713; w2: 0.05679648
             o1: 76.67261496; o2: -0.27274174
 
+            axialTilt: 177.36
             rotationPeriod: -243.025
             satelliteCount: 0
             radius: 6051.8
             volume: 9.2843e11
             mass: 4.8675e24
+            surface: 4.6e8
         },
         PlanetConfig
         {
@@ -84,11 +88,13 @@ ApplicationWindow
             w1: 102.93005885; w2: 0.31795260
             o1: -5.11260389; o2: -0.24123856
 
+            axialTilt: 23.43
             rotationPeriod: 0.997
             satelliteCount: 1
             radius: 6378.1
             volume: 1.08321e12
             mass: 5.97237e24
+            surface: 5.1e8
         },
         PlanetConfig
         {
@@ -107,11 +113,13 @@ ApplicationWindow
             w1: -23.91744784;  w2: 0.45223625
             o1: 49.71320984; o2: -0.26852431
 
+            axialTilt: 25.19
             rotationPeriod: 1.026
             satelliteCount: 2
             radius: 3389.5
             volume: 1.6318e11
             mass: 6.4171e23
+            surface: 1.44e8
         },
         PlanetConfig
         {
@@ -130,11 +138,13 @@ ApplicationWindow
             w1: 14.27495244; w2: 0.18199196
             o1: 100.29282654; o2: 0.13024619
 
+            axialTilt: 3.13
             rotationPeriod: 0.4135
             satelliteCount: 67
             radius: 69911
             volume: 1.4313e15
             mass: 1.8986e27
+            surface: 6.14e10
         },
         PlanetConfig
         {
@@ -142,8 +152,10 @@ ApplicationWindow
 
             name: qsTr("Saturn")
             smallImageSource: "../gfx/s_saturn.png"
+            smallImageOnTopSource: "../gfx/s_saturn_rings.png"
             smallImageScaleZoomedIn: 0.0
             mediumImageSource: "../gfx/m_saturn.png"
+            mediumImageOnTopSource: "../gfx/m_saturn_rings.png"
             orbitColor: "#66e3c9a3"
 
             a1: 9.54149883; a2: -0.00003065
@@ -153,11 +165,13 @@ ApplicationWindow
             w1: 92.86136063; w2: 0.54179478
             o1: 113.63998702; o2: -0.25015002
 
+            axialTilt: 26.73
             rotationPeriod: 0.439
             satelliteCount: 62
             radius: 58232
             volume: 8.2713e14
             mass: 5.6846e26
+            surface: 4.27e10
         },
         PlanetConfig
         {
@@ -176,11 +190,13 @@ ApplicationWindow
             w1: 172.43404441; w2: 0.09266985
             o1: 73.96250215; o2: 0.05739699
 
+            axialTilt: 97.77
             rotationPeriod: 0.718
             satelliteCount: 27
             radius: 25362
             volume: 6.833e13
             mass: 8.681e25
+            surface: 8.11e9
         },
         PlanetConfig
         {
@@ -199,11 +215,13 @@ ApplicationWindow
             w1: 46.68158724; w2: 0.01009938
             o1: 131.78635853; o2: -0.00606302
 
+            axialTilt: 28.32
             rotationPeriod: 0.671
             satelliteCount: 14
             radius: 24622
             volume: 6.254e13
             mass: 1.0243e26
+            surface: 7.62e9
         },
         PlanetConfig
         {
@@ -217,6 +235,7 @@ ApplicationWindow
             orbitColor: "#66b08764"
             orbitCorrectionFactorX: 1.021
             orbitCorrectionFactorY: 0.982
+            orbitCanShowZPosition: true
 
             a1: 39.48686035; a2: 0.00449751
             e1: 0.24885238; e2: 0.00006016
@@ -225,11 +244,13 @@ ApplicationWindow
             w1: 224.09702598; w2: -0.00968827
             o1: 110.30167986; o2: -0.00809981
 
+            axialTilt: 119.59
             rotationPeriod: 6.387
             satelliteCount: 5
             radius: 1186
             volume: 6.99e9
             mass: 1.305e22
+            surface: 1.77e7
         }
     ]
 

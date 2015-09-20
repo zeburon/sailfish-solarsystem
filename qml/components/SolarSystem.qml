@@ -202,9 +202,10 @@ Item
             property real displayedShadowRotation: planetPosition.displayedShadowRotation
 
             x: displayedX * root.currentZoom
-            y: displayedY * root.currentZoom + (root.showZPosition ? displayedZ * root.currentZoom : 0.0)
+            y: displayedY * root.currentZoom + ((root.showZPosition && planetPosition.planetConfig.orbitCanShowZPosition) ? displayedZ * root.currentZoom : 0.0)
             scale: root.imageScale * planetPosition.displayedOpacity
             opacity: root.imageOpacity * planetPosition.displayedOpacity
+            shadowRotation: planetPosition.displayedShadowRotation
 
             // -----------------------------------------------------------------------
             // visualization of distance to ecliptic
@@ -246,7 +247,7 @@ Item
             property real displayedZ: planetPosition.displayedCoordinates[2]
 
             x: displayedX * root.currentZoom
-            y: displayedY * root.currentZoom + (root.showZPosition ? displayedZ * root.currentZoom : 0.0)
+            y: displayedY * root.currentZoom + ((root.showZPosition && planetPosition.planetConfig.orbitCanShowZPosition) ? displayedZ * root.currentZoom : 0.0)
             opacity: planetPosition.displayedOpacity
         }
     }
