@@ -68,7 +68,7 @@ Item
     }
 
     // -----------------------------------------------------------------------
-    // optional image rendered on top of everything (e.g. rings
+    // optional image rendered on top of everything (e.g. rings)
     Image
     {
         id: imageOnTop

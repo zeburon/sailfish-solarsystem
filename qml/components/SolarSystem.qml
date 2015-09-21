@@ -172,6 +172,8 @@ Item
         for (var planetIdx = 0; planetIdx < images.children.length; ++planetIdx)
         {
             var planetImage = images.children[planetIdx];
+            if (planetImage.opacity < 0.35)
+                continue;
 
             var dx = planetImage.x + width / 2 - mouseX;
             var dy = planetImage.y + height / 2 - mouseY;

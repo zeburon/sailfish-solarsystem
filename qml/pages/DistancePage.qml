@@ -35,6 +35,14 @@ Page
 
     // -----------------------------------------------------------------------
 
+    function showPlanetDetailsPage(planetConfig)
+    {
+        planetDetailsPage.planetConfig = planetConfig;
+        pageStack.push(planetDetailsPage);
+    }
+
+    // -----------------------------------------------------------------------
+
     onVisibleChanged:
     {
         if (visible)
@@ -55,6 +63,15 @@ Page
             width: planetImageSize
             height: planetImageSize
             showShadowBehindPlanet: false
+
+            MouseArea
+            {
+                anchors { fill: parent }
+                onClicked:
+                {
+                    showPlanetDetailsPage(planetConfig);
+                }
+            }
         }
     }
     // distance label
