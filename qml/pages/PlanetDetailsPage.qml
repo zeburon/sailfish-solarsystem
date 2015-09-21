@@ -60,67 +60,67 @@ Page
     {
         id: column
 
-        anchors { left: parent.left; leftMargin: Theme.paddingSmall; right: parent.right; rightMargin: Theme.paddingSmall }
+        anchors { left: parent.left; leftMargin: Theme.paddingSmall; right: parent.right }
         spacing: Theme.paddingSmall
 
         PageHeader
         {
             title: planetConfig.name
+        }
 
-            PlanetImage
+        PlanetImage
+        {
+            id: planetImage
+
+            useSmallImage: false
+            planetConfig: page.planetConfig
+            anchors { left: parent.left; leftMargin: 75; top: parent.top; topMargin: 75 }
+            showShadowBehindPlanet: false
+            shadowRotation: 180
+
+            Item
             {
-                id: planetImage
+                id: axialTiltInfo
 
-                useSmallImage: false
-                planetConfig: page.planetConfig
-                anchors { left: parent.left; leftMargin: Theme.paddingLarge + totalWidth / 2; verticalCenter: parent.verticalCenter }
-                showShadowBehindPlanet: false
-                shadowRotation: 180
+                anchors { centerIn: parent }
+                rotation: planetConfig.axialTilt
+                opacity: 0.85
 
-                Item
+                Rectangle
                 {
-                    id: axialTiltInfo
+                    anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.top; bottomMargin: planetImage.imageHeight / 2 }
+                    width: 2
+                    height: 6
+                    color: "red"
 
-                    anchors { centerIn: parent }
-                    rotation: planetConfig.axialTilt
-                    opacity: 0.85
-
-                    Rectangle
+                    Label
                     {
-                        anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.top; bottomMargin: planetImage.imageHeight / 2 }
-                        width: 2
-                        height: 6
-                        color: "red"
+                        id: northLabel
 
-                        Label
-                        {
-                            id: northLabel
-
-                            text: qsTr("N")
-                            anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.top }
-                            color: parent.color
-                            horizontalAlignment: Text.AlignHCenter
-                            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny * 0.75 }
-                        }
+                        text: qsTr("N")
+                        anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.top }
+                        color: parent.color
+                        horizontalAlignment: Text.AlignHCenter
+                        font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny * 0.75 }
                     }
+                }
 
-                    Rectangle
+                Rectangle
+                {
+                    anchors { horizontalCenter: parent.horizontalCenter; top: parent.bottom; topMargin: planetImage.imageHeight / 2 }
+                    width: 2
+                    height: 6
+                    color: "green"
+
+                    Label
                     {
-                        anchors { horizontalCenter: parent.horizontalCenter; top: parent.bottom; topMargin: planetImage.imageHeight / 2 }
-                        width: 2
-                        height: 6
-                        color: "green"
+                        id: southLabel
 
-                        Label
-                        {
-                            id: southLabel
-
-                            text: qsTr("S")
-                            anchors { horizontalCenter: parent.horizontalCenter; top: parent.bottom }
-                            color: parent.color
-                            horizontalAlignment: Text.AlignHCenter
-                            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny * 0.75 }
-                        }
+                        text: qsTr("S")
+                        anchors { horizontalCenter: parent.horizontalCenter; top: parent.bottom }
+                        color: parent.color
+                        horizontalAlignment: Text.AlignHCenter
+                        font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny * 0.75 }
                     }
                 }
             }

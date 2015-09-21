@@ -172,7 +172,7 @@ Item
         for (var planetIdx = 0; planetIdx < images.children.length; ++planetIdx)
         {
             var planetImage = images.children[planetIdx];
-            if (planetImage.opacity < 0.35)
+            if (planetImage.scale < 0.4)
                 continue;
 
             var dx = planetImage.x + width / 2 - mouseX;
