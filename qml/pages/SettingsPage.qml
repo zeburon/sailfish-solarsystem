@@ -21,133 +21,127 @@ Page
 
     // -----------------------------------------------------------------------
 
-    SilicaFlickable
+    Column
     {
-        anchors { fill: parent }
-        contentHeight: column.height
+        id: column
 
-        Column
+        width: page.width
+        spacing: Theme.paddingSmall
+
+        PageHeader
         {
-            id: column
+            title: qsTr("Settings")
+        }
 
-            width: page.width
-            spacing: Theme.paddingSmall
+        // orbit style: simplified or realistic
+        ComboBox
+        {
+            id: orbitStyleComboBox
 
-            PageHeader
+            label: qsTr("Style")
+            menu: ContextMenu
             {
-                title: qsTr("Settings")
-            }
-
-            // orbit style: simplified or realistic
-            ComboBox
-            {
-                id: orbitStyleComboBox
-
-                label: qsTr("Style")
-                menu: ContextMenu
+                MenuItem
                 {
+                    text: qsTr("simplified")
+                    onClicked:
+                    {
+                        settings.simplifiedOrbits = true;
+                    }
+                }
+                MenuItem
+                {
+                    text: qsTr("realistic")
+                    onClicked:
+                    {
+                        settings.simplifiedOrbits = false;
+                    }
+                }
+            }
+            description:
+            {
+                if (currentIndex === 0)
+                    return qsTr("Orbits are depicted as regular circles.");
+                else
+                    return qsTr("Orbits are drawn to scale.");
+            }
+        }
+
+        // date format
+        ComboBox
+        {
+            id: dateFormatComboBox
+
+            label: qsTr("Date format")
+            menu: ContextMenu
+            {
+                Repeater
+                {
+                    model: Globals.DATE_FORMATS.length
+
                     MenuItem
                     {
-                        text: qsTr("simplified")
+                        text: Globals.DATE_FORMATS[index]
                         onClicked:
                         {
-                            settings.simplifiedOrbits = true;
-                        }
-                    }
-                    MenuItem
-                    {
-                        text: qsTr("realistic")
-                        onClicked:
-                        {
-                            settings.simplifiedOrbits = false;
-                        }
-                    }
-                }
-                description:
-                {
-                    if (currentIndex === 0)
-                        return qsTr("Orbits are depicted as regular circles.");
-                    else
-                        return qsTr("Orbits are drawn to scale.");
-                }
-            }
-
-            // date format
-            ComboBox
-            {
-                id: dateFormatComboBox
-
-                label: qsTr("Date format")
-                menu: ContextMenu
-                {
-                    Repeater
-                    {
-                        model: Globals.DATE_FORMATS.length
-
-                        MenuItem
-                        {
-                            text: Globals.DATE_FORMATS[index]
-                            onClicked:
-                            {
-                                settings.dateFormat = text;
-                            }
+                            settings.dateFormat = text;
                         }
                     }
                 }
             }
+        }
 
-            Item
-            {
-                width: 1
-                height: Theme.paddingLarge * 2
-            }
+        Item
+        {
+            width: 1
+            height: Theme.paddingLarge * 2
+        }
 
-            // optional information
-            TextSwitch
+        // optional information
+        TextSwitch
+        {
+            text: qsTr("Show planet names")
+            checked: settings.showLabels
+            onCheckedChanged:
             {
-                text: qsTr("Show planet names")
-                checked: settings.showLabels
-                onCheckedChanged:
-                {
-                    settings.showLabels = checked;
-                }
+                settings.showLabels = checked;
             }
-            TextSwitch
+        }
+        TextSwitch
+        {
+            text: qsTr("Show planet orbits")
+            checked: settings.showOrbits
+            onCheckedChanged:
             {
-                text: qsTr("Show planet orbits")
-                checked: settings.showOrbits
-                onCheckedChanged:
-                {
-                    settings.showOrbits = checked;
-                }
+                settings.showOrbits = checked;
             }
+        }
 
-            Item
-            {
-                width: 1
-                height: Theme.paddingLarge * 2
-            }
+        Item
+        {
+            width: 1
+            height: Theme.paddingLarge * 2
+        }
 
-            // pluto settings
-            TextSwitch
+        // pluto settings
+        TextSwitch
+        {
+            text: qsTr("Show Pluto")
+            checked: settings.showDwarfPlanets
+            onCheckedChanged:
             {
-                text: qsTr("Show Pluto")
-                checked: settings.showDwarfPlanets
-                onCheckedChanged:
-                {
-                    settings.showDwarfPlanets = checked;
-                }
+                settings.showDwarfPlanets = checked;
             }
-            TextSwitch
+        }
+        TextSwitch
+        {
+            text: qsTr("Show inclination of Pluto")
+            description: qsTr("Display distance to ecliptic via y-axis.")
+            checked: settings.showZPosition
+            enabled: !settings.simplifiedOrbits && settings.showDwarfPlanets
+            onCheckedChanged:
             {
-                text: qsTr("Show inclination of Pluto")
-                description: qsTr("Display distance to ecliptic via y-axis.")
-                checked: settings.showZPosition
-                enabled: !settings.simplifiedOrbits && settings.showDwarfPlanets
-                onCheckedChanged:
-                {
-                    settings.showZPosition = checked;
-                }
+                settings.showZPosition = checked;
             }
         }
     }

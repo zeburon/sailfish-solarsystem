@@ -126,10 +126,6 @@ green number: distance is decreasing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Eccentricity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Axial Tilt</source>
         <translation type="unfinished"></translation>
     </message>
@@ -163,6 +159,14 @@ green number: distance is decreasing</source>
     </message>
     <message>
         <source>Satellites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>N</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>S</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
