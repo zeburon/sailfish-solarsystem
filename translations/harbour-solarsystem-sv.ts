@@ -171,6 +171,22 @@ Gröna siffror: Avståndet minskar</translation>
         <source>S</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Temperature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Atmosphere</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>plenty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>trace</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SettingsPage</name>

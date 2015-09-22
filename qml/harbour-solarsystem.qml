@@ -45,6 +45,10 @@ ApplicationWindow
             volume: 6.083e10
             mass: 3.3011e23
             surface: 7.48e7
+            surfaceGravity: 3.7
+            escapeVelocity: 4250
+            averageTemperature: 270
+            pressure: 0
         },
         PlanetConfig
         {
@@ -70,6 +74,10 @@ ApplicationWindow
             volume: 9.2843e11
             mass: 4.8675e24
             surface: 4.6e8
+            surfaceGravity: 8.87
+            escapeVelocity: 10360
+            averageTemperature: 737
+            pressure: 9.2e6
         },
         PlanetConfig
         {
@@ -95,6 +103,10 @@ ApplicationWindow
             volume: 1.08321e12
             mass: 5.97237e24
             surface: 5.1e8
+            surfaceGravity: 9.807
+            escapeVelocity: 11186
+            averageTemperature: 288
+            pressure: 101.325e3
         },
         PlanetConfig
         {
@@ -120,6 +132,10 @@ ApplicationWindow
             volume: 1.6318e11
             mass: 6.4171e23
             surface: 1.44e8
+            surfaceGravity: 3.711
+            escapeVelocity: 5027
+            averageTemperature: 210
+            pressure: 0.636e3
         },
         PlanetConfig
         {
@@ -145,6 +161,10 @@ ApplicationWindow
             volume: 1.4313e15
             mass: 1.8986e27
             surface: 6.14e10
+            surfaceGravity: 24.79
+            escapeVelocity: 59500
+            averageTemperature: 165
+            pressure: -1
         },
         PlanetConfig
         {
@@ -172,6 +192,11 @@ ApplicationWindow
             volume: 8.2713e14
             mass: 5.6846e26
             surface: 4.27e10
+            surfaceGravity: 10.44
+            escapeVelocity: 35500
+            averageTemperature: 134
+            pressure: -1
+
         },
         PlanetConfig
         {
@@ -197,6 +222,10 @@ ApplicationWindow
             volume: 6.833e13
             mass: 8.681e25
             surface: 8.11e9
+            surfaceGravity: 8.69
+            escapeVelocity: 21300
+            averageTemperature: 76
+            pressure: -1
         },
         PlanetConfig
         {
@@ -222,6 +251,10 @@ ApplicationWindow
             volume: 6.254e13
             mass: 1.0243e26
             surface: 7.62e9
+            surfaceGravity: 11.15
+            escapeVelocity: 23500
+            averageTemperature: 72
+            pressure: -1
         },
         PlanetConfig
         {
@@ -251,6 +284,10 @@ ApplicationWindow
             volume: 6.99e9
             mass: 1.305e22
             surface: 1.77e7
+            surfaceGravity: 0.62
+            escapeVelocity: 1212
+            averageTemperature: 44
+            pressure: 0.3
         }
     ]
 

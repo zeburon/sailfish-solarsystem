@@ -74,6 +74,8 @@ QtObject
     property real mass // kg
     property real surface // km²
     property real density: mass / volume // kg / km³
-    property real surfaceGravity: (6.67e-11 * mass) / Math.pow(radius * 1000, 2) // m / s²
+    property real surfaceGravity: (6.67384e-11 * mass) / Math.pow(radius * 1000, 2) // m / s²
     property real escapeVelocity: Math.sqrt((2 * 6.67e-11 * mass) / (radius * 1000)) // m / s
+    property int averageTemperature // K
+    property real pressure // Pa
 }

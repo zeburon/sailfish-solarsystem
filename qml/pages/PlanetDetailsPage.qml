@@ -19,12 +19,20 @@ Page
     {
         var exponent = 0;
 
-        while (value >= 10)
+        if (value >= 1)
         {
-            ++exponent;
-            value /= 10;
+            while (value >= 10)
+            {
+                ++exponent;
+                value /= 10;
+            }
+            return value.toFixed(0) + " × 10" + formatAsSuperscript(exponent);
         }
-        return value.toFixed(0) + " × 10" + formatAsSuperscript(exponent);
+        else if (value >= 0.01)
+        {
+            return value.toFixed(2);
+        }
+        return "0";
     }
 
     // -----------------------------------------------------------------------
@@ -179,8 +187,8 @@ Page
             {
                 width: parent.width * 0.35
                 title: qsTr("Density")
-                value: formatExponentialNumber(planetConfig.density)
-                unit: "kg/km³"
+                value: (planetConfig.density / 1000000000).toFixed(0)
+                unit: "kg/m³"
             }
         }
         Row
@@ -194,7 +202,6 @@ Page
                 value: formatExponentialNumber(planetConfig.surface)
                 unit: "km²"
             }
-
             DetailsElement
             {
                 width: parent.width * 0.3
@@ -220,6 +227,33 @@ Page
                 title: qsTr("Satellites")
                 value: planetConfig.satelliteCount
                 unit: ""
+            }
+            DetailsElement
+            {
+                width: parent.width * 0.3
+                title: qsTr("Temperature")
+                value: "~ " + (planetConfig.averageTemperature - 273.15).toFixed(0)
+                unit: "°C"
+            }
+            DetailsElement
+            {
+                width: parent.width * 0.3
+                title: qsTr("Atmosphere")
+                value:
+                {
+                    if (planetConfig.pressure < 0)
+                        return qsTr("plenty");
+                    else if (planetConfig.pressure < 0.1)
+                        return qsTr("trace");
+                    else
+                        return formatExponentialNumber(planetConfig.pressure);
+                }
+                unit:
+                {
+                    if (planetConfig.pressure > 0.1)
+                        return "Pa";
+                    return "";
+                }
             }
         }
 
