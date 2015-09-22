@@ -82,7 +82,12 @@ Item
     function getDateString(format)
     {
         var str = Qt.formatDate(settings.date, format);
-        return str.substring(0, format.length);
+
+        // make sure "abbreviated localized month name" is always the same length
+        if (format === monthLabelFormat)
+            str = str.substring(0, format.length);
+
+        return str;
     }
 
     // -----------------------------------------------------------------------
