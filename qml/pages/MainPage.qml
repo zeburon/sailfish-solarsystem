@@ -88,6 +88,7 @@ Page
     Component.onCompleted:
     {
         distancePage.updated.connect(stopAnimation);
+        solarSystem.switchedToRealisticOrbits.connect(zoomTextTimeout.start);
     }
 
     // -----------------------------------------------------------------------
@@ -137,6 +138,7 @@ Page
                     visible: !settings.simplifiedOrbits
                     source: settings.zoomedOut ? "image://theme/icon-camera-zoom-in" : "image://theme/icon-camera-zoom-out"
                 }
+                // show help text for a few seconds after switching to the realistic orbit mode
                 Text
                 {
                     id: zoomText

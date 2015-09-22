@@ -47,6 +47,8 @@ Item
 
     signal clickedOnPlanet(var planetConfig)
     signal clickedOnEmptySpace()
+    signal switchedToRealisticOrbits()
+    signal switchedToSimplifiedOrbits()
 
     // -----------------------------------------------------------------------
 
@@ -204,6 +206,11 @@ Item
     onSimplifiedOrbitsChanged:
     {
         delayedUpdateTimer.start();
+
+        if (!simplifiedOrbits)
+            switchedToRealisticOrbits();
+        else
+            switchedToSimplifiedOrbits();
     }
     onShowDwarfPlanetsChanged:
     {
