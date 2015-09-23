@@ -180,15 +180,15 @@ Gröna siffror: Avståndet minskar</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Atmosphere</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>plenty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>trace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pressure</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -263,39 +263,39 @@ Gröna siffror: Avståndet minskar</translation>
     <name>harbour-solarsystem</name>
     <message>
         <source>Mercury</source>
-        <translation type="unfinished">Merkurius</translation>
+        <translation>Merkurius</translation>
     </message>
     <message>
         <source>Venus</source>
-        <translation type="unfinished">Venus</translation>
+        <translation>Venus</translation>
     </message>
     <message>
         <source>Earth</source>
-        <translation type="unfinished">Jorden</translation>
+        <translation>Jorden</translation>
     </message>
     <message>
         <source>Mars</source>
-        <translation type="unfinished">Mars</translation>
+        <translation>Mars</translation>
     </message>
     <message>
         <source>Jupiter</source>
-        <translation type="unfinished">Jupiter</translation>
+        <translation>Jupiter</translation>
     </message>
     <message>
         <source>Saturn</source>
-        <translation type="unfinished">Saturnus</translation>
+        <translation>Saturnus</translation>
     </message>
     <message>
         <source>Uranus</source>
-        <translation type="unfinished">Uranus</translation>
+        <translation>Uranus</translation>
     </message>
     <message>
         <source>Neptune</source>
-        <translation type="unfinished">Neptunus</translation>
+        <translation>Neptunus</translation>
     </message>
     <message>
         <source>Pluto</source>
-        <translation type="unfinished">Pluto</translation>
+        <translation>Pluto</translation>
     </message>
 </context>
 </TS>

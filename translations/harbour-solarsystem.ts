@@ -178,15 +178,15 @@ green number: distance is decreasing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Atmosphere</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>plenty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>trace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pressure</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

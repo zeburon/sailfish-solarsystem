@@ -244,7 +244,7 @@ Page
             DetailsElement
             {
                 width: parent.width * 0.35
-                title: qsTr("Atmosphere")
+                title: qsTr("Pressure")
                 value:
                 {
                     if (planetConfig.pressure < 0)

@@ -86,110 +86,110 @@ grüne Zahl: abnehmende Entfernung</translation>
     </message>
     <message>
         <source>Click on planets for details</source>
-        <translation type="unfinished"></translation>
+        <translation>Klicke auf Planeten für Details</translation>
     </message>
 </context>
 <context>
     <name>PlanetDetailsPage</name>
     <message>
         <source>Radius</source>
-        <translation type="unfinished"></translation>
+        <translation>Radius</translation>
     </message>
     <message>
         <source>Volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Volumen</translation>
     </message>
     <message>
         <source>Mass</source>
-        <translation type="unfinished"></translation>
+        <translation>Masse</translation>
     </message>
     <message>
         <source>Density</source>
-        <translation type="unfinished"></translation>
+        <translation>Dichte</translation>
     </message>
     <message>
         <source>Escape Velocity</source>
-        <translation type="unfinished"></translation>
+        <translation>Fluchtgeschw.</translation>
     </message>
     <message>
         <source>Distance to sun</source>
-        <translation type="unfinished"></translation>
+        <translation>Entfernung zur Sonne</translation>
     </message>
     <message>
         <source>Average</source>
-        <translation type="unfinished"></translation>
+        <translation>Durchschnitt</translation>
     </message>
     <message>
         <source>Minimum</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimum</translation>
     </message>
     <message>
         <source>Maximum</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximum</translation>
     </message>
     <message>
         <source>Velocity</source>
-        <translation type="unfinished"></translation>
+        <translation>Geschw.</translation>
     </message>
     <message>
         <source>Axial Tilt</source>
-        <translation type="unfinished"></translation>
+        <translation>Achsneigung</translation>
     </message>
     <message>
         <source>Gravity</source>
-        <translation type="unfinished"></translation>
+        <translation>Gravitation</translation>
     </message>
     <message>
         <source>Inclination</source>
-        <translation type="unfinished"></translation>
+        <translation>Neigung</translation>
     </message>
     <message>
         <source>Surface</source>
-        <translation type="unfinished"></translation>
+        <translation>Oberfläche</translation>
     </message>
     <message>
         <source>Physical characteristics</source>
-        <translation type="unfinished"></translation>
+        <translation>Physikalische Eigenschaften</translation>
     </message>
     <message>
         <source>Orbital characteristics</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigenschaften des Orbits</translation>
     </message>
     <message>
         <source>Rot. Period</source>
-        <translation type="unfinished"></translation>
+        <translation>Rot. Periode</translation>
     </message>
     <message>
         <source>Orb. Period</source>
-        <translation type="unfinished"></translation>
+        <translation>Umlaufzeit</translation>
     </message>
     <message>
         <source>Satellites</source>
-        <translation type="unfinished"></translation>
+        <translation>Monde</translation>
     </message>
     <message>
         <source>N</source>
-        <translation type="unfinished"></translation>
+        <translation>N</translation>
     </message>
     <message>
         <source>S</source>
-        <translation type="unfinished"></translation>
+        <translation>S</translation>
     </message>
     <message>
         <source>Temperature</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Atmosphere</source>
-        <translation type="unfinished"></translation>
+        <translation>Temperatur</translation>
     </message>
     <message>
         <source>plenty</source>
-        <translation type="unfinished"></translation>
+        <translation>reichlich</translation>
     </message>
     <message>
         <source>trace</source>
-        <translation type="unfinished"></translation>
+        <translation>dünn</translation>
+    </message>
+    <message>
+        <source>Pressure</source>
+        <translation>Druck</translation>
     </message>
 </context>
 <context>
@@ -244,58 +244,58 @@ grüne Zahl: abnehmende Entfernung</translation>
     </message>
     <message>
         <source>Pressure unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Druckeinheit</translation>
     </message>
     <message>
         <source>Temperature unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Temperatureinheit</translation>
     </message>
     <message>
         <source>Formats and Units</source>
-        <translation type="unfinished"></translation>
+        <translation>Formate und Einheiten</translation>
     </message>
     <message>
         <source>Display Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Darstellungsmodus</translation>
     </message>
 </context>
 <context>
     <name>harbour-solarsystem</name>
     <message>
         <source>Mercury</source>
-        <translation type="unfinished">Merkur</translation>
+        <translation>Merkur</translation>
     </message>
     <message>
         <source>Venus</source>
-        <translation type="unfinished">Venus</translation>
+        <translation>Venus</translation>
     </message>
     <message>
         <source>Earth</source>
-        <translation type="unfinished">Erde</translation>
+        <translation>Erde</translation>
     </message>
     <message>
         <source>Mars</source>
-        <translation type="unfinished">Mars</translation>
+        <translation>Mars</translation>
     </message>
     <message>
         <source>Jupiter</source>
-        <translation type="unfinished">Jupiter</translation>
+        <translation>Jupiter</translation>
     </message>
     <message>
         <source>Saturn</source>
-        <translation type="unfinished">Saturn</translation>
+        <translation>Saturn</translation>
     </message>
     <message>
         <source>Uranus</source>
-        <translation type="unfinished">Uranus</translation>
+        <translation>Uranus</translation>
     </message>
     <message>
         <source>Neptune</source>
-        <translation type="unfinished">Neptun</translation>
+        <translation>Neptun</translation>
     </message>
     <message>
         <source>Pluto</source>
-        <translation type="unfinished">Pluto</translation>
+        <translation>Pluto</translation>
     </message>
 </context>
 </TS>
