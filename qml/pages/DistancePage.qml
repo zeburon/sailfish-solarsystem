@@ -12,6 +12,8 @@ Page
 
     property SolarSystem solarSystem
     property bool pageActive: status === PageStatus.Active
+    property date date: settings.date
+    property bool updateDistancesRequired: true
     property var planetDistanceItems: []
 
     // properties used by PlanetImage items
@@ -30,6 +32,7 @@ Page
         {
             planetDistanceItems[idx].update();
         }
+        updateDistancesRequired = false;
         updated();
     }
 
@@ -45,10 +48,14 @@ Page
 
     onVisibleChanged:
     {
-        if (visible)
+        if (visible && updateDistancesRequired)
         {
             updateDistances();
         }
+    }
+    onDateChanged:
+    {
+        updateDistancesRequired = true;
     }
 
     // -----------------------------------------------------------------------

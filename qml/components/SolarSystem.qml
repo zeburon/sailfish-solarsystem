@@ -96,10 +96,12 @@ Item
 
     function updatePlanetPositions()
     {
-        if (!initialized)
+        if (!initialized || !Calculation.isDateValid(date))
             return;
 
-        Calculation.setDate(date);
+        if (!Calculation.setDateIfChanged(date))
+            return;
+
         Calculation.setOrbitParameters(auSize, simplifiedOrbits);
 
         for (var planetIdx = 0; planetIdx < planetPositions.length; ++planetIdx)
@@ -123,13 +125,13 @@ Item
     {
         var lastDate = new Date(date);
         lastDate.setDate(lastDate.getDate() - 1);
-        Calculation.setDate(lastDate)
+        Calculation.setDateIfChanged(lastDate)
         for (var planetIdx = 0; planetIdx < planetPositions.length; ++planetIdx)
         {
             Calculation.updateOldEclipticCoordinates(planetPositions[planetIdx]);
         }
 
-        Calculation.setDate(date);
+        Calculation.setDateIfChanged(date);
     }
 
     // -----------------------------------------------------------------------
@@ -201,7 +203,8 @@ Item
 
     onDateChanged:
     {
-        updatePlanetPositions();
+        if (initialized)
+            updatePlanetPositions();
     }
     onSimplifiedOrbitsChanged:
     {
@@ -337,8 +340,8 @@ Item
         repeat: false
         onTriggered:
         {
-            paintOrbits();
             updatePlanetPositions();
+            paintOrbits();
         }
     }
 

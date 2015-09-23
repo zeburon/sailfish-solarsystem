@@ -42,13 +42,18 @@ function isDateValid(d)
 
 // -----------------------------------------------------------------------
 
-function setDate(newDate)
+function setDateIfChanged(newDate)
 {
     var year = newDate.getFullYear();
     var month = newDate.getMonth() + 1;
     var day = newDate.getDate();
-    daysSinceJ2000 = 367 * year - (7 * (year + ((month + 9) / 12))) / 4 + (275 * month) / 9 + day - 730530;
+    var newDaysSinceJ2000 = 367 * year - (7 * (year + ((month + 9) / 12))) / 4 + (275 * month) / 9 + day - 730530;
+    if (newDaysSinceJ2000 === daysSinceJ2000)
+        return false;
+
+    daysSinceJ2000 = newDaysSinceJ2000;
     centuriesSinceJ2000 = daysSinceJ2000 / 36525;
+    return true;
 }
 
 // -----------------------------------------------------------------------
