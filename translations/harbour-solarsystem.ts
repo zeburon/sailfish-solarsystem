@@ -236,6 +236,22 @@ green number: distance is decreasing</source>
         <source>Date format</source>
         <translation></translation>
     </message>
+    <message>
+        <source>Pressure unit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Temperature unit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Formats and Units</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>harbour-solarsystem</name>

@@ -232,8 +232,14 @@ Page
             {
                 width: parent.width * 0.35
                 title: qsTr("Temperature")
-                value: "~ " + (planetConfig.averageTemperature - 273.15).toFixed(0)
-                unit: "°C"
+                value:
+                {
+                    if (settings.temperatureUnit === "°C")
+                        return "~ " + (planetConfig.averageTemperature - 273.15).toFixed(0);
+                    else
+                        return "~ " + planetConfig.averageTemperature.toFixed(0);
+                }
+                unit: settings.temperatureUnit
             }
             DetailsElement
             {
@@ -246,12 +252,17 @@ Page
                     else if (planetConfig.pressure < 0.1)
                         return qsTr("trace");
                     else
-                        return formatExponentialNumber(planetConfig.pressure);
+                    {
+                        if (settings.pressureUnit === "bar")
+                            return (planetConfig.pressure / 100000).toFixed(2);
+                        else
+                            return formatExponentialNumber(planetConfig.pressure);
+                    }
                 }
                 unit:
                 {
                     if (planetConfig.pressure > 0.1)
-                        return "Pa";
+                        return settings.pressureUnit;
                     return "";
                 }
             }

@@ -10,16 +10,18 @@ QtObject
     property bool animationEnabled: false
     property int animationDirection: 1
 
-    property bool showLabels: true;                      property string showLabelsKey: "showLabels"
-    property bool showOrbits: true;                      property string showOrbitsKey: "showOrbits"
-    property bool showDwarfPlanets: false;               property string showDwarfPlanetsKey: "showDwarfPlanets"
-    property bool showZPosition: false;                  property string showZPositionKey: "showZPosition"
-    property date date: new Date(Date.now());            property string dateKey: "date"
-    property string dateFormat: Globals.DATE_FORMATS[0]; property string dateFormatKey: "dateFormat"
-    property int animationIncrement: 1;                  property string animationIncrementKey: "animationIncrement"
-    property bool simplifiedOrbits: true;                property string simplifiedOrbitsKey: "simplifiedOrbits"
-    property bool zoomedOut: false;                      property string zoomedOutKey: "zoomedOut"
-    property int distancePlanetIdx: 0;                   property string distancePlanetIdxKey: "distancePlanetIdx"
+    property bool showLabels: true;                                property string showLabelsKey: "showLabels"
+    property bool showOrbits: true;                                property string showOrbitsKey: "showOrbits"
+    property bool showDwarfPlanets: false;                         property string showDwarfPlanetsKey: "showDwarfPlanets"
+    property bool showZPosition: false;                            property string showZPositionKey: "showZPosition"
+    property date date: new Date(Date.now());                      property string dateKey: "date"
+    property string dateFormat: Globals.DATE_FORMATS[0];           property string dateFormatKey: "dateFormat"
+    property string pressureUnit: Globals.PRESSURE_UNITS[0];       property string pressureUnitKey: "pressureUnit"
+    property string temperatureUnit: Globals.TEMPERATURE_UNITS[0]; property string temperatureUnitKey: "temperatureUnit"
+    property int animationIncrement: 1;                            property string animationIncrementKey: "animationIncrement"
+    property bool simplifiedOrbits: true;                          property string simplifiedOrbitsKey: "simplifiedOrbits"
+    property bool zoomedOut: false;                                property string zoomedOutKey: "zoomedOut"
+    property int distancePlanetIdx: 0;                             property string distancePlanetIdxKey: "distancePlanetIdx"
 
     // -----------------------------------------------------------------------
 
@@ -62,6 +64,16 @@ QtObject
         var storedDateFormat = Storage.getValue(dateFormatKey);
         if (storedDateFormat)
             dateFormat = storedDateFormat;
+
+        // load pressureUnit
+        var storedPressureUnit = Storage.getValue(pressureUnitKey);
+        if (storedPressureUnit)
+            pressureUnit = storedPressureUnit;
+
+        // load temperatureUnit
+        var storedTemperatureUnit = Storage.getValue(temperatureUnitKey);
+        if (storedTemperatureUnit)
+            temperatureUnit = storedTemperatureUnit;
 
         // load animationIncrement
         var storedAnimationIncrement = Storage.getValue(animationIncrementKey);
@@ -126,6 +138,14 @@ QtObject
     onDateFormatChanged:
     {
         Storage.setValue(dateFormatKey, dateFormat);
+    }
+    onPressureUnitChanged:
+    {
+        Storage.setValue(pressureUnitKey, pressureUnit);
+    }
+    onTemperatureUnitChanged:
+    {
+        Storage.setValue(temperatureUnitKey, temperatureUnit);
     }
     onAnimationIncrementChanged:
     {

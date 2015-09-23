@@ -17,6 +17,12 @@ Page
 
         var dateFormatIdx = Globals.DATE_FORMATS.indexOf(settings.dateFormat);
         dateFormatComboBox.currentIndex = dateFormatIdx;
+
+        var pressureUnitIdx = Globals.PRESSURE_UNITS.indexOf(settings.pressureUnit);
+        pressureUnitComboBox.currentIndex = pressureUnitIdx;
+
+        var temperatureUnitIdx = Globals.TEMPERATURE_UNITS.indexOf(settings.temperatureUnit);
+        temperatureUnitComboBox.currentIndex = temperatureUnitIdx;
     }
 
     // -----------------------------------------------------------------------
@@ -26,11 +32,93 @@ Page
         id: column
 
         width: page.width
-        spacing: Theme.paddingSmall
+        spacing: 0
 
         PageHeader
         {
             title: qsTr("Settings")
+        }
+
+        SectionHeader
+        {
+            text: qsTr("Formats and Units")
+        }
+
+        // date format
+        ComboBox
+        {
+            id: dateFormatComboBox
+
+            label: qsTr("Date format")
+            menu: ContextMenu
+            {
+                Repeater
+                {
+                    model: Globals.DATE_FORMATS.length
+
+                    MenuItem
+                    {
+                        text: Globals.DATE_FORMATS[index]
+                        onClicked:
+                        {
+                            settings.dateFormat = text;
+                        }
+                    }
+                }
+            }
+        }
+
+        // pressure unit
+        ComboBox
+        {
+            id: pressureUnitComboBox
+
+            label: qsTr("Pressure unit")
+            menu: ContextMenu
+            {
+                Repeater
+                {
+                    model: Globals.PRESSURE_UNITS.length
+
+                    MenuItem
+                    {
+                        text: Globals.PRESSURE_UNITS[index]
+                        onClicked:
+                        {
+                            settings.pressureUnit = text;
+                        }
+                    }
+                }
+            }
+        }
+
+        // pressure unit
+        ComboBox
+        {
+            id: temperatureUnitComboBox
+
+            label: qsTr("Temperature unit")
+            menu: ContextMenu
+            {
+                Repeater
+                {
+                    model: Globals.TEMPERATURE_UNITS.length
+
+                    MenuItem
+                    {
+                        text: Globals.TEMPERATURE_UNITS[index]
+                        onClicked:
+                        {
+                            settings.temperatureUnit = text;
+                        }
+                    }
+                }
+            }
+        }
+
+        SectionHeader
+        {
+            text: qsTr("Display Mode")
         }
 
         // orbit style: simplified or realistic
@@ -67,36 +155,6 @@ Page
             }
         }
 
-        // date format
-        ComboBox
-        {
-            id: dateFormatComboBox
-
-            label: qsTr("Date format")
-            menu: ContextMenu
-            {
-                Repeater
-                {
-                    model: Globals.DATE_FORMATS.length
-
-                    MenuItem
-                    {
-                        text: Globals.DATE_FORMATS[index]
-                        onClicked:
-                        {
-                            settings.dateFormat = text;
-                        }
-                    }
-                }
-            }
-        }
-
-        Item
-        {
-            width: 1
-            height: Theme.paddingLarge * 2
-        }
-
         // optional information
         TextSwitch
         {
@@ -115,12 +173,6 @@ Page
             {
                 settings.showOrbits = checked;
             }
-        }
-
-        Item
-        {
-            width: 1
-            height: Theme.paddingLarge * 2
         }
 
         // pluto settings

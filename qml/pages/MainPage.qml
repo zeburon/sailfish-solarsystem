@@ -16,6 +16,7 @@ Page
     property bool animatingBackward: settings.animationEnabled && settings.animationDirection === -1
     property bool animatingForward: settings.animationEnabled && settings.animationDirection === 1
     property bool busy: pageStack.acceptAnimationRunning
+    property bool showHelpTextWhenActivated
 
     // -----------------------------------------------------------------------
 
