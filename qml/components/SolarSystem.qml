@@ -94,12 +94,12 @@ Item
 
     // -----------------------------------------------------------------------
 
-    function updatePlanetPositions()
+    function updatePlanetPositions(forceUpdate)
     {
         if (!initialized || !Calculation.isDateValid(date))
             return;
 
-        if (!Calculation.setDateIfChanged(date))
+        if (!Calculation.setDateIfChanged(date) && !forceUpdate)
             return;
 
         Calculation.setOrbitParameters(auSize, simplifiedOrbits);

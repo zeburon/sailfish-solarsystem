@@ -78,8 +78,9 @@ Page
 
     // -----------------------------------------------------------------------
 
-    function scheduleShowHelpText()
+    function handleOrbitStyleChange()
     {
+        solarSystem.updatePlanetPositions(true);
         showHelpTextWhenActivated = true;
     }
 
@@ -106,8 +107,8 @@ Page
     Component.onCompleted:
     {
         distancePage.updated.connect(stopAnimation);
-        solarSystem.switchedToRealisticOrbits.connect(scheduleShowHelpText);
-        solarSystem.switchedToSimplifiedOrbits.connect(scheduleShowHelpText);
+        solarSystem.switchedToRealisticOrbits.connect(handleOrbitStyleChange);
+        solarSystem.switchedToSimplifiedOrbits.connect(handleOrbitStyleChange);
     }
 
     // -----------------------------------------------------------------------
