@@ -84,6 +84,10 @@ grüne Zahl: abnehmende Entfernung</translation>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
+    <message>
+        <source>Click on planets for details</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlanetDetailsPage</name>

@@ -16,7 +16,7 @@ Page
     property bool animatingBackward: settings.animationEnabled && settings.animationDirection === -1
     property bool animatingForward: settings.animationEnabled && settings.animationDirection === 1
     property bool busy: pageStack.acceptAnimationRunning
-    property bool showHelpTextWhenActivated
+    property bool showHelpTextWhenActivated: true
 
     // -----------------------------------------------------------------------
 
@@ -78,18 +78,36 @@ Page
 
     // -----------------------------------------------------------------------
 
+    function scheduleShowHelpText()
+    {
+        showHelpTextWhenActivated = true;
+    }
+
+    // -----------------------------------------------------------------------
+
     onPageActiveChanged:
     {
         stopAnimation();
         if (pageActive)
         {
             pageStack.pushAttached(distancePage);
+
+            if (showHelpTextWhenActivated)
+            {
+                showHelpTextWhenActivated = false;
+
+                if (solarSystem.simplifiedOrbits)
+                    detailsHelpTimer.start();
+                else
+                    zoomHelpTimer.start();
+            }
         }
     }
     Component.onCompleted:
     {
         distancePage.updated.connect(stopAnimation);
-        solarSystem.switchedToRealisticOrbits.connect(zoomTextTimeout.start);
+        solarSystem.switchedToRealisticOrbits.connect(scheduleShowHelpText);
+        solarSystem.switchedToSimplifiedOrbits.connect(scheduleShowHelpText);
     }
 
     // -----------------------------------------------------------------------
@@ -126,30 +144,22 @@ Page
             width: page.width
             spacing: Theme.paddingSmall
 
-            // header: title and zoom button
+            // header: title, help text and zoom button
             PageHeader
             {
                 title: qsTr("Solar System")
 
-                Image
-                {
-                    id: zoomImage
-
-                    anchors { left: parent.left; leftMargin: Theme.paddingLarge; verticalCenter: parent.verticalCenter }
-                    visible: !settings.simplifiedOrbits
-                    source: settings.zoomedOut ? "image://theme/icon-camera-zoom-in" : "image://theme/icon-camera-zoom-out"
-                }
-                // show help text for a few seconds after switching to the realistic orbit mode
+                // simplified orbits
                 Text
                 {
-                    id: zoomText
+                    id: detailsHelpText
 
-                    anchors { left: zoomImage.right; verticalCenter: zoomImage.verticalCenter; margins: Theme.paddingSmall }
-                    text: qsTr("Click to toggle zoom")
-                    visible: zoomImage.visible
+                    anchors { left: parent.left; leftMargin: Theme.paddingLarge; verticalCenter: parent.verticalCenter }
+                    text: qsTr("Click on planets for details")
+                    visible: settings.simplifiedOrbits
                     color: Theme.secondaryHighlightColor
                     font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
-                    opacity: zoomTextTimeout.running ? 1 : 0
+                    opacity: detailsHelpTimer.running ? 1 : 0
 
                     Behavior on opacity
                     {
@@ -158,7 +168,41 @@ Page
                 }
                 Timer
                 {
-                    id: zoomTextTimeout
+                    id: detailsHelpTimer
+
+                    repeat: false
+                    running: false
+                    interval: 3000
+                }
+
+                // realistic orbits
+                Image
+                {
+                    id: zoomImage
+
+                    anchors { left: parent.left; leftMargin: Theme.paddingLarge; verticalCenter: parent.verticalCenter }
+                    visible: !settings.simplifiedOrbits
+                    source: settings.zoomedOut ? "image://theme/icon-camera-zoom-in" : "image://theme/icon-camera-zoom-out"
+                }
+                Text
+                {
+                    id: zoomHelpText
+
+                    anchors { left: zoomImage.right; verticalCenter: zoomImage.verticalCenter; margins: Theme.paddingSmall }
+                    text: qsTr("Click to toggle zoom")
+                    visible: zoomImage.visible
+                    color: Theme.secondaryHighlightColor
+                    font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
+                    opacity: zoomHelpTimer.running ? 1 : 0
+
+                    Behavior on opacity
+                    {
+                        NumberAnimation { easing.type: Easing.InOutQuart; duration: 500 }
+                    }
+                }
+                Timer
+                {
+                    id: zoomHelpTimer
 
                     repeat: false
                     running: false
