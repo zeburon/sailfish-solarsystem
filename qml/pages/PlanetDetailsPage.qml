@@ -144,14 +144,14 @@ Page
 
             DetailsElement
             {
-                width: parent.width * 0.35
+                width: parent.width * 0.3
                 title: qsTr("Radius")
                 value: planetConfig.radius.toFixed(0)
                 unit: "km"
             }
             DetailsElement
             {
-                width: parent.width * 0.3
+                width: parent.width * 0.35
                 title: qsTr("Axial Tilt")
                 value: planetConfig.axialTilt.toFixed(2)
                 unit: "°"
@@ -171,14 +171,14 @@ Page
 
             DetailsElement
             {
-                width: parent.width * 0.35
+                width: parent.width * 0.3
                 title: qsTr("Volume")
                 value: formatExponentialNumber(planetConfig.volume)
                 unit: "km³"
             }
             DetailsElement
             {
-                width: parent.width * 0.3
+                width: parent.width * 0.35
                 title: qsTr("Mass")
                 value: formatExponentialNumber(planetConfig.mass)
                 unit: "kg"
@@ -197,14 +197,14 @@ Page
 
             DetailsElement
             {
-                width: parent.width * 0.35
+                width: parent.width * 0.3
                 title: qsTr("Surface")
                 value: formatExponentialNumber(planetConfig.surface)
                 unit: "km²"
             }
             DetailsElement
             {
-                width: parent.width * 0.3
+                width: parent.width * 0.35
                 title: qsTr("Gravity")
                 value: planetConfig.surfaceGravity.toFixed(2)
                 unit: "m/s²"
@@ -223,21 +223,21 @@ Page
 
             DetailsElement
             {
-                width: parent.width * 0.35
+                width: parent.width * 0.3
                 title: qsTr("Satellites")
                 value: planetConfig.satelliteCount
                 unit: ""
             }
             DetailsElement
             {
-                width: parent.width * 0.3
+                width: parent.width * 0.35
                 title: qsTr("Temperature")
                 value: "~ " + (planetConfig.averageTemperature - 273.15).toFixed(0)
                 unit: "°C"
             }
             DetailsElement
             {
-                width: parent.width * 0.3
+                width: parent.width * 0.35
                 title: qsTr("Atmosphere")
                 value:
                 {
@@ -267,14 +267,14 @@ Page
 
             DetailsElement
             {
-                width: parent.width * 0.35
+                width: parent.width * 0.3
                 title: qsTr("Orb. Period")
                 value: planetConfig.orbitalPeriod.toFixed(2)
                 unit: "a"
             }
             DetailsElement
             {
-                width: parent.width * 0.3
+                width: parent.width * 0.35
                 title: qsTr("Velocity")
                 value: (planetConfig.orbitalVelocity / 1000).toFixed(2)
                 unit: "km/s"
@@ -298,14 +298,14 @@ Page
 
             DetailsElement
             {
-                width: parent.width * 0.35
+                width: parent.width * 0.3
                 title: qsTr("Average")
                 value: planetConfig.orbitAverageDistance.toFixed(2)
                 unit: "AU"
             }
             DetailsElement
             {
-                width: parent.width * 0.3
+                width: parent.width * 0.35
                 title: qsTr("Minimum")
                 value: planetConfig.orbitPerihelion.toFixed(2)
                 unit: "AU"
