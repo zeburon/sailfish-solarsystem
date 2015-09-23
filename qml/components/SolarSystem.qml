@@ -39,8 +39,10 @@ Item
     property real currentOffsetX: simplifiedOrbits ? 0.0 : (zoomedOut && showDwarfPlanets ? -width / 14.0 : 0.0)
     property real currentOffsetY: simplifiedOrbits ? 0.0 : (zoomedOut && showDwarfPlanets ? height / 16.0 : 0.0)
 
-    // list of planets
     property bool initialized: false
+    property bool forceNextUpdate: false
+
+    // list of planets
     property var planetPositions: []
 
     // -----------------------------------------------------------------------
@@ -94,14 +96,15 @@ Item
 
     // -----------------------------------------------------------------------
 
-    function updatePlanetPositions(forceUpdate)
+    function updatePlanetPositions()
     {
         if (!initialized || !Calculation.isDateValid(date))
             return;
 
-        if (!Calculation.setDateIfChanged(date) && !forceUpdate)
+        if (!Calculation.setDateIfChanged(date) && !forceNextUpdate)
             return;
 
+        forceNextUpdate = false;
         Calculation.setOrbitParameters(auSize, simplifiedOrbits);
 
         for (var planetIdx = 0; planetIdx < planetPositions.length; ++planetIdx)
@@ -208,6 +211,7 @@ Item
     }
     onSimplifiedOrbitsChanged:
     {
+        forceNextUpdate = true;
         delayedUpdateTimer.start();
 
         if (!simplifiedOrbits)

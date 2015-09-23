@@ -80,7 +80,6 @@ Page
 
     function handleOrbitStyleChange()
     {
-        solarSystem.updatePlanetPositions(true);
         showHelpTextWhenActivated = true;
     }
 
