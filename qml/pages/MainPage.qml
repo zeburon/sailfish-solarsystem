@@ -182,7 +182,7 @@ Page
 
                     anchors { left: parent.left; leftMargin: Theme.paddingLarge; verticalCenter: parent.verticalCenter }
                     visible: !settings.simplifiedOrbits
-                    source: settings.zoomedOut ? "image://theme/icon-camera-zoom-in" : "image://theme/icon-camera-zoom-out"
+                    source: settings.zoomedOut ? "../gfx/zoom_in.png" : "../gfx/zoom_out.png"
                 }
                 Text
                 {

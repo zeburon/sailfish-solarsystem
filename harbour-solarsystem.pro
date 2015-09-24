@@ -66,7 +66,9 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/components/PlanetPosition.qml \
     qml/components/DetailsElement.qml \
     qml/gfx/m_saturn_rings.png \
-    qml/gfx/s_saturn_rings.png
+    qml/gfx/s_saturn_rings.png \
+    qml/gfx/zoom_in.png \
+    qml/gfx/zoom_out.png
 
 # to disable building translations every time, comment out the
 # following CONFIG line
