@@ -17,26 +17,28 @@ CoverBackground
     function init()
     {
         solarSystem.init();
+        update();
     }
 
     // -----------------------------------------------------------------------
 
-    function refresh()
+    function update()
     {
+        // only update planet positions once a day
         var currentDate = new Date(Date.now());
         if (currentDate.getDate() !== solarSystem.date.getDate() || currentDate.getMonth() !== solarSystem.date.getMonth())
         {
             solarSystem.date = currentDate;
             solarSystem.updatePlanetPositions();
+            solarSystem.prepareDistanceCoordinates();
+            updatePlanetDistanceLabel();
         }
         solarSystem.paintOrbits();
-        solarSystem.prepareDistanceCoordinates();
-        updatePlanetDistance();
     }
 
     // -----------------------------------------------------------------------
 
-    function updatePlanetDistance()
+    function updatePlanetDistanceLabel()
     {
         // check if selected planet is still visible (e.g. dwarf planets are still enabled)
         if (!planetConfigs[settings.distancePlanetIdx].visible)
@@ -72,8 +74,8 @@ CoverBackground
             if (planetConfig !== earth && planetConfig.visible)
             {
                 settings.distancePlanetIdx = planetIdx;
-                updatePlanetDistance();
-                break;
+                updatePlanetDistanceLabel();
+                return;
             }
         }
     }
@@ -90,8 +92,8 @@ CoverBackground
             if (planetConfig !== earth && planetConfig.visible)
             {
                 settings.distancePlanetIdx = planetIdx;
-                updatePlanetDistance();
-                break;
+                updatePlanetDistanceLabel();
+                return;
             }
         }
     }
@@ -101,7 +103,7 @@ CoverBackground
     onCoverActiveChanged:
     {
         if (coverActive)
-            refresh();
+            update();
     }
 
     // -----------------------------------------------------------------------

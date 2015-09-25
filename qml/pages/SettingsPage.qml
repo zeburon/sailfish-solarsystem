@@ -11,7 +11,7 @@ Page
 
     // -----------------------------------------------------------------------
 
-    function refresh()
+    function init()
     {
         orbitStyleComboBox.currentIndex = settings.simplifiedOrbits ? 0 : 1;
 

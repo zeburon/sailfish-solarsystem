@@ -204,12 +204,7 @@ Item
 
     // -----------------------------------------------------------------------
 
-    onDateChanged:
-    {
-        if (initialized)
-            updatePlanetPositions();
-    }
-    onSimplifiedOrbitsChanged:
+    function handleSettingChange()
     {
         forceNextUpdate = true;
         delayedUpdateTimer.start();
@@ -219,9 +214,21 @@ Item
         else
             switchedToSimplifiedOrbits();
     }
+
+    // -----------------------------------------------------------------------
+
+    onDateChanged:
+    {
+        if (initialized)
+            updatePlanetPositions();
+    }
+    onSimplifiedOrbitsChanged:
+    {
+        handleSettingChange();
+    }
     onShowDwarfPlanetsChanged:
     {
-        delayedUpdateTimer.start();
+        handleSettingChange();
     }
 
     // -----------------------------------------------------------------------
@@ -340,7 +347,7 @@ Item
     {
         id: delayedUpdateTimer
 
-        interval: 250
+        interval: 50
         repeat: false
         onTriggered:
         {

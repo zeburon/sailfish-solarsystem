@@ -327,19 +327,17 @@ ApplicationWindow
         settings.loadValues();
         mainPage.init();
         coverPage.init();
+        settingsPage.init();
         settings.startStoringValueChanges();
         initialized = true;
-
-        // update / redraw contents
-        coverPage.refresh();
-        mainPage.refresh();
-        settingsPage.refresh();
     }
     onActiveChanged:
     {
+        // automatically stop animation when active status of application changes (e.g. switched to background)
         settings.animationEnabled = false;
+
         if (active)
-            mainPage.refresh();
+            mainPage.repaint();
     }
 
     // -----------------------------------------------------------------------

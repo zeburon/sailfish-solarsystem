@@ -46,7 +46,7 @@ Page
 
     // -----------------------------------------------------------------------
 
-    function refresh()
+    function repaint()
     {
         solarSystem.paintOrbits();
     }
