@@ -88,6 +88,10 @@ Gröna siffror: Avståndet minskar</translation>
         <source>Click on planets for details</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Sky</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlanetDetailsPage</name>
@@ -256,6 +260,13 @@ Gröna siffror: Avståndet minskar</translation>
     </message>
     <message>
         <source>Display Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SkyPage</name>
+    <message>
+        <source>Sky</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

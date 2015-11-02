@@ -1,3 +1,4 @@
+var julianDate;
 var daysSinceJ2000;
 var centuriesSinceJ2000;
 
@@ -31,6 +32,13 @@ function mod2pi(angle)
 
 // -----------------------------------------------------------------------
 
+function getFraction(value)
+{
+    return value - Math.floor(value);
+}
+
+// -----------------------------------------------------------------------
+
 function isDateValid(d)
 {
     if (Object.prototype.toString.call(d) !== "[object Date]")
@@ -53,7 +61,28 @@ function setDateIfChanged(newDate)
 
     daysSinceJ2000 = newDaysSinceJ2000;
     centuriesSinceJ2000 = daysSinceJ2000 / 36525;
+
+    julianDate = 2415020.5 - 64; // 1.1.1900 - correction of algorithm
+    if (month <= 2)
+    {
+        year--;
+        month += 12;
+    }
+    julianDate += Math.floor((year - 1900) * 365.25);
+    julianDate += Math.floor(30.6001 * (1 + month));
+    julianDate += day;
     return true;
+}
+
+// -----------------------------------------------------------------------
+
+function getLongitudeOffset(hours)
+{
+    var jd = Math.floor(julianDate - 0.5) + 0.5; // JD at 0 hours UT
+    var t = (jd - 2451545.0) / 36525.0;
+    var t0 = 6.697374558 + t * (2400.051336 + t * 0.000025862);
+    var meanSiderealTime = (t0 + (hours % 24) * 1.002737909) % 24;
+    return (meanSiderealTime / 24) * 360;
 }
 
 // -----------------------------------------------------------------------
@@ -141,7 +170,7 @@ function updateDisplayedCoordinates(planetPosition)
         y = au * eclipticCoordinates[1];
         z = au * eclipticCoordinates[2];
     }
-    planetPosition.displayedCoordinates = [Math.round(x), Math.round(-y), Math.round(z)];
+    planetPosition.displayedCoordinates = [x, -y, z];
 }
 
 // -----------------------------------------------------------------------

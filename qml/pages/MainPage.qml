@@ -11,19 +11,20 @@ Page
 
     // -----------------------------------------------------------------------
 
-    property alias solarSystem: solarSystem
     property bool pageActive: status === PageStatus.Active
     property bool animatingBackward: settings.animationEnabled && settings.animationDirection === -1
     property bool animatingForward: settings.animationEnabled && settings.animationDirection === 1
     property bool busy: pageStack.acceptAnimationRunning
     property bool showHelpTextWhenActivated: true
+    property alias planetPositions: topView.planetPositions
+    property alias solarSystem: topView.solarSystem
 
     // -----------------------------------------------------------------------
 
     function init()
     {
         loadAnimationIncrement();
-        solarSystem.init();
+        topView.init();
     }
 
     // -----------------------------------------------------------------------
@@ -48,7 +49,7 @@ Page
 
     function repaint()
     {
-        solarSystem.paintOrbits();
+        topView.paintOrbits();
     }
 
     // -----------------------------------------------------------------------
@@ -87,7 +88,7 @@ Page
 
     onPageActiveChanged:
     {
-        stopAnimation();
+        //stopAnimation();
         if (pageActive)
         {
             pageStack.pushAttached(distancePage);
@@ -96,7 +97,7 @@ Page
             {
                 showHelpTextWhenActivated = false;
 
-                if (solarSystem.simplifiedOrbits)
+                if (topView.simplifiedOrbits)
                     detailsHelpTimer.start();
                 else
                     zoomHelpTimer.start();
@@ -106,8 +107,8 @@ Page
     Component.onCompleted:
     {
         distancePage.updated.connect(stopAnimation);
-        solarSystem.switchedToRealisticOrbits.connect(handleOrbitStyleChange);
-        solarSystem.switchedToSimplifiedOrbits.connect(handleOrbitStyleChange);
+        topView.switchedToRealisticOrbits.connect(handleOrbitStyleChange);
+        topView.switchedToSimplifiedOrbits.connect(handleOrbitStyleChange);
     }
 
     // -----------------------------------------------------------------------
@@ -134,6 +135,14 @@ Page
                 onClicked:
                 {
                     pageStack.push(settingsPage);
+                }
+            }
+            MenuItem
+            {
+                text: qsTr("Sky")
+                onClicked:
+                {
+                    pageStack.push(skyPage);
                 }
             }
         }
@@ -224,9 +233,9 @@ Page
                 width: column.width
                 height: column.width
 
-                SolarSystem
+                TopView
                 {
-                    id: solarSystem
+                    id: topView
 
                     anchors { centerIn: parent; horizontalCenterOffset: currentOffsetX; verticalCenterOffset: currentOffsetY }
                     width: parent.width
@@ -243,8 +252,8 @@ Page
                     animateZoom: app.initialized
                     Component.onCompleted:
                     {
-                        solarSystem.clickedOnEmptySpace.connect(toggleZoom);
-                        solarSystem.clickedOnPlanet.connect(showPlanetDetailsPage);
+                        topView.clickedOnEmptySpace.connect(toggleZoom);
+                        topView.clickedOnPlanet.connect(showPlanetDetailsPage);
                     }
                 }
 
@@ -253,8 +262,8 @@ Page
                     anchors { fill: parent }
                     onClicked:
                     {
-                        var solarSystemCoordinates = parent.mapToItem(solarSystem, mouse.x, mouse.y);
-                        solarSystem.click(solarSystemCoordinates.x, solarSystemCoordinates.y);
+                        var topViewCoordinates = parent.mapToItem(topView, mouse.x, mouse.y);
+                        topView.click(topViewCoordinates.x, topViewCoordinates.y);
                     }
                 }
             }

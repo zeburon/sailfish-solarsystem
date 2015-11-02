@@ -16,7 +16,7 @@ CoverBackground
 
     function init()
     {
-        solarSystem.init();
+        topView.init();
         update();
     }
 
@@ -26,14 +26,13 @@ CoverBackground
     {
         // only update planet positions once a day
         var currentDate = new Date(Date.now());
-        if (currentDate.getDate() !== solarSystem.date.getDate() || currentDate.getMonth() !== solarSystem.date.getMonth())
+        if (currentDate.getDate() !== topView.date.getDate() || currentDate.getMonth() !== topView.date.getMonth())
         {
-            solarSystem.date = currentDate;
-            solarSystem.updatePlanetPositions();
-            solarSystem.prepareDistanceCoordinates();
+            topView.date = currentDate;
+            topView.solarSystem.prepareDistanceCoordinates();
             updatePlanetDistanceLabel();
         }
-        solarSystem.paintOrbits();
+        topView.paintOrbits();
     }
 
     // -----------------------------------------------------------------------
@@ -44,7 +43,7 @@ CoverBackground
         if (!planetConfigs[settings.distancePlanetIdx].visible)
             selectPreviousPlanet();
 
-        var result = solarSystem.getDistanceToEarth(settings.distancePlanetIdx);
+        var result = topView.solarSystem.getDistanceToEarth(settings.distancePlanetIdx);
         labelName.text = qsTr("Distance to %1").arg(planetConfigs[settings.distancePlanetIdx].name);
         labelDistance.text = result[0].toFixed(2) + " AU";
 
@@ -113,9 +112,9 @@ CoverBackground
         anchors { fill: parent }
         spacing: 0
 
-        SolarSystem
+        TopView
         {
-            id: solarSystem
+            id: topView
 
             width: parent.width
             height: width

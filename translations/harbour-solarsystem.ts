@@ -86,6 +86,10 @@ green number: distance is decreasing</source>
         <source>Click on planets for details</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Sky</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlanetDetailsPage</name>
@@ -254,6 +258,13 @@ green number: distance is decreasing</source>
     </message>
     <message>
         <source>Display Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SkyPage</name>
+    <message>
+        <source>Sky</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

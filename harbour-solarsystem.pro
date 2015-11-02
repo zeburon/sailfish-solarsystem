@@ -68,7 +68,10 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/gfx/m_saturn_rings.png \
     qml/gfx/s_saturn_rings.png \
     qml/gfx/zoom_in.png \
-    qml/gfx/zoom_out.png
+    qml/gfx/zoom_out.png \
+    qml/pages/SkyPage.qml \
+    qml/components/TopView.qml \
+    qml/components/SkyView.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line

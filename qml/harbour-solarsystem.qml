@@ -316,7 +316,7 @@ ApplicationWindow
     // -----------------------------------------------------------------------
 
     cover: coverPage
-    initialPage: mainPage
+    initialPage: skyPage
 
     // -----------------------------------------------------------------------
 
@@ -326,6 +326,7 @@ ApplicationWindow
         initPlanetIndices();
         settings.loadValues();
         mainPage.init();
+        skyPage.init();
         coverPage.init();
         settingsPage.init();
         settings.startStoringValueChanges();
@@ -367,6 +368,10 @@ ApplicationWindow
         id: planetDetailsPage
 
         planetConfig: planetConfigs[0]
+    }
+    SkyPage
+    {
+        id: skyPage
     }
     SettingsPage
     {

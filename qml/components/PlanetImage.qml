@@ -9,6 +9,7 @@ Item
     property PlanetConfig planetConfig
     property bool showShadowOnPlanet: true
     property bool showShadowBehindPlanet: true
+    property alias shadowOpacity: shadow.opacity
     property real shadowRotation: 0
     property alias imageWidth: image.width
     property alias imageHeight: image.height

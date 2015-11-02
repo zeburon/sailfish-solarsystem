@@ -88,6 +88,10 @@ grüne Zahl: abnehmende Entfernung</translation>
         <source>Click on planets for details</source>
         <translation>Klicke auf Planeten für Details</translation>
     </message>
+    <message>
+        <source>Sky</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlanetDetailsPage</name>
@@ -257,6 +261,13 @@ grüne Zahl: abnehmende Entfernung</translation>
     <message>
         <source>Display Mode</source>
         <translation>Darstellungsmodus</translation>
+    </message>
+</context>
+<context>
+    <name>SkyPage</name>
+    <message>
+        <source>Sky</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
