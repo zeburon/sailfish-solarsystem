@@ -274,39 +274,39 @@ Gröna siffror: Avståndet minskar</translation>
     <name>harbour-solarsystem</name>
     <message>
         <source>Mercury</source>
-        <translation>Merkurius</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Venus</source>
-        <translation>Venus</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Earth</source>
-        <translation>Jorden</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Mars</source>
-        <translation>Mars</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Jupiter</source>
-        <translation>Jupiter</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Saturn</source>
-        <translation>Saturnus</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Uranus</source>
-        <translation>Uranus</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Neptune</source>
-        <translation>Neptunus</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Pluto</source>
-        <translation>Pluto</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

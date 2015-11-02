@@ -438,6 +438,15 @@ Canvas
 
         context.globalAlpha = 1.0;
 
+        // stars
+        var maxMagnitude = starConfigs[0].magnitude;
+        for (var starIdx = 0; starIdx < starConfigs.length; ++starIdx)
+        {
+            var starConfig = starConfigs[starIdx];
+            var projectedStarCoordinates = relativeEquatorialToScreenCoordinates(getCoordinates(starConfig.raDegrees, starConfig.declination, 100));
+            drawCircle(context, projectedStarCoordinates, "yellow", 4 * (1.0 - (starConfig.magnitude - maxMagnitude) / 6));
+        }
+
         // sun
         var projected = absolouteEclipticToScreenCoordinates([0, 0, 0]);
         sun.x = projected[0] + width / 2;
@@ -493,11 +502,11 @@ Canvas
 
             Behavior on shadowOpacity
             {
-                NumberAnimation { duration: 250 }
+                NumberAnimation { duration: 100 }
             }
             Behavior on shadowRotation
             {
-                NumberAnimation { duration: 250 }
+                NumberAnimation { duration: 100 }
             }
         }
     }
