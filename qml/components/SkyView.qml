@@ -179,7 +179,7 @@ Canvas
     function drawAzimutalGrid(context, color)
     {
         var coordinates = [];
-        for (var skyLatitude = -80; skyLatitude <= 80; skyLatitude += 20)
+        for (var skyLatitude = -75; skyLatitude <= 75; skyLatitude += 25)
         {
             var circleCoordinates = [];
             for (var skyLongitude = 0; skyLongitude <= 360; skyLongitude += 22.5)
@@ -205,10 +205,10 @@ Canvas
         }
 
         // north pole
-        drawGridLabel(context, relativeAzimutalToScreenCoordinates(getCoordinates(0, 90, 100)), "white", "UP");
+        drawGridLabel(context, relativeAzimutalToScreenCoordinates(getCoordinates(0, 90, 100)), "white", "NORTH");
 
         // south pole
-        drawGridLabel(context, relativeAzimutalToScreenCoordinates(getCoordinates(0, -90, 100)), "white", "DOWN");
+        drawGridLabel(context, relativeAzimutalToScreenCoordinates(getCoordinates(0, -90, 100)), "white", "SOUTH");
     }
 
     // -----------------------------------------------------------------------
@@ -216,7 +216,7 @@ Canvas
     function drawEquatorialGrid(context, color)
     {
         var coordinates = [];
-        for (var skyLatitude = -80; skyLatitude <= 80; skyLatitude += 20)
+        for (var skyLatitude = -75; skyLatitude <= 75; skyLatitude += 25)
         {
             var circleCoordinates = [];
             for (var skyLongitude = 0; skyLongitude <= 360; skyLongitude += 22.5)
@@ -242,7 +242,7 @@ Canvas
     function drawEclipticGrid(context, color)
     {
         var coordinates = [];
-        for (var skyLatitude = -80; skyLatitude <= 80; skyLatitude += 20)
+        for (var skyLatitude = -75; skyLatitude <= 75; skyLatitude += 25)
         {
             var circleCoordinates = [];
             for (var skyLongitude = 0; skyLongitude <= 360; skyLongitude += 22.5)
@@ -458,6 +458,7 @@ Canvas
         for (var planetIdx = 0; planetIdx < planetPositions.length; ++planetIdx)
         {
             var planetPosition = planetPositions[planetIdx];
+            var planetCoordinates = planetPosition.displayedCoordinates;
             var planetImage = planetImages[planetIdx];
             var planetLabel = planetLabels[planetIdx];
 
@@ -467,12 +468,14 @@ Canvas
                 planetLabel.visible = false;
                 continue;
             }
+            var orientation = -earthCoordinates[0] * (planetCoordinates[1] - earthCoordinates[1]) - (planetCoordinates[0] - earthCoordinates[0]) * -earthCoordinates[1];
 
-            var projectedPlanetCoordinates = absolouteEclipticToScreenCoordinates(planetPosition.displayedCoordinates);
+            var projectedPlanetCoordinates = absolouteEclipticToScreenCoordinates(planetCoordinates);
             planetImage.x = projectedPlanetCoordinates[0] + width / 2;
             planetImage.y = projectedPlanetCoordinates[1] + height / 2;
             planetImage.z = projectedPlanetCoordinates[2];
             planetImage.z = 1000 - projectedPlanetCoordinates[2];
+            planetImage.shadowRotation = orientation > 0.0 ? 180 : 0;
             planetImage.visible = projectedPlanetCoordinates[2] > 0;
 
             planetLabel.x = projectedPlanetCoordinates[0] + width / 2;
@@ -481,9 +484,11 @@ Canvas
             planetLabel.visible = showLabels && projectedPlanetCoordinates[2] > 0;
         }
 
-        var projected1 = relativeEclipticToScreenCoordinates(getCoordinates(-longitudeOffset, 0, 100));
-        var projected2 = relativeEclipticToScreenCoordinates(getCoordinates(-longitudeOffset + 10, 0, 100));
-        planetRotation = Math.atan2(projected2[0] - projected1[0], -(projected2[1] - projected1[1])) * 180 / Math.PI + 90;
+        // calculate rotation of planet images along ecliptic plane
+        var eclipticLongitude = -longitudeOffset - longitudeLookOffset;
+        var projectedEclipticPosition1 = relativeEclipticToScreenCoordinates(getCoordinates(eclipticLongitude, 0, 100));
+        var projectedEclipticPosition2 = relativeEclipticToScreenCoordinates(getCoordinates(eclipticLongitude + 1, 0, 100));
+        planetRotation = Math.atan2(projectedEclipticPosition2[0] - projectedEclipticPosition1[0], -(projectedEclipticPosition2[1] - projectedEclipticPosition1[1])) * 180 / Math.PI + 90;
     }
 
     // -----------------------------------------------------------------------
@@ -497,8 +502,7 @@ Canvas
             showShadowOnPlanet: true
             showShadowBehindPlanet: false
             rotation: planetRotation
-            shadowRotation: Math.atan2(x - sun.x, -(y - sun.y)) * 180 / Math.PI - 90 - rotation
-            shadowOpacity: Math.min(1.0, Math.sqrt((x - sun.x) * (x - sun.x) + (y - sun.y) * (y - sun.y)) / 100)
+            shadowOpacity: Math.min(1.0, Math.sqrt((x - sun.x) * (x - sun.x) + (y - sun.y) * (y - sun.y)) / 150)
 
             Behavior on shadowOpacity
             {
@@ -506,7 +510,7 @@ Canvas
             }
             Behavior on shadowRotation
             {
-                NumberAnimation { duration: 100 }
+                RotationAnimation { direction: RotationAnimation.Shortest; duration: 100 }
             }
         }
     }
@@ -542,7 +546,7 @@ Canvas
     Timer
     {
         repeat: true
-        interval: 33
+        interval: 50
         running: timerEnabled
         onTriggered:
         {
