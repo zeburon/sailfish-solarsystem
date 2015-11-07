@@ -308,5 +308,9 @@ grüne Zahl: abnehmende Entfernung</translation>
         <source>Pluto</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Moon</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

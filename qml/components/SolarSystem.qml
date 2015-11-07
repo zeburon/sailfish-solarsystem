@@ -149,6 +149,13 @@ QtObject
         return Calculation.getLongitudeOffset(hours);
     }
 
+// -----------------------------------------------------------------------
+
+    function getJulianDate()
+    {
+        return Math.floor(Calculation.julianDate - 0.5) + 0.5;
+    }
+
     // -----------------------------------------------------------------------
 
     function handleSettingChange()

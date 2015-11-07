@@ -288,6 +288,23 @@ ApplicationWindow
             escapeVelocity: 1212
             averageTemperature: 44
             pressure: 0.3
+        },
+        PlanetConfig
+        {
+            id: moon
+
+            name: qsTr("Moon")
+            parentPlanetConfig: earth
+            smallImageSource: "../gfx/s_moon.png"
+            mediumImageSource: "../gfx/s_moon.png"
+            orbitColor: "#ffffff"
+
+            a1: 60.2666//0.00257
+            e1: 0.054900
+            i1: 5.1454
+            l1: 115.3654; l2: 477198.8675316225
+            w1: 318.0634; w2: 6003.1511970075
+            o1: 125.1228; o2: -1934.1378481575
         }
     ]
 
@@ -620,7 +637,7 @@ ApplicationWindow
     // -----------------------------------------------------------------------
 
     cover: coverPage
-    initialPage: skyPage
+    initialPage: mainPage
 
     // -----------------------------------------------------------------------
 

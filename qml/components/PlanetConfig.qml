@@ -8,6 +8,7 @@ QtObject
     property string name
     property bool isDwarfPlanet: false
     property bool visible: true
+    property QtObject parentPlanetConfig
 
     property int idxWithDwarfPlanets
     property int idxWithoutDwarfPlanets

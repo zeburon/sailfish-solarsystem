@@ -11,7 +11,7 @@ Canvas
     property bool showAzimutalGrid: true
     property bool showEquatorialGrid: true
     property bool showEclipticGrid: true
-    property real hours: 13
+    property real hours: 12
     property bool timerEnabled
 
     property alias planetPositions: solarSystem.planetPositions
@@ -88,8 +88,6 @@ Canvas
         var segmentCount = coordinates[0].length - 1;
 
         context.globalAlpha = 0.2;
-        context.lineJoin = "round";
-        context.lineCap = "round";
         context.strokeStyle = color;
 
         context.beginPath();
@@ -470,7 +468,16 @@ Canvas
             }
             var orientation = -earthCoordinates[0] * (planetCoordinates[1] - earthCoordinates[1]) - (planetCoordinates[0] - earthCoordinates[0]) * -earthCoordinates[1];
 
-            var projectedPlanetCoordinates = absolouteEclipticToScreenCoordinates(planetCoordinates);
+            var projectedPlanetCoordinates;
+            if (planetPosition.planetConfig.name === "Moon")
+            {
+                projectedPlanetCoordinates = relativeEclipticToScreenCoordinates(planetCoordinates);
+            }
+            else
+            {
+                projectedPlanetCoordinates = absolouteEclipticToScreenCoordinates(planetCoordinates);
+            }
+
             planetImage.x = projectedPlanetCoordinates[0] + width / 2;
             planetImage.y = projectedPlanetCoordinates[1] + height / 2;
             planetImage.z = projectedPlanetCoordinates[2];
@@ -553,11 +560,11 @@ Canvas
             /*
             hours += 0.05;
             hours %= 24;
-            */
             var newDate = new Date(date);
             newDate.setDate(newDate.getDate() + 1);
             date = newDate;
             parent.requestPaint();
+            */
         }
     }
     MouseArea

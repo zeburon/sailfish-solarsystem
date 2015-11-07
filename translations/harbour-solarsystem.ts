@@ -306,5 +306,9 @@ green number: distance is decreasing</source>
         <source>Pluto</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Moon</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
