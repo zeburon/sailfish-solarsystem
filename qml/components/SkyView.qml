@@ -1,4 +1,6 @@
 import QtQuick 2.0
+import harbour.solarsystem.Projector 1.0
+import harbour.solarsystem.DateTime 1.0
 
 Canvas
 {
@@ -6,74 +8,62 @@ Canvas
 
     // -----------------------------------------------------------------------
 
-    property date date
     property bool showLabels: true
-    property bool showAzimutalGrid: true
-    property bool showEquatorialGrid: true
-    property bool showEclipticGrid: true
-    property real hours: 12
-    property bool timerEnabled
+    property bool showAzimuth: true
+    property bool showEquator: true
+    property bool showEcliptic: true
 
-    property alias planetPositions: solarSystem.planetPositions
-    property var planetImages: []
-    property var planetLabels: []
+    property alias solarSystem: solarSystem
+    property var solarBodyInfos: []
 
     property real latitude: 47.066
     property real longitude: 15.433
 
-    property real longitudeOffset: latitude < 0 ? 180 : 0
-    property real longitudeLookOffset: 0.01
-    property real latitudeLookOffset: 40
-
-    property real horizontalFov: 120
-    property real verticalFov: horizontalFov * (height / width)
-    property real horizontalFovTan: Math.tan(horizontalFov * Math.PI / 180 / 2)
-    property real verticalFovTan: Math.tan(verticalFov * Math.PI / 180 / 2)
-    property real currentZoom: 1
+    property real fieldOfView: 120
+    property real currentZoom: 1.0
 
     property var earthCoordinates: [0, 0, 0]
+    property real sunLongitude
 
-    property var lookUp: [0, 0, 0]
-    property var lookRight: [0, 0, 0]
-    property var lookView: [0, 0, 0]
-
-    property var azimutalUp: [0, 0, 0]
-    property var azimutalRight: [0, 0, 0]
-    property var azimutalView: [0, 0, 0]
-
+    property real longitudeLookOffset: 0.01
+    property real latitudeLookOffset: 40
     property int mouseXStart
     property int mouseLongitudeOffsetStart
     property int mouseYStart
     property int mouseLatitudeOffsetStart
 
-    property real planetRotation
-
     // -----------------------------------------------------------------------
 
     function init()
     {
-        solarSystem.init();
-
-        for (var planetIdx = 0; planetIdx < planetPositions.length; ++planetIdx)
+        for (var bodyIdx = 0; bodyIdx < solarSystem.solarBodies.length; ++bodyIdx)
         {
-            var planetPosition = planetPositions[planetIdx];
-            var planetConfig = planetPosition.planetConfig;
+            var solarBody = solarSystem.solarBodies[bodyIdx];
 
-            var planetImage = planetImageComponent.createObject(root, {"planetConfig": planetConfig});
-            var planetLabel = planetLabelComponent.createObject(root, {"planetConfig": planetConfig, "yOffset": planetImage.imageHeight * 0.75});
-            planetImages.push(planetImage);
-            planetLabels.push(planetLabel);
+            var info = solarBodyInfo.createObject(null, {"solarBody": solarBody});
+            solarBodyInfos.push(info);
+
+            var planetImage = planetImageComponent.createObject(root, {"solarBody": solarBody, "info": info});
+            var planetLabel = planetLabelComponent.createObject(root, {"solarBody": solarBody, "info": info, "yOffset": planetImage.imageHeight * 0.75});
         }
+    }
+
+    // -----------------------------------------------------------------------
+
+    function update(dateTime)
+    {
+        solarSystem.dateTime.string = dateTime.string;
+        requestPaint();
     }
 
     // -----------------------------------------------------------------------
 
     function drawCircle(context, coordinates, color, radius)
     {
-        if (coordinates[2] >= 0)
+        if (coordinates.z >= 0)
         {
             context.beginPath();
-            context.arc(coordinates[0], coordinates[1], radius, 0, 2 * Math.PI, false);
+            context.arc(coordinates.x, coordinates.y, radius, 0, 2 * Math.PI, false);
             context.fillStyle = color;
             context.fill();
         }
@@ -81,49 +71,31 @@ Canvas
 
     // -----------------------------------------------------------------------
 
-    function drawGridWithLines(context, coordinates, color)
+    function drawLabel(context, coordinates, color, label)
     {
-        var circleCount = coordinates.length;
-        var equatorIdx = Math.floor(circleCount / 2);
-        var segmentCount = coordinates[0].length - 1;
-
-        context.globalAlpha = 0.2;
-        context.strokeStyle = color;
-
-        context.beginPath();
-        context.lineWidth = 1;
-        for (var circleIdx = 0; circleIdx < circleCount; ++circleIdx)
+        if (coordinates.z > 0)
         {
-            if (circleIdx !== equatorIdx)
-                drawGridHelperHorizontal(context, coordinates, circleIdx);
+            drawCircle(context, coordinates, color, 5);
+            context.fillStyle = color;
+            context.fillText(label,  coordinates.x, coordinates.y - 5);
         }
-        for (var segmentIdx = 0; segmentIdx < segmentCount; ++segmentIdx)
-        {
-            drawGridHelperVertical(context, coordinates, segmentIdx);
-        }
-        context.stroke();
-
-        context.globalAlpha = 0.4;
-        context.beginPath();
-        context.lineWidth = 3;
-        drawGridHelperHorizontal(context, coordinates, equatorIdx);
-        context.stroke();
     }
 
     // -----------------------------------------------------------------------
 
-    function drawGridHelperHorizontal(context, coordinates, idx)
+    function drawPath(context, coordinates)
     {
         var drawing = false;
-        for (var segmentIdx = 0; segmentIdx < coordinates[idx].length; ++segmentIdx)
+        for (var idx = 0; idx < coordinates.length; ++idx)
         {
-            var projectedCoordinates = coordinates[idx][segmentIdx];
-            if (projectedCoordinates[2] >= 0)
+            var point = coordinates[idx];
+            if (point.z > 0)
             {
                 if (drawing)
-                    context.lineTo(projectedCoordinates[0], projectedCoordinates[1]);
+                    context.lineTo(point.x, point.y);
                 else
-                    context.moveTo(projectedCoordinates[0], projectedCoordinates[1]);
+                    context.moveTo(point.x, point.y);
+
                 drawing = true;
             }
             else
@@ -135,61 +107,57 @@ Canvas
 
     // -----------------------------------------------------------------------
 
-    function drawGridHelperVertical(context, coordinates, idx)
+    function drawAzimuth(context)
     {
-        var drawing = false;
-        for (var circleIdx = 0; circleIdx < coordinates.length; ++circleIdx)
+        var skyLongitude, skyLatitude;
+
+        context.globalAlpha = 0.3;
+        context.lineWidth = 2;
+
+        // upper hemisphere
+        context.strokeStyle = "#9999ff";
+        for (skyLongitude = 0; skyLongitude < 180; skyLongitude += 90)
         {
-            var projectedCoordinates = coordinates[circleIdx][idx];
-            if (projectedCoordinates[2] >= 0)
+            var upperCoordinates = [];
+            for (skyLatitude = 0; skyLatitude <= 180; skyLatitude += 10)
             {
-                if (drawing)
-                {
-                    context.lineTo(projectedCoordinates[0], projectedCoordinates[1]);
-                }
-                else
-                {
-                    context.moveTo(projectedCoordinates[0], projectedCoordinates[1]);
-                }
-                drawing = true;
+                upperCoordinates.push(projector.sphericalAzimuthalToScreenCoordinates(skyLongitude, skyLatitude));
             }
-            else if (drawing)
-            {
-                drawing = false;
-            }
+            context.beginPath();
+            drawPath(context, upperCoordinates);
+            context.stroke();
         }
-    }
 
-    // -----------------------------------------------------------------------
-
-    function drawGridLabel(context, coordinates, color, label)
-    {
-        if (coordinates[2] > 0)
+        // lower hemisphere
+        context.strokeStyle = "#88cc00";
+        for (skyLongitude = 0; skyLongitude < 180; skyLongitude += 90)
         {
-            drawCircle(context, coordinates, color, 5);
-            context.fillStyle = color;
-            context.fillText(label,  coordinates[0], coordinates[1] - 5);
-        }
-    }
-
-    // -----------------------------------------------------------------------
-
-    function drawAzimutalGrid(context, color)
-    {
-        var coordinates = [];
-        for (var skyLatitude = -75; skyLatitude <= 75; skyLatitude += 25)
-        {
-            var circleCoordinates = [];
-            for (var skyLongitude = 0; skyLongitude <= 360; skyLongitude += 22.5)
+            var lowerCoordinates = [];
+            for (skyLatitude = 0; skyLatitude <= 180; skyLatitude += 10)
             {
-                var azimutalCoordinates = getCoordinates(skyLongitude, skyLatitude, 100);
-                circleCoordinates.push(relativeAzimutalToScreenCoordinates(azimutalCoordinates));
+                lowerCoordinates.push(projector.sphericalAzimuthalToScreenCoordinates(skyLongitude, -skyLatitude));
             }
-            coordinates.push(circleCoordinates);
+            context.beginPath();
+            drawPath(context, lowerCoordinates);
+            context.stroke();
         }
-        drawGridWithLines(context, coordinates, color);
 
-        for (var skyLongitude = 0; skyLongitude < 360; skyLongitude += 90)
+        // equator
+        context.globalAlpha = 0.4;
+        context.lineWidth = 4;
+        context.strokeStyle = "white";
+        var equatorCoordinates = [];
+        for (skyLongitude = 0; skyLongitude <= 360; skyLongitude += 10)
+        {
+            equatorCoordinates.push(projector.sphericalAzimuthalToScreenCoordinates(skyLongitude, 0));
+        }
+        context.beginPath();
+        drawPath(context, equatorCoordinates);
+        context.stroke();
+
+        // labels
+        context.globalAlpha = 0.6;
+        for (skyLongitude = 0; skyLongitude < 360; skyLongitude += 90)
         {
             var direction;
             switch (skyLongitude)
@@ -199,196 +167,46 @@ Canvas
                 case 180: direction = "W"; break;
                 case 270: direction = "S"; break;
             }
-            drawGridLabel(context, relativeAzimutalToScreenCoordinates(getCoordinates(skyLongitude, 0, 100)), "white", direction);
+            drawLabel(context, projector.sphericalAzimuthalToScreenCoordinates(skyLongitude, 0), "white", direction);
         }
-
-        // north pole
-        drawGridLabel(context, relativeAzimutalToScreenCoordinates(getCoordinates(0, 90, 100)), "white", "NORTH");
-
-        // south pole
-        drawGridLabel(context, relativeAzimutalToScreenCoordinates(getCoordinates(0, -90, 100)), "white", "SOUTH");
+        drawLabel(context, projector.sphericalAzimuthalToScreenCoordinates(0, 90), "#9999ff", "NORTH");
+        drawLabel(context, projector.sphericalAzimuthalToScreenCoordinates(0, -90), "#88cc00", "SOUTH");
     }
 
     // -----------------------------------------------------------------------
 
-    function drawEquatorialGrid(context, color)
+    function drawEquator(context)
     {
+        // equator
         var coordinates = [];
-        for (var skyLatitude = -75; skyLatitude <= 75; skyLatitude += 25)
+        for (var skyLongitude = 0; skyLongitude <= 360; skyLongitude += 10)
         {
-            var circleCoordinates = [];
-            for (var skyLongitude = 0; skyLongitude <= 360; skyLongitude += 22.5)
-            {
-                var equatorialCoordinates = getCoordinates(skyLongitude - longitudeOffset, skyLatitude, 100);
-                circleCoordinates.push(relativeEquatorialToScreenCoordinates(equatorialCoordinates));
-            }
-            coordinates.push(circleCoordinates);
+            coordinates.push(projector.sphericalEquatorialToScreenCoordinates(skyLongitude, 0));
         }
-        drawGridWithLines(context, coordinates, color);
-
-        // north pole
-        var projected = relativeEquatorialToScreenCoordinates(getCoordinates(0, 90, 100));
-        drawCircle(context, projected, color, 3);
-
-        // south pole
-        var projected = relativeEquatorialToScreenCoordinates(getCoordinates(0, -90, 100));
-        drawCircle(context, projected, color, 3);
+        context.globalAlpha = 0.3;
+        context.lineWidth = 4;
+        context.beginPath();
+        drawPath(context, coordinates);
+        context.strokeStyle = "#999966";
+        context.stroke();
     }
 
     // -----------------------------------------------------------------------
 
-    function drawEclipticGrid(context, color)
+    function drawEcliptic(context)
     {
+        // equator
         var coordinates = [];
-        for (var skyLatitude = -75; skyLatitude <= 75; skyLatitude += 25)
+        for (var skyLongitude = 0; skyLongitude <= 360; skyLongitude += 10)
         {
-            var circleCoordinates = [];
-            for (var skyLongitude = 0; skyLongitude <= 360; skyLongitude += 22.5)
-            {
-                var eclipticalCoordinates = getCoordinates(skyLongitude, skyLatitude, 100);
-                circleCoordinates.push(relativeEclipticToScreenCoordinates(eclipticalCoordinates));
-            }
-            coordinates.push(circleCoordinates);
+            coordinates.push(projector.sphericalEclipticToScreenCoordinates(skyLongitude, 0));
         }
-        drawGridWithLines(context, coordinates, color);
-
-        // north pole
-        var projected = relativeEclipticToScreenCoordinates(getCoordinates(0, 90, 100));
-        drawCircle(context, projected, color, 3);
-
-        // south pole
-        var projected = relativeEclipticToScreenCoordinates(getCoordinates(0, -90, 100));
-        drawCircle(context, projected, color, 3);
-    }
-
-    // -----------------------------------------------------------------------
-
-    function normalize(v)
-    {
-        var length = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
-        return [v[0] / length, v[1] / length, v[2] / length];
-    }
-
-    // -----------------------------------------------------------------------
-
-    function getCoordinates(lon, lat, distance)
-    {
-        lon *= Math.PI / 180;
-        lat *= Math.PI / 180;
-
-        var coords = [0, 0, 0];
-        coords[0] = distance * Math.cos(lat) * Math.cos(lon);
-        coords[1] = distance * Math.cos(lat) * Math.sin(lon);
-        coords[2] = distance * Math.sin(lat);
-        return coords;
-    }
-
-    // -----------------------------------------------------------------------
-
-    function eclipticToEquatorialCoordinates(ecliptic)
-    {
-        var c = Math.cos(-earth.axialTilt * Math.PI / 180);
-        var s = Math.sin(-earth.axialTilt * Math.PI / 180);
-
-        var equatorial = [0, 0, 0];
-        equatorial[0] = ecliptic[0];
-        equatorial[1] = c * ecliptic[1] - s * ecliptic[2];
-        equatorial[2] = s * ecliptic[1] + c * ecliptic[2];
-        return equatorial;
-    }
-
-    // -----------------------------------------------------------------------
-
-    function equatorialToEclipticCoordinates(equatorial)
-    {
-        var c = Math.cos(-earth.axialTilt * Math.PI / 180);
-        var s = Math.sin(-earth.axialTilt * Math.PI / 180);
-
-        var ecliptic = [0, 0, 0];
-        ecliptic[0] = equatorial[0];
-        ecliptic[1] = c * equatorial[1] + s * equatorial[2];
-        ecliptic[2] = -s * equatorial[1] + c * equatorial[2];
-        return ecliptic;
-    }
-
-    // -----------------------------------------------------------------------
-
-    function absolouteEclipticToScreenCoordinates(absoluteEclipticCoordinates)
-    {
-        var relativeEclipticCoordinates = [0, 0, 0];
-        relativeEclipticCoordinates[0] = absoluteEclipticCoordinates[0] - earthCoordinates[0];
-        relativeEclipticCoordinates[1] = absoluteEclipticCoordinates[1] - earthCoordinates[1];
-        relativeEclipticCoordinates[2] = absoluteEclipticCoordinates[2] - earthCoordinates[2];
-        return relativeEclipticToScreenCoordinates(relativeEclipticCoordinates);
-    }
-
-    // -----------------------------------------------------------------------
-
-    function relativeEclipticToScreenCoordinates(relativeEclipticCoordinates)
-    {
-        var relativeEquatorialCoordinates = eclipticToEquatorialCoordinates(relativeEclipticCoordinates);
-        return relativeEquatorialToScreenCoordinates(relativeEquatorialCoordinates);
-    }
-
-    // -----------------------------------------------------------------------
-
-    function relativeEquatorialToScreenCoordinates(relativeEquatorialCoordinates)
-    {
-        var lookCoordinates = toLookCoordinates(relativeEquatorialCoordinates);
-        return eyeToScreenCoordinates(lookCoordinates);
-    }
-
-    // -----------------------------------------------------------------------
-
-    function relativeAzimutalToScreenCoordinates(coordinates)
-    {
-        var azimutalCoordinates = toAzimutalCoordinates(coordinates);
-
-        var eyeCoordinates = [0, 0, 0];
-        eyeCoordinates[0] = azimutalCoordinates[0] * lookRight[0] + azimutalCoordinates[1] * lookRight[1] + azimutalCoordinates[2] * lookRight[2];
-        eyeCoordinates[1] = azimutalCoordinates[0] * lookView[0]  + azimutalCoordinates[1] * lookView[1]  + azimutalCoordinates[2] * lookView[2];
-        eyeCoordinates[2] = azimutalCoordinates[0] * lookUp[0]    + azimutalCoordinates[1] * lookUp[1]    + azimutalCoordinates[2] * lookUp[2];
-        return eyeToScreenCoordinates(eyeCoordinates);
-    }
-
-    // -----------------------------------------------------------------------
-
-    function toAzimutalCoordinates(coordinates)
-    {
-        var azimutalCoordinates = [0, 0, 0];
-        azimutalCoordinates[0] = coordinates[0] * azimutalRight[0] + coordinates[1] * azimutalView[0] + coordinates[2] * azimutalUp[0];
-        azimutalCoordinates[1] = coordinates[0] * azimutalRight[1] + coordinates[1] * azimutalView[1] + coordinates[2] * azimutalUp[1];
-        azimutalCoordinates[2] = coordinates[0] * azimutalRight[2] + coordinates[1] * azimutalView[2] + coordinates[2] * azimutalUp[2];
-        return azimutalCoordinates;
-    }
-
-    // -----------------------------------------------------------------------
-
-    function toLookCoordinates(coordinates)
-    {
-        var lookCoordinates = [0, 0, 0];
-        lookCoordinates[0] = coordinates[0] * lookRight[0] + coordinates[1] * lookRight[1] + coordinates[2] * lookRight[2];
-        lookCoordinates[1] = coordinates[0] * lookView[0]  + coordinates[1] * lookView[1]  + coordinates[2] * lookView[2];
-        lookCoordinates[2] = coordinates[0] * lookUp[0]    + coordinates[1] * lookUp[1]    + coordinates[2] * lookUp[2];
-        return lookCoordinates;
-    }
-
-    // -----------------------------------------------------------------------
-
-    function eyeToScreenCoordinates(eyeCoordinates)
-    {
-        var distance = currentZoom / eyeCoordinates[1];
-
-        var normalizedCoordinates = [0, 0, 0];
-        normalizedCoordinates[0] = distance * eyeCoordinates[0] / horizontalFovTan;
-        normalizedCoordinates[1] = eyeCoordinates[1];
-        normalizedCoordinates[2] = distance * eyeCoordinates[2] / verticalFovTan;
-
-        var projectedCoordinates = [0, 0, 0];
-        projectedCoordinates[0] = (width / 2.0) * normalizedCoordinates[0];
-        projectedCoordinates[1] = -(height / 2.0) * normalizedCoordinates[2];
-        projectedCoordinates[2] = normalizedCoordinates[1];
-        return projectedCoordinates;
+        context.globalAlpha = 0.3;
+        context.lineWidth = 4;
+        context.beginPath();
+        drawPath(context, coordinates);
+        context.strokeStyle = "cyan";
+        context.stroke();
     }
 
     // -----------------------------------------------------------------------
@@ -402,37 +220,21 @@ Canvas
         context.font = "bold 12pt sans-serif";
         context.textAlign = "center";
 
-        earthCoordinates = planetPositions[earth.idxWithDwarfPlanets].displayedCoordinates;
-        longitudeOffset = solarSystem.getLongitudeOffset(hours);
+        earthCoordinates[0] = solarSystem.earth.orbitalElements.x;
+        earthCoordinates[1] = solarSystem.earth.orbitalElements.y;
+        earthCoordinates[2] = solarSystem.earth.orbitalElements.z;
 
-        azimutalUp = getCoordinates(longitude - longitudeOffset, latitude, 1);
-        azimutalRight = [azimutalUp[1], -azimutalUp[0], 0];
-        azimutalRight = normalize(azimutalRight);
-        azimutalView[0] = azimutalRight[1] * azimutalUp[2] - azimutalRight[2] * azimutalUp[1];
-        azimutalView[1] = azimutalRight[2] * azimutalUp[0] - azimutalRight[0] * azimutalUp[2];
-        azimutalView[2] = azimutalRight[0] * azimutalUp[1] - azimutalRight[1] * azimutalUp[0];
-        azimutalView = normalize(azimutalView);
+        //longitudeLookOffset = -dateTime.meanSiderealTime / 24 * 360 - solarSystem.saturn.orbitalElements.longitude - longitude;
+        //latitudeLookOffset = 0;
 
-        lookView = getCoordinates(longitudeLookOffset - 90, latitudeLookOffset, 1);
-        lookRight = [lookView[1], -lookView[0], 0];
-        lookRight = normalize(lookRight);
-        lookUp[0] = lookRight[1] * lookView[2] - lookRight[2] * lookView[1];
-        lookUp[1] = lookRight[2] * lookView[0] - lookRight[0] * lookView[2];
-        lookUp[2] = lookRight[0] * lookView[1] - lookRight[1] * lookView[0];
-        lookUp = normalize(lookUp);
+        projector.update();
 
-        lookRight = toAzimutalCoordinates(lookRight);
-        lookView = toAzimutalCoordinates(lookView);
-        lookUp = toAzimutalCoordinates(lookUp);
-
-        if (showAzimutalGrid)
-            drawAzimutalGrid(context, "cyan");
-
-        if (showEquatorialGrid)
-            drawEquatorialGrid(context, "lightblue");
-
-        if (showEclipticGrid)
-            drawEclipticGrid(context, "blue");
+        if (showAzimuth)
+            drawAzimuth(context);
+        if (showEquator)
+            drawEquator(context);
+        if (showEcliptic)
+            drawEcliptic(context);
 
         context.globalAlpha = 1.0;
 
@@ -441,92 +243,125 @@ Canvas
         for (var starIdx = 0; starIdx < starConfigs.length; ++starIdx)
         {
             var starConfig = starConfigs[starIdx];
-            var projectedStarCoordinates = relativeEquatorialToScreenCoordinates(getCoordinates(starConfig.raDegrees, starConfig.declination, 100));
+            var projectedStarCoordinates = projector.sphericalEclipticToScreenCoordinates(starConfig.raDegrees, starConfig.declination);
             drawCircle(context, projectedStarCoordinates, "yellow", 4 * (1.0 - (starConfig.magnitude - maxMagnitude) / 6));
         }
 
         // sun
-        var projected = absolouteEclipticToScreenCoordinates([0, 0, 0]);
-        sun.x = projected[0] + width / 2;
-        sun.y = projected[1] + height / 2;
-        sun.z = 1000 - projected[2];
-        sun.visible = projected[2] > 0;
+        var projected = projector.rectangularEclipticToScreenCoordinates(-earthCoordinates[0], -earthCoordinates[1], -earthCoordinates[2]);
+        sun.x = projected.x + width / 2;
+        sun.y = projected.y + height / 2;
+        sun.z = 1000 - projected.z;
+        sun.visible = projected.z > 0;
+        sunLongitude = (solarSystem.earth.orbitalElements.longitude + 180) % 360;
+        sun.rotation = projector.getImageRotation(sunLongitude, 0);
 
         // planets
-        for (var planetIdx = 0; planetIdx < planetPositions.length; ++planetIdx)
+        for (var infoIdx = 0; infoIdx < solarBodyInfos.length; ++infoIdx)
         {
-            var planetPosition = planetPositions[planetIdx];
-            var planetCoordinates = planetPosition.displayedCoordinates;
-            var planetImage = planetImages[planetIdx];
-            var planetLabel = planetLabels[planetIdx];
-
-            if (!planetPosition.planetConfig.visible || planetIdx === earth.idxWithDwarfPlanets)
-            {
-                planetImage.visible = false;
-                planetLabel.visible = false;
-                continue;
-            }
-            var orientation = -earthCoordinates[0] * (planetCoordinates[1] - earthCoordinates[1]) - (planetCoordinates[0] - earthCoordinates[0]) * -earthCoordinates[1];
-
-            var projectedPlanetCoordinates;
-            if (planetPosition.planetConfig.name === "Moon")
-            {
-                projectedPlanetCoordinates = relativeEclipticToScreenCoordinates(planetCoordinates);
-            }
-            else
-            {
-                projectedPlanetCoordinates = absolouteEclipticToScreenCoordinates(planetCoordinates);
-            }
-
-            planetImage.x = projectedPlanetCoordinates[0] + width / 2;
-            planetImage.y = projectedPlanetCoordinates[1] + height / 2;
-            planetImage.z = projectedPlanetCoordinates[2];
-            planetImage.z = 1000 - projectedPlanetCoordinates[2];
-            planetImage.shadowRotation = orientation > 0.0 ? 180 : 0;
-            planetImage.visible = projectedPlanetCoordinates[2] > 0;
-
-            planetLabel.x = projectedPlanetCoordinates[0] + width / 2;
-            planetLabel.y = projectedPlanetCoordinates[1] + height / 2;
-            planetLabel.z = 1000 - projectedPlanetCoordinates[2];
-            planetLabel.visible = showLabels && projectedPlanetCoordinates[2] > 0;
+            solarBodyInfos[infoIdx].updateCoordinates();
         }
-
-        // calculate rotation of planet images along ecliptic plane
-        var eclipticLongitude = -longitudeOffset - longitudeLookOffset;
-        var projectedEclipticPosition1 = relativeEclipticToScreenCoordinates(getCoordinates(eclipticLongitude, 0, 100));
-        var projectedEclipticPosition2 = relativeEclipticToScreenCoordinates(getCoordinates(eclipticLongitude + 1, 0, 100));
-        planetRotation = Math.atan2(projectedEclipticPosition2[0] - projectedEclipticPosition1[0], -(projectedEclipticPosition2[1] - projectedEclipticPosition1[1])) * 180 / Math.PI + 90;
     }
 
     // -----------------------------------------------------------------------
 
     Component
     {
+        id: solarBodyInfo
+
+        Item
+        {
+            property SolarBody solarBody
+
+            property real displayedX
+            property real displayedY
+            property real displayedZ
+            property real displayedRotation
+            property real displayedPhase: 0.5
+            property real longitudeFromEarth
+
+            function updateCoordinates()
+            {
+                if (!solarBody.visible)
+                {
+                    visible = false;
+                    return;
+                }
+
+                var dx = solarBody.orbitalElements.x;
+                var dy = solarBody.orbitalElements.y;
+                var dz = solarBody.orbitalElements.z;
+                if (solarBody.parentSolarBody)
+                {
+                    var parentSolarBody = solarBody.parentSolarBody;
+                    dx += parentSolarBody.orbitalElements.x;
+                    dy += parentSolarBody.orbitalElements.y;
+                    dz += parentSolarBody.orbitalElements.z;
+                }
+                dx -= earthCoordinates[0];
+                dy -= earthCoordinates[1];
+                dz -= earthCoordinates[2];
+
+                var newLongitudeFromEarth = Math.atan2(dy, dx) * 180 / Math.PI;
+                if (newLongitudeFromEarth < 0.0)
+                {
+                    newLongitudeFromEarth += 360.0;
+                }
+                longitudeFromEarth = newLongitudeFromEarth;
+
+                var projectedCoordinates = projector.rectangularEclipticToScreenCoordinates(dx, dy, dz)
+                displayedX = projectedCoordinates.x + root.width / 2;
+                displayedY = projectedCoordinates.y + root.height / 2;
+                displayedZ = 1000 - projectedCoordinates.z;
+                visible = projectedCoordinates.z > 0;
+                displayedRotation = projector.getImageRotation(longitudeFromEarth, solarBody.orbitalElements.latitude);
+
+                if (solarBody.orbitalElements.distance < solarSystem.earth.orbitalElements.distance)
+                {
+                    var age = (solarBody.orbitalElements.longitude - root.sunLongitude + 180) % 360.0;
+                    if (age < 0)
+                    {
+                        age += 360;
+                    }
+                    var phase = 1.0 - 0.5 * (1.0 - Math.cos(0.5 * age * Math.PI / 180));
+                    if (solarBody.parentSolarBody)
+                    {
+                        phase = (phase + 0.5) % 1.0;
+                    }
+                    displayedPhase = phase;
+                }
+            }
+        }
+    }
+    Component
+    {
         id: planetImageComponent
 
-        PlanetImage
+        SkySolarBodyImage
         {
-            showShadowOnPlanet: true
-            showShadowBehindPlanet: false
-            rotation: planetRotation
-            shadowOpacity: Math.min(1.0, Math.sqrt((x - sun.x) * (x - sun.x) + (y - sun.y) * (y - sun.y)) / 150)
+            property var info
 
-            Behavior on shadowOpacity
-            {
-                NumberAnimation { duration: 100 }
-            }
-            Behavior on shadowRotation
-            {
-                RotationAnimation { direction: RotationAnimation.Shortest; duration: 100 }
-            }
+            x: info.displayedX
+            y: info.displayedY
+            z: info.displayedZ
+            visible: info.visible
+            rotation: info.displayedRotation
+            shadowPhase: info.displayedPhase
+            useSmallImage: !solarBody.parentSolarBody
         }
     }
     Component
     {
         id: planetLabelComponent
 
-        PlanetLabel
+        SolarBodyLabel
         {
+            property var info
+
+            x: info.displayedX
+            y: info.displayedY
+            z: info.displayedZ + 1
+            visible: info.visible && root.showLabels
         }
     }
 
@@ -536,37 +371,30 @@ Canvas
     {
         id: solarSystem
 
-        date: root.date
         showDwarfPlanets: settings.showDwarfPlanets
-        simplifiedOrbits: false
-        radius: 100
+    }
+    Projector
+    {
+        id: projector
+
+        dateTime: solarSystem.dateTime
+        longitude: root.longitude
+        latitude: root.latitude
+        longitudeOffset: longitudeLookOffset
+        latitudeOffset: latitudeLookOffset
+        width: root.width
+        height: root.height
+        zoom: root.currentZoom
+        fieldOfView: root.fieldOfView
     }
     Sun
     {
         id: sun
 
         animated: true
-        rotation: planetRotation
         visible: z > 0
     }
 
-    Timer
-    {
-        repeat: true
-        interval: 50
-        running: timerEnabled
-        onTriggered:
-        {
-            /*
-            hours += 0.05;
-            hours %= 24;
-            var newDate = new Date(date);
-            newDate.setDate(newDate.getDate() + 1);
-            date = newDate;
-            parent.requestPaint();
-            */
-        }
-    }
     MouseArea
     {
         id: mouseArea
@@ -582,10 +410,12 @@ Canvas
         onPositionChanged:
         {
             longitudeLookOffset = mouseLongitudeOffsetStart + (360 / width) * -(mouse.x - mouseXStart);
-            longitudeLookOffset %= 360;
+            longitudeLookOffset = longitudeLookOffset % 360;
             latitudeLookOffset = mouseLatitudeOffsetStart + (180 / height) * -(mouse.y - mouseYStart);
             latitudeLookOffset = Math.max(-89.0, Math.min(89.0, latitudeLookOffset));
-            root.requestPaint();
+            requestPaint();
         }
+        preventStealing: true
+        propagateComposedEvents: false
     }
 }

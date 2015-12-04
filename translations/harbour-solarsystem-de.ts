@@ -36,26 +36,7 @@
     <name>CoverPage</name>
     <message>
         <source>Distance to %1</source>
-        <translation>Entfernung zu %1</translation>
-    </message>
-</context>
-<context>
-    <name>DistancePage</name>
-    <message>
-        <source>Planet Distances</source>
-        <translation>Entfernungen der Planeten</translation>
-    </message>
-    <message>
-        <source>All distances are in astronomical units (AU).
-1 AU is roughly the distance from earth to sun, or about 150 million kilometers.</source>
-        <translation>Werte in astronomischen Einheiten (AU).
-1 AU entspricht dem mittleren Abstand zwischen Erde und Sonne, ungefähr 150 Millionen Kilometer.</translation>
-    </message>
-    <message>
-        <source>red number: distance is increasing
-green number: distance is decreasing</source>
-        <translation>rote Zahl: zunehmende Entfernung
-grüne Zahl: abnehmende Entfernung</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -89,7 +70,11 @@ grüne Zahl: abnehmende Entfernung</translation>
         <translation>Klicke auf Planeten für Details</translation>
     </message>
     <message>
-        <source>Sky</source>
+        <source>Switch to Top View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch to Sky View</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -197,6 +182,25 @@ grüne Zahl: abnehmende Entfernung</translation>
     </message>
 </context>
 <context>
+    <name>PlanetDistancePage</name>
+    <message>
+        <source>Planet Distances</source>
+        <translation type="unfinished">Entfernungen der Planeten</translation>
+    </message>
+    <message>
+        <source>All distances are in astronomical units (AU).
+1 AU is roughly the distance from earth to sun, or about 150 million kilometers.</source>
+        <translation type="unfinished">Werte in astronomischen Einheiten (AU).
+1 AU entspricht dem mittleren Abstand zwischen Erde und Sonne, ungefähr 150 Millionen Kilometer.</translation>
+    </message>
+    <message>
+        <source>red number: distance is increasing
+green number: distance is decreasing</source>
+        <translation type="unfinished">rote Zahl: zunehmende Entfernung
+grüne Zahl: abnehmende Entfernung</translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
@@ -262,16 +266,29 @@ grüne Zahl: abnehmende Entfernung</translation>
         <source>Display Mode</source>
         <translation>Darstellungsmodus</translation>
     </message>
-</context>
-<context>
-    <name>SkyPage</name>
     <message>
-        <source>Sky</source>
+        <source>Top View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sky View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Azimuth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Ecliptic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Equator</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>harbour-solarsystem</name>
+    <name>SolarSystem</name>
     <message>
         <source>Mercury</source>
         <translation type="unfinished"></translation>
@@ -282,6 +299,10 @@ grüne Zahl: abnehmende Entfernung</translation>
     </message>
     <message>
         <source>Earth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -306,10 +327,6 @@ grüne Zahl: abnehmende Entfernung</translation>
     </message>
     <message>
         <source>Pluto</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Moon</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

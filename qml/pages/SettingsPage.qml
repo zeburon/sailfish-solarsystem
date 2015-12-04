@@ -27,173 +27,221 @@ Page
 
     // -----------------------------------------------------------------------
 
-    Column
+    SilicaFlickable
     {
-        id: column
+        anchors { fill: parent }
+        contentHeight: column.height
 
-        width: page.width
-        spacing: 0
-
-        PageHeader
+        VerticalScrollDecorator {}
+        Column
         {
-            title: qsTr("Settings")
-        }
+            id: column
 
-        SectionHeader
-        {
-            text: qsTr("Formats and Units")
-        }
+            width: page.width
+            spacing: 0
 
-        // date format
-        ComboBox
-        {
-            id: dateFormatComboBox
-
-            label: qsTr("Date format")
-            menu: ContextMenu
+            PageHeader
             {
-                Repeater
-                {
-                    model: Globals.DATE_FORMATS.length
+                title: qsTr("Settings")
+            }
 
-                    MenuItem
+            SectionHeader
+            {
+                text: qsTr("Formats and Units")
+            }
+
+            // date format
+            ComboBox
+            {
+                id: dateFormatComboBox
+
+                label: qsTr("Date format")
+                menu: ContextMenu
+                {
+                    Repeater
                     {
-                        text: Globals.DATE_FORMATS[index]
-                        onClicked:
+                        model: Globals.DATE_FORMATS.length
+
+                        MenuItem
                         {
-                            settings.dateFormat = text;
+                            text: Globals.DATE_FORMATS[index]
+                            onClicked:
+                            {
+                                settings.dateFormat = text;
+                            }
                         }
                     }
                 }
             }
-        }
 
-        // pressure unit
-        ComboBox
-        {
-            id: pressureUnitComboBox
-
-            label: qsTr("Pressure unit")
-            menu: ContextMenu
+            // pressure unit
+            ComboBox
             {
-                Repeater
-                {
-                    model: Globals.PRESSURE_UNITS.length
+                id: pressureUnitComboBox
 
-                    MenuItem
+                label: qsTr("Pressure unit")
+                menu: ContextMenu
+                {
+                    Repeater
                     {
-                        text: Globals.PRESSURE_UNITS[index]
-                        onClicked:
+                        model: Globals.PRESSURE_UNITS.length
+
+                        MenuItem
                         {
-                            settings.pressureUnit = text;
+                            text: Globals.PRESSURE_UNITS[index]
+                            onClicked:
+                            {
+                                settings.pressureUnit = text;
+                            }
                         }
                     }
                 }
             }
-        }
 
-        // pressure unit
-        ComboBox
-        {
-            id: temperatureUnitComboBox
-
-            label: qsTr("Temperature unit")
-            menu: ContextMenu
+            // pressure unit
+            ComboBox
             {
-                Repeater
-                {
-                    model: Globals.TEMPERATURE_UNITS.length
+                id: temperatureUnitComboBox
 
-                    MenuItem
+                label: qsTr("Temperature unit")
+                menu: ContextMenu
+                {
+                    Repeater
                     {
-                        text: Globals.TEMPERATURE_UNITS[index]
-                        onClicked:
+                        model: Globals.TEMPERATURE_UNITS.length
+
+                        MenuItem
                         {
-                            settings.temperatureUnit = text;
+                            text: Globals.TEMPERATURE_UNITS[index]
+                            onClicked:
+                            {
+                                settings.temperatureUnit = text;
+                            }
                         }
                     }
                 }
             }
-        }
 
-        SectionHeader
-        {
-            text: qsTr("Display Mode")
-        }
-
-        // orbit style: simplified or realistic
-        ComboBox
-        {
-            id: orbitStyleComboBox
-
-            label: qsTr("Style")
-            menu: ContextMenu
+            SectionHeader
             {
-                MenuItem
+                text: qsTr("Display Mode")
+            }
+
+            TextSwitch
+            {
+                text: qsTr("Show planet names")
+                checked: settings.showLabels
+                onCheckedChanged:
                 {
-                    text: qsTr("simplified")
-                    onClicked:
-                    {
-                        settings.simplifiedOrbits = true;
-                    }
-                }
-                MenuItem
-                {
-                    text: qsTr("realistic")
-                    onClicked:
-                    {
-                        settings.simplifiedOrbits = false;
-                    }
+                    settings.showLabels = checked;
                 }
             }
-            description:
+            TextSwitch
             {
-                if (currentIndex === 0)
-                    return qsTr("Orbits are depicted as regular circles.");
-                else
-                    return qsTr("Orbits are drawn to scale.");
+                text: qsTr("Show Pluto")
+                checked: settings.showDwarfPlanets
+                onCheckedChanged:
+                {
+                    settings.showDwarfPlanets = checked;
+                }
             }
-        }
 
-        // optional information
-        TextSwitch
-        {
-            text: qsTr("Show planet names")
-            checked: settings.showLabels
-            onCheckedChanged:
+            SectionHeader
             {
-                settings.showLabels = checked;
+                text: qsTr("Top View")
             }
-        }
-        TextSwitch
-        {
-            text: qsTr("Show planet orbits")
-            checked: settings.showOrbits
-            onCheckedChanged:
-            {
-                settings.showOrbits = checked;
-            }
-        }
 
-        // pluto settings
-        TextSwitch
-        {
-            text: qsTr("Show Pluto")
-            checked: settings.showDwarfPlanets
-            onCheckedChanged:
+            // orbit style: simplified or realistic
+            ComboBox
             {
-                settings.showDwarfPlanets = checked;
+                id: orbitStyleComboBox
+
+                label: qsTr("Style")
+                menu: ContextMenu
+                {
+                    MenuItem
+                    {
+                        text: qsTr("simplified")
+                        onClicked:
+                        {
+                            settings.simplifiedOrbits = true;
+                        }
+                    }
+                    MenuItem
+                    {
+                        text: qsTr("realistic")
+                        onClicked:
+                        {
+                            settings.simplifiedOrbits = false;
+                        }
+                    }
+                }
+                description:
+                {
+                    if (currentIndex === 0)
+                        return qsTr("Orbits are depicted as regular circles.");
+                    else
+                        return qsTr("Orbits are drawn to scale.");
+                }
             }
-        }
-        TextSwitch
-        {
-            text: qsTr("Show inclination of Pluto")
-            description: qsTr("Display distance to ecliptic via y-axis.")
-            checked: settings.showZPosition
-            enabled: !settings.simplifiedOrbits && settings.showDwarfPlanets
-            onCheckedChanged:
+
+            // optional information
+
+            TextSwitch
             {
-                settings.showZPosition = checked;
+                text: qsTr("Show planet orbits")
+                checked: settings.showOrbits
+                onCheckedChanged:
+                {
+                    settings.showOrbits = checked;
+                }
+            }
+
+            // pluto settings
+
+            TextSwitch
+            {
+                text: qsTr("Show inclination of Pluto")
+                description: qsTr("Display distance to ecliptic via y-axis.")
+                checked: settings.showZPosition
+                enabled: !settings.simplifiedOrbits && settings.showDwarfPlanets
+                onCheckedChanged:
+                {
+                    settings.showZPosition = checked;
+                }
+            }
+
+            SectionHeader
+            {
+                text: qsTr("Sky View")
+            }
+
+            TextSwitch
+            {
+                text: qsTr("Show Azimuth")
+                checked: settings.showAzimuth
+                onCheckedChanged:
+                {
+                    settings.showAzimuth = checked;
+                }
+            }
+            TextSwitch
+            {
+                text: qsTr("Show Ecliptic")
+                checked: settings.showEcliptic
+                onCheckedChanged:
+                {
+                    settings.showEcliptic = checked;
+                }
+            }
+            TextSwitch
+            {
+                text: qsTr("Show Equator")
+                checked: settings.showEquator
+                onCheckedChanged:
+                {
+                    settings.showEquator = checked;
+                }
             }
         }
     }

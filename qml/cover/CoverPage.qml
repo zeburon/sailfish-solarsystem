@@ -11,6 +11,7 @@ CoverBackground
     // -----------------------------------------------------------------------
 
     property bool coverActive: status === Cover.Active
+    property SolarSystem solarSystem: topView.solarSystem
 
     // -----------------------------------------------------------------------
 
@@ -25,13 +26,14 @@ CoverBackground
     function update()
     {
         // only update planet positions once a day
+        /*
         var currentDate = new Date(Date.now());
         if (currentDate.getDate() !== topView.date.getDate() || currentDate.getMonth() !== topView.date.getMonth())
         {
-            topView.date = currentDate;
-            topView.solarSystem.prepareDistanceCoordinates();
+            solarSystem.dateTime.setNow();
             updatePlanetDistanceLabel();
         }
+        */
         topView.paintOrbits();
     }
 
@@ -40,11 +42,12 @@ CoverBackground
     function updatePlanetDistanceLabel()
     {
         // check if selected planet is still visible (e.g. dwarf planets are still enabled)
-        if (!planetConfigs[settings.distancePlanetIdx].visible)
+        if (!solarSystem.solarBodies[settings.distancePlanetIdx].visible)
             selectPreviousPlanet();
 
-        var result = topView.solarSystem.getDistanceToEarth(settings.distancePlanetIdx);
-        labelName.text = qsTr("Distance to %1").arg(planetConfigs[settings.distancePlanetIdx].name);
+        var solarBody = solarSystem.solarBodies[settings.distancePlanetIdx];
+        var result = topView.solarSystem.getDistanceToEarth(solarBody);
+        labelName.text = qsTr("Distance to %1").arg(solarBody.name);
         labelDistance.text = result[0].toFixed(2) + " AU";
 
         // distance is increasing
@@ -65,14 +68,14 @@ CoverBackground
 
     function selectPreviousPlanet()
     {
-        var planetIdx = settings.distancePlanetIdx;
-        while (planetIdx > 0)
+        var bodyIdx = settings.distancePlanetIdx;
+        while (bodyIdx > 0)
         {
-            --planetIdx;
-            var planetConfig = planetConfigs[planetIdx];
-            if (planetConfig !== earth && planetConfig.visible)
+            --bodyIdx;
+            var solarBody = solarSystem.solarBodies[bodyIdx];
+            if (bodyIdx !== solarSystem.getIndex(solarSystem.earth) && solarBody.visible)
             {
-                settings.distancePlanetIdx = planetIdx;
+                settings.distancePlanetIdx = bodyIdx;
                 updatePlanetDistanceLabel();
                 return;
             }
@@ -83,14 +86,14 @@ CoverBackground
 
     function selectNextPlanet()
     {
-        var planetIdx = settings.distancePlanetIdx;
-        while (planetIdx < planetConfigs.length - 1)
+        var bodyIdx = settings.distancePlanetIdx;
+        while (bodyIdx < solarSystem.solarBodies.length - 1)
         {
-            ++planetIdx;
-            var planetConfig = planetConfigs[planetIdx];
-            if (planetConfig !== earth && planetConfig.visible)
+            ++bodyIdx;
+            var solarBody = solarSystem.solarBodies[bodyIdx];
+            if (bodyIdx !== 2 && solarBody.visible)
             {
-                settings.distancePlanetIdx = planetIdx;
+                settings.distancePlanetIdx = bodyIdx;
                 updatePlanetDistanceLabel();
                 return;
             }
@@ -122,6 +125,7 @@ CoverBackground
             showOrbits: settings.showOrbits
             showLabels: false
             showDwarfPlanets: settings.showDwarfPlanets
+            simplifiedOrbits: true
             animateSun: false
             radiusBorderOffset: Theme.paddingMedium
             imageScale: 0.6
@@ -150,7 +154,7 @@ CoverBackground
 
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
-            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeMedium }
+            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeMedium; bold: true }
             opacity: 0.9
         }
     }

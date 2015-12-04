@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import harbour.solarsystem.DateTime 1.0
 
 import "../components"
 import "../calculation.js" as Calculation
@@ -12,19 +13,36 @@ Page
     // -----------------------------------------------------------------------
 
     property bool pageActive: status === PageStatus.Active
+    property bool initialized: false
     property bool animatingBackward: settings.animationEnabled && settings.animationDirection === -1
     property bool animatingForward: settings.animationEnabled && settings.animationDirection === 1
     property bool busy: pageStack.acceptAnimationRunning
     property bool showHelpTextWhenActivated: true
-    property alias planetPositions: topView.planetPositions
-    property alias solarSystem: topView.solarSystem
+    property SolarSystem solarSystem: topView.solarSystem
 
     // -----------------------------------------------------------------------
 
     function init()
     {
+        dateTime.string = settings.dateTime;
         loadAnimationIncrement();
         topView.init();
+        skyView.init();
+        initialized = true;
+        update();
+    }
+
+    // -----------------------------------------------------------------------
+
+    function update()
+    {
+        if (!initialized)
+            return;
+
+        if (topView.visible)
+            topView.update(dateTime);
+        else
+            skyView.update(dateTime);
     }
 
     // -----------------------------------------------------------------------
@@ -49,7 +67,10 @@ Page
 
     function repaint()
     {
-        topView.paintOrbits();
+        if (topView.visible)
+            topView.paintOrbits();
+        else
+            skyView.requestPaint();
     }
 
     // -----------------------------------------------------------------------
@@ -71,9 +92,9 @@ Page
 
     // -----------------------------------------------------------------------
 
-    function showPlanetDetailsPage(planetConfig)
+    function showPlanetDetailsPage(solarBody)
     {
-        planetDetailsPage.planetConfig = planetConfig;
+        planetDetailsPage.solarBody = solarBody;
         pageStack.push(planetDetailsPage);
     }
 
@@ -91,7 +112,7 @@ Page
         //stopAnimation();
         if (pageActive)
         {
-            pageStack.pushAttached(distancePage);
+            //pageStack.pushAttached(distancePage);
 
             if (showHelpTextWhenActivated)
             {
@@ -106,7 +127,7 @@ Page
     }
     Component.onCompleted:
     {
-        distancePage.updated.connect(stopAnimation);
+        //distancePage.updated.connect(stopAnimation);
         topView.switchedToRealisticOrbits.connect(handleOrbitStyleChange);
         topView.switchedToSimplifiedOrbits.connect(handleOrbitStyleChange);
     }
@@ -139,10 +160,10 @@ Page
             }
             MenuItem
             {
-                text: qsTr("Sky")
+                text: settings.showSkyView ? qsTr("Switch to Top View") : qsTr("Switch to Sky View")
                 onClicked:
                 {
-                    pageStack.push(skyPage);
+                    settings.showSkyView = !settings.showSkyView;
                 }
             }
         }
@@ -190,7 +211,7 @@ Page
                     id: zoomImage
 
                     anchors { left: parent.left; leftMargin: Theme.paddingLarge; verticalCenter: parent.verticalCenter }
-                    visible: !settings.simplifiedOrbits
+                    visible: !settings.simplifiedOrbits && topView.visible
                     source: settings.zoomedOut ? "../gfx/zoom_in.png" : "../gfx/zoom_out.png"
                 }
                 Text
@@ -244,26 +265,53 @@ Page
                     showOrbits: settings.showOrbits
                     showDwarfPlanets: settings.showDwarfPlanets
                     showZPosition: settings.showZPosition
-                    date: settings.date
                     animationIncrement: settings.animationIncrement
                     simplifiedOrbits: settings.simplifiedOrbits
                     zoomedOut: settings.zoomedOut
                     animateSun: pageActive && app.active
                     animateZoom: app.initialized
+                    visible: !settings.showSkyView
                     Component.onCompleted:
                     {
                         topView.clickedOnEmptySpace.connect(toggleZoom);
                         topView.clickedOnPlanet.connect(showPlanetDetailsPage);
                     }
+                    onVisibleChanged:
+                    {
+                        if (visible)
+                        {
+                            page.update();
+                        }
+                    }
                 }
-
                 MouseArea
                 {
                     anchors { fill: parent }
+                    enabled: topView.visible
                     onClicked:
                     {
                         var topViewCoordinates = parent.mapToItem(topView, mouse.x, mouse.y);
                         topView.click(topViewCoordinates.x, topViewCoordinates.y);
+                    }
+                }
+                SkyView
+                {
+                    id: skyView
+
+                    width: parent.width
+                    height: parent.width
+                    clip: true
+                    visible: settings.showSkyView
+                    showLabels: settings.showLabels
+                    showAzimuth: settings.showAzimuth
+                    showEcliptic: settings.showEcliptic
+                    showEquator: settings.showEquator
+                    onVisibleChanged:
+                    {
+                        if (visible)
+                        {
+                            page.update();
+                        }
                     }
                 }
             }
@@ -271,6 +319,7 @@ Page
             // labels displaying the selected date
             DateDisplay
             {
+                dateTime: skyView.solarSystem.dateTime
                 width: column.width
             }
 
@@ -300,10 +349,7 @@ Page
                         opacity: 0.75
                         onClicked:
                         {
-                            var newDate = new Date(Date.now());
-                            newDate.setHours(0);
-                            newDate.setMinutes(0);
-                            settings.date = newDate;
+                            dateTime.setNow();
                         }
                     }
                     Label
@@ -342,6 +388,16 @@ Page
     }
 
     // animation timer: if triggered, update time and solar system
+    DateTime
+    {
+        id: dateTime
+
+        onStringChanged:
+        {
+            settings.dateTime = string;
+            update();
+        }
+    }
     Timer
     {
         id: animationTimer
@@ -351,41 +407,14 @@ Page
         repeat: true
         onTriggered:
         {
-            var newDate = new Date(settings.date);
-            newDate.setHours(12);
-            newDate.setMinutes(0);
-            newDate.setDate(newDate.getDate() + settings.animationIncrement * settings.animationDirection);
-
-            // QDateTime documentation:
-            // There is no year 0. Dates in that year are considered invalid.
-            // The year -1 is the year "1 before Christ" or "1 before current era." The day before 1 January 1 CE is 31 December 1 BCE.
-
-            // HOWEVER:
-            // subtracting one day from january first of the year 1 will make the year jump to 0.
-            // this makes the whole date invalid, as there is no year 0 according to the documentation.
-            if (newDate.getFullYear() === 0)
+            if (settings.showSkyView)
             {
-                newDate.setFullYear(settings.animationDirection);
-            }
-            // next problem: if we assign a date with a negative year to a different date, the year is increased by one.
-            // year -1 becomes year 0, which is invalid yet again.
-            // 'solution': subtract one year, which will be added again during assignment.
-            // note: same behavior if you have a binding to a date
-            // the whole thing smells like a bug :)
-            if (newDate.getFullYear() < 0)
-            {
-                newDate.setFullYear(newDate.getFullYear() - 1);
-            }
-
-            // final check... just to be on the safe side
-            if (Calculation.isDateValid(newDate))
-            {
-                settings.date = newDate;
+                var increment = 60 * 24.0 * (settings.animationIncrement / Globals.MAX_ANIMATION_INCREMENT);
+                dateTime.addSeconds(increment * settings.animationDirection * 60);
             }
             else
             {
-                console.log("reached illegal date. stopping animation");
-                settings.animationEnabled = false;
+                dateTime.addDays(settings.animationIncrement * settings.animationDirection);
             }
         }
     }

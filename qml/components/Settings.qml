@@ -14,7 +14,11 @@ QtObject
     property bool showOrbits: true;                                property string showOrbitsKey: "showOrbits"
     property bool showDwarfPlanets: false;                         property string showDwarfPlanetsKey: "showDwarfPlanets"
     property bool showZPosition: false;                            property string showZPositionKey: "showZPosition"
-    property date date: new Date(Date.now());                      property string dateKey: "date"
+    property bool showSkyView: false;                              property string showSkyViewKey: "showSkyView"
+    property bool showEcliptic: false;                             property string showEclipticKey: "showEcliptic"
+    property bool showEquator: false;                              property string showEquatorKey: "showEquator"
+    property bool showAzimuth: false;                              property string showAzimuthKey: "showAzimuth"
+    property string dateTime: "";                                  property string dateTimeKey: "dateTime"
     property string dateFormat: Globals.DATE_FORMATS[0];           property string dateFormatKey: "dateFormat"
     property string pressureUnit: Globals.PRESSURE_UNITS[0];       property string pressureUnitKey: "pressureUnit"
     property string temperatureUnit: Globals.TEMPERATURE_UNITS[0]; property string temperatureUnitKey: "temperatureUnit"
@@ -49,16 +53,30 @@ QtObject
         if (storedShowZPosition)
             showZPosition = storedShowZPosition === "true";
 
-        // load date
-        var storedDate = Storage.getValue(dateKey);
-        if (storedDate)
-        {
-            date = new Date(storedDate);
+        // load showSkyView
+        var storedShowSkyView = Storage.getValue(showSkyViewKey);
+        if (storedShowSkyView)
+            showSkyView = storedShowSkyView === "true";
 
-            // check if stored date is actually valid
-            if (!Calculation.isDateValid(date))
-                date = new Date(Date.now());
-        }
+        // load showEcliptic
+        var storedShowEcliptic = Storage.getValue(showEclipticKey);
+        if (storedShowEcliptic)
+            showEcliptic = storedShowEcliptic === "true";
+
+        // load showEquator
+        var storedShowEquator = Storage.getValue(showEquatorKey);
+        if (storedShowEquator)
+            showEquator = storedShowEquator === "true";
+
+        // load showAzimuth
+        var storedShowAzimuth = Storage.getValue(showAzimuthKey);
+        if (storedShowAzimuth)
+            showAzimuth = storedShowAzimuth === "true";
+
+        // load dateTime
+        var storedDateTime = Storage.getValue(dateTimeKey);
+        if (storedDateTime)
+            dateTime = storedDateTime;
 
         // load dateFormat
         var storedDateFormat = Storage.getValue(dateFormatKey);
@@ -109,7 +127,7 @@ QtObject
     {
         if (!animationEnabled)
         {
-            Storage.setValue(dateKey, date);
+            Storage.setValue(dateTimeKey, dateTime);
             Storage.setValue(animationIncrementKey, animationIncrement);
         }
     }
@@ -129,11 +147,27 @@ QtObject
     {
         Storage.setValue(showZPositionKey, showZPosition);
     }
-    onDateChanged:
+    onShowSkyViewChanged:
+    {
+        Storage.setValue(showSkyViewKey, showSkyView);
+    }
+    onShowEclipticChanged:
+    {
+        Storage.setValue(showEclipticKey, showEcliptic);
+    }
+    onShowEquatorChanged:
+    {
+        Storage.setValue(showEquatorKey, showEquator);
+    }
+    onShowAzimuthChanged:
+    {
+        Storage.setValue(showAzimuthKey, showAzimuth);
+    }
+    onDateTimeChanged:
     {
         // value keeps changing as long as animation is enabled. store when animation is disabled
         if (!animationEnabled)
-            Storage.setValue(dateKey, date);
+            Storage.setValue(dateTimeKey, dateTime);
     }
     onDateFormatChanged:
     {

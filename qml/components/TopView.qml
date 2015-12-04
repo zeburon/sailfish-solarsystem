@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import harbour.solarsystem.DateTime 1.0
 
 import "../calculation.js" as Calculation
 import "../globals.js" as Globals
@@ -11,9 +12,8 @@ Item
     // -----------------------------------------------------------------------
 
     // settings
-    property date date
     property int animationIncrement: 5
-    property bool simplifiedOrbits: true
+    property bool simplifiedOrbits: false
     property bool zoomedOut: false
     property bool showLabels: true
     property bool showOrbits: true
@@ -24,8 +24,12 @@ Item
     property real imageScale: 1.0
     property int orbitThickness: 3
     property bool animateZoom: false
+    property bool initialized: false
 
-    property real radiusSunOffset: Math.max(40, Math.min(width, height) / 20) * imageScale
+    // radius-related properties
+    property real auSize: 100
+    property real radiusRange: width / 2 - radiusBorderOffset - radiusSunOffset
+    property real radiusSunOffset: Math.max(30, Math.min(width, height) / 20) * imageScale
     property real radiusBorderOffset: 15
 
     // zoom-related properties
@@ -34,12 +38,13 @@ Item
     property real currentOffsetX: simplifiedOrbits ? 0.0 : (zoomedOut && showDwarfPlanets ? -width / 14.0 : 0.0)
     property real currentOffsetY: simplifiedOrbits ? 0.0 : (zoomedOut && showDwarfPlanets ? height / 16.0 : 0.0)
 
-    property alias planetPositions: solarSystem.planetPositions
+    // solar body information
     property alias solarSystem: solarSystem
+    property var solarBodyInfos: []
 
     // -----------------------------------------------------------------------
 
-    signal clickedOnPlanet(var planetConfig)
+    signal clickedOnPlanet(var solarBody)
     signal clickedOnEmptySpace()
     signal switchedToRealisticOrbits()
     signal switchedToSimplifiedOrbits()
@@ -48,17 +53,74 @@ Item
 
     function init()
     {
-        solarSystem.init();
-
-        // automatically sort images and labels by creating planets in reverse order
-        for (var planetIdx = planetPositions.length - 1; planetIdx >= 0; --planetIdx)
+        // create instances
+        for (var bodyIdx = 0; bodyIdx < solarSystem.solarBodies.length; ++bodyIdx)
         {
-            var planetPosition = planetPositions[planetIdx];
-            var planetConfig = planetPosition.planetConfig;
+            var solarBody = solarSystem.solarBodies[bodyIdx];
 
-            var planetImage = planetImageComponent.createObject(images, {"planetConfig": planetConfig, "planetPosition": planetPosition});
-            var planetLabel = planetLabelComponent.createObject(labels, {"planetConfig": planetConfig, "planetPosition": planetPosition, "yOffset": planetImage.imageHeight * 0.75});
+            var info = solarBodyInfo.createObject(null, {"solarBody": solarBody});
+            solarBodyInfos.push(info);
+
+            var bodyZ = solarSystem.solarBodies.length - bodyIdx;
+            var image = solarBodyImageComponent.createObject(images, {"solarBody": solarBody, "info": info, "z": bodyZ});
+            var label = solarBodyLabelComponent.createObject(labels, {"solarBody": solarBody, "info": info, "z": bodyZ, "yOffset": image.imageHeight * 0.75});
         }
+        // link to parent instances
+        for (var infoIdx = 0; infoIdx < solarBodyInfos.length; ++infoIdx)
+        {
+            var info = solarBodyInfos[infoIdx];
+            var parentSolarBody = info.solarBody.parentSolarBody;
+            if (parentSolarBody)
+            {
+                info.parentInfo = solarBodyInfos[solarSystem.getIndex(parentSolarBody)];
+            }
+        }
+        initialized = true;
+        updateSimplifiedOrbitRadiuses();
+        //update();
+    }
+
+    // -----------------------------------------------------------------------
+
+    function update(dateTime)
+    {
+        solarSystem.dateTime.string = dateTime.string;
+        for (var infoIdx = 0; infoIdx < solarBodyInfos.length; ++infoIdx)
+        {
+            solarBodyInfos[infoIdx].updateCoordinates();
+        }
+        paintOrbits();
+    }
+
+    // -----------------------------------------------------------------------
+
+    function updateSimplifiedOrbitRadiuses()
+    {
+        var visibleBodyCount = 0;
+        for (var infoIdx = 0; infoIdx < solarBodyInfos.length; ++infoIdx)
+        {
+            var info = solarBodyInfos[infoIdx];
+            if (info.solarBody.visible && !info.solarBody.parentSolarBody)
+            {
+                ++visibleBodyCount;
+            }
+        }
+        var radiusIncrement = radiusRange / (visibleBodyCount - 1);
+        var visibleBodyIdx = 0;
+        for (var infoIdx = 0; infoIdx < solarBodyInfos.length; ++infoIdx)
+        {
+            var info = solarBodyInfos[infoIdx];
+            if (info.solarBody.parentSolarBody)
+            {
+                info.orbitSimplifiedRadius = radiusIncrement / 2;
+            }
+            else if (info.solarBody.visible)
+            {
+                info.orbitSimplifiedRadius = radiusSunOffset + radiusIncrement * visibleBodyIdx;
+                ++visibleBodyIdx;
+            }
+        }
+        auSize = solarBodyInfos[solarSystem.getIndex(solarSystem.earth)].orbitSimplifiedRadius;
     }
 
     // -----------------------------------------------------------------------
@@ -72,28 +134,28 @@ Item
 
     function click(mouseX, mouseY)
     {
-        var closestPlanetConfig;
+        var closestInfo;
         var minDistance = 99999;
 
-        for (var planetIdx = 0; planetIdx < images.children.length; ++planetIdx)
+        for (var bodyIdx = 0; bodyIdx < images.children.length; ++bodyIdx)
         {
-            var planetImage = images.children[planetIdx];
-            if (planetImage.scale < 0.4)
+            var image = images.children[bodyIdx];
+            if (image.scale < 0.4 || image.info.parentInfo)
                 continue;
 
-            var dx = planetImage.x + width / 2 - mouseX;
-            var dy = planetImage.y + height / 2 - mouseY;
+            var dx = image.x + width / 2 - mouseX;
+            var dy = image.y + height / 2 - mouseY;
             var distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < minDistance && distance < Globals.PLANET_CLICK_AREA_SIZE)
             {
-                closestPlanetConfig = planetImage.planetConfig;
+                closestInfo = image.info;
                 minDistance = distance;
             }
         }
 
-        if (closestPlanetConfig !== undefined)
+        if (closestInfo)
         {
-            clickedOnPlanet(closestPlanetConfig);
+            clickedOnPlanet(closestInfo.solarBody);
         }
         else
         {
@@ -103,66 +165,116 @@ Item
 
     // -----------------------------------------------------------------------
 
+    onShowDwarfPlanetsChanged:
+    {
+        if (initialized)
+        {
+            updateSimplifiedOrbitRadiuses();
+        }
+    }
+    onShowZPositionChanged:
+    {
+        if (initialized)
+        {
+            //update();
+        }
+    }
+    onSimplifiedOrbitsChanged:
+    {
+        if (initialized)
+        {
+            //update();
+        }
+    }
+
+    // -----------------------------------------------------------------------
+
     Component
     {
-        id: planetImageComponent
+        id: solarBodyInfo
 
-        PlanetImage
+        Item
         {
-            property PlanetPosition planetPosition
-            property real displayedX: planetPosition.displayedCoordinates[0]
-            property real displayedY: planetPosition.displayedCoordinates[1]
-            property real displayedZ: planetPosition.displayedCoordinates[2] * 0.75
-            property real displayedShadowRotation: planetPosition.displayedShadowRotation
+            property SolarBody solarBody
+            property var parentInfo: null
 
-            x: displayedX * root.currentZoom
-            y: displayedY * root.currentZoom + ((root.showZPosition && planetPosition.planetConfig.orbitCanShowZPosition) ? displayedZ * root.currentZoom : 0.0)
-            scale: root.imageScale * planetPosition.displayedOpacity
-            opacity: root.imageOpacity * planetPosition.displayedOpacity
-            shadowRotation: planetPosition.displayedShadowRotation
+            property real orbitProjectionFactor: Math.cos(solarBody.orbitalElements.inclination) // adjust orbit dimensions according to inclination
+            property real orbitOffset: simplifiedOrbits ? 0.0 : ((solarBody.orbitalElements.maximumDistance - solarBody.orbitalElements.minimumDistance) / 2.0) * root.auSize * orbitProjectionFactor
+            property real orbitA: simplifiedOrbits ? orbitSimplifiedRadius : solarBody.orbitalElements.semiMajorAxis * root.auSize * orbitProjectionFactor
+            property real orbitB: simplifiedOrbits ? orbitSimplifiedRadius : solarBody.orbitalElements.semiMajorAxis * root.auSize * Math.sqrt(1.0 - Math.pow(solarBody.orbitalElements.eccentricity, 2))
+            property real orbitRotation: solarBody.orbitalElements.argumentOfPeriapsis + solarBody.orbitalElements.longitudeOfAscendingNode
+            property real orbitSimplifiedRadius
 
-            // -----------------------------------------------------------------------
-            // visualization of distance to ecliptic
-            Rectangle
+            property real displayedX
+            property real displayedY
+            property real displayedZ
+            property real displayedOpacity: simplifiedOrbits ? 1.0 : (1.0 - ((1.0 - root.currentZoom) * (1.0 - solarBody.smallImageScaleZoomedOut) + root.currentZoom * (1.0 - solarBody.smallImageScaleZoomedIn)))
+            property real displayedScale: root.imageScale * displayedOpacity
+            property real displayedShadowRotation: Math.atan2(displayedY + displayedZ, displayedX) * 180 / Math.PI;
+
+            function updateCoordinates()
             {
-                id: zIndicatorLine
-
-                width: 4
-                radius: 2
-                z: -1
-                height: Math.abs(displayedZ * root.currentZoom)
-                color: displayedZ < 0.0 ? "green" : "red"
-                opacity: 0.3
-                anchors { horizontalCenter: parent.horizontalCenter; top: parent.top; topMargin: displayedZ > 0.0 ? -height : 0 }
-                visible: root.showZPosition
-
-                Rectangle
+                var newX = 0, newY = 0, newZ = 0;
+                if (simplifiedOrbits)
                 {
-                    id: zIndicatorBase
-
-                    width: 8
-                    height: width
-                    radius: width / 2
-                    anchors { verticalCenter: displayedZ < 0 ? parent.bottom : parent.top; horizontalCenter: parent.horizontalCenter }
-                    color: parent.color
+                    var angle = Math.atan2(solarBody.orbitalElements.y, solarBody.orbitalElements.x);
+                    newX = orbitSimplifiedRadius * Math.cos(angle);
+                    newY = orbitSimplifiedRadius * Math.sin(angle);
+                    newZ = 0.0;
                 }
+                else
+                {
+                    newX = solarBody.orbitalElements.x * root.auSize;
+                    newY = solarBody.orbitalElements.y * root.auSize;
+                    newZ = solarBody.orbitalElements.z * root.auSize;
+                    if (root.showZPosition && solarBody.orbitCanShowZPosition)
+                    {
+                        newY += newZ;
+                    }
+                    newX *= solarBody.orbitCorrectionFactorX;
+                    newY *= solarBody.orbitCorrectionFactorY;
+                }
+
+                if (parentInfo)
+                {
+                    newX += parentInfo.displayedX;
+                    newY += parentInfo.displayedY;
+                    newZ += parentInfo.displayedZ;
+                }
+                displayedX = newX;
+                displayedY = newY;
+                displayedZ = newZ;
             }
         }
     }
     Component
     {
-        id: planetLabelComponent
+        id: solarBodyImageComponent
 
-        PlanetLabel
+        TopSolarBodyImage
         {
-            property PlanetPosition planetPosition
-            property real displayedX: planetPosition.displayedCoordinates[0]
-            property real displayedY: planetPosition.displayedCoordinates[1]
-            property real displayedZ: planetPosition.displayedCoordinates[2] * 0.75
+            property var info
 
-            x: displayedX * root.currentZoom
-            y: displayedY * root.currentZoom + ((root.showZPosition && planetPosition.planetConfig.orbitCanShowZPosition) ? displayedZ * root.currentZoom : 0.0)
-            opacity: planetPosition.displayedOpacity
+            x: info.displayedX * root.currentZoom
+            y: info.displayedY * root.currentZoom
+            zPosition: info.displayedZ * root.currentZoom
+            showZPosition: root.showZPosition && solarBody.orbitCanShowZPosition
+            scale: info.displayedScale
+            opacity: info.displayedOpacity
+            shadowRotation: info.displayedShadowRotation
+        }
+    }
+    Component
+    {
+        id: solarBodyLabelComponent
+
+        SolarBodyLabel
+        {
+            property var info
+
+            x: info.displayedX * root.currentZoom
+            y: info.displayedY * root.currentZoom
+            opacity: info.displayedOpacity
         }
     }
 
@@ -172,36 +284,27 @@ Item
     {
         id: solarSystem
 
-        date: root.date
-        simplifiedOrbits: root.simplifiedOrbits
         showDwarfPlanets: root.showDwarfPlanets
-        radius: Math.min(root.width / 2, root.height / 2)
-        radiusSunOffset: root.radiusSunOffset
-        radiusBorderOffset: root.radiusBorderOffset
-        Component.onCompleted:
-        {
-            delayedUpdateTimerTimeout.connect(paintOrbits);
-        }
     }
 
     Sun
     {
         id: sun
 
-        scale: imageScale * currentZoom
-        animated: animateSun
-        opacity: imageOpacity
+        scale: root.imageScale * root.currentZoom
+        animated: root.animateSun
+        opacity: root.imageOpacity
         anchors { centerIn: parent }
         z: 0
     }
-    OrbitPainter
+    TopOrbitPainter
     {
         id: orbits
 
         zoom: root.currentZoom
-        planetPositions: solarSystem.planetPositions
-        lineThickness: orbitThickness
-        visible: showOrbits
+        solarBodyInfos: root.solarBodyInfos
+        lineThickness: root.orbitThickness
+        visible: root.showOrbits
         anchors { fill: parent }
         z: 1
     }
@@ -209,7 +312,7 @@ Item
     {
         id: images
 
-        opacity: imageOpacity
+        opacity: root.imageOpacity
         anchors { centerIn: parent }
         z: 2
     }
@@ -217,7 +320,7 @@ Item
     {
         id: labels
 
-        visible: showLabels
+        visible: root.showLabels
         anchors { centerIn: parent }
         z: 3
     }
@@ -226,19 +329,19 @@ Item
 
     Behavior on currentZoomRealistic
     {
-        enabled: animateZoom
+        enabled: root.animateZoom
 
         NumberAnimation { easing.type: Easing.InOutQuart; duration: Globals.ZOOM_ANIMATION_DURATION_MS }
     }
     Behavior on currentOffsetX
     {
-        enabled: animateZoom
+        enabled: root.animateZoom
 
         NumberAnimation { easing.type: Easing.InOutQuart; duration: Globals.ZOOM_ANIMATION_DURATION_MS }
     }
     Behavior on currentOffsetY
     {
-        enabled: animateZoom
+        enabled: root.animateZoom
 
         NumberAnimation { easing.type: Easing.InOutQuart; duration: Globals.ZOOM_ANIMATION_DURATION_MS }
     }

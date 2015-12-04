@@ -14,7 +14,12 @@ TARGET = harbour-solarsystem
 
 CONFIG += sailfishapp
 
-SOURCES += src/harbour-solarsystem.cpp
+SOURCES += src/harbour-solarsystem.cpp \
+    src/orbitalelementsplanet.cpp \
+    src/orbitalelements.cpp \
+    src/orbitalelementsmoon.cpp \
+    src/projector.cpp \
+    src/datetime.cpp
 
 OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/cover/CoverPage.qml \
@@ -30,18 +35,14 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/components/Sun.qml \
     qml/pages/MainPage.qml \
     qml/pages/AboutPage.qml \
-    qml/components/SolarSystem.qml \
     qml/storage.js \
     qml/calculation.js \
-    qml/components/PlanetImage.qml \
-    qml/components/PlanetLabel.qml \
     qml/gfx/shadow2.png \
     qml/globals.js \
     qml/components/DateDisplay.qml \
     qml/pages/SettingsPage.qml \
     qml/components/Settings.qml \
     qml/components/PlayButton.qml \
-    qml/pages/DistancePage.qml \
     qml/pages/PlanetDetailsPage.qml \
     qml/gfx/s_earth.png \
     qml/gfx/s_jupiter.png \
@@ -52,7 +53,6 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/gfx/s_saturn.png \
     qml/gfx/s_uranus.png \
     qml/gfx/s_venus.png \
-    qml/components/OrbitPainter.qml \
     qml/gfx/m_earth.png \
     qml/gfx/m_jupiter.png \
     qml/gfx/m_mars.png \
@@ -62,14 +62,12 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/gfx/m_saturn.png \
     qml/gfx/m_uranus.png \
     qml/gfx/m_venus.png \
-    qml/components/PlanetConfig.qml \
     qml/components/PlanetPosition.qml \
     qml/components/DetailsElement.qml \
     qml/gfx/m_saturn_rings.png \
     qml/gfx/s_saturn_rings.png \
     qml/gfx/zoom_in.png \
     qml/gfx/zoom_out.png \
-    qml/pages/SkyPage.qml \
     qml/components/TopView.qml \
     qml/components/SkyView.qml \
     qml/components/StarConfig.qml
@@ -79,4 +77,24 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
 CONFIG += sailfishapp_i18n
 TRANSLATIONS += translations/harbour-solarsystem-de.ts \
     translations/harbour-solarsystem-sv.ts
+
+HEADERS += \
+    src/orbitalelementsplanet.h \
+    src/orbitalelements.h \
+    src/orbitalelementsmoon.h \
+    src/projector.h \
+    src/datetime.h
+
+DISTFILES += \
+    qml/components/SolarBody.qml \
+    qml/components/TopOrbitPainter.qml \
+    qml/gfx/m_moon.png \
+    qml/gfx/s_moon.png \
+    qml/components/SolarSystem.qml \
+    qml/pages/PlanetDistancePage.qml \
+    qml/components/SolarBodyImage.qml \
+    qml/components/TopSolarBodyImage.qml \
+    qml/components/SolarBodyLabel.qml \
+    qml/components/SideSolarBodyImage.qml \
+    qml/components/SkySolarBodyImage.qml
 

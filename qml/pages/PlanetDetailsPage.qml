@@ -11,7 +11,8 @@ Page
     // -----------------------------------------------------------------------
 
     property bool pageActive: status === PageStatus.Active
-    property PlanetConfig planetConfig
+    property SolarBody solarBody
+    property SolarSystem solarSystem
 
     // -----------------------------------------------------------------------
 
@@ -73,17 +74,16 @@ Page
 
         PageHeader
         {
-            title: planetConfig.name
+            title: solarBody.name
         }
 
-        PlanetImage
+        SideSolarBodyImage
         {
             id: planetImage
 
             useSmallImage: false
-            planetConfig: page.planetConfig
+            solarBody: page.solarBody
             anchors { left: parent.left; leftMargin: 75; top: parent.top; topMargin: 75 }
-            showShadowBehindPlanet: false
             shadowRotation: 180
 
             Item
@@ -91,7 +91,7 @@ Page
                 id: axialTiltInfo
 
                 anchors { centerIn: parent }
-                rotation: planetConfig.axialTilt
+                rotation: solarBody.axialTilt
                 opacity: 0.85
 
                 Rectangle
@@ -146,21 +146,21 @@ Page
             {
                 width: parent.width * 0.3
                 title: qsTr("Radius")
-                value: planetConfig.radius.toFixed(0)
+                value: solarBody.radius.toFixed(0)
                 unit: "km"
             }
             DetailsElement
             {
                 width: parent.width * 0.35
                 title: qsTr("Axial Tilt")
-                value: planetConfig.axialTilt.toFixed(2)
+                value: solarBody.axialTilt.toFixed(2)
                 unit: "°"
             }
             DetailsElement
             {
                 width: parent.width * 0.35
                 title: qsTr("Rot. Period")
-                value: planetConfig.rotationPeriod.toFixed(2)
+                value: solarBody.rotationPeriod.toFixed(2)
                 unit: "d"
             }
         }
@@ -173,21 +173,21 @@ Page
             {
                 width: parent.width * 0.3
                 title: qsTr("Volume")
-                value: formatExponentialNumber(planetConfig.volume)
+                value: formatExponentialNumber(solarBody.volume)
                 unit: "km³"
             }
             DetailsElement
             {
                 width: parent.width * 0.35
                 title: qsTr("Mass")
-                value: formatExponentialNumber(planetConfig.mass)
+                value: formatExponentialNumber(solarBody.mass)
                 unit: "kg"
             }
             DetailsElement
             {
                 width: parent.width * 0.35
                 title: qsTr("Density")
-                value: (planetConfig.density / 1000000000).toFixed(0)
+                value: (solarBody.density / 1000000000).toFixed(0)
                 unit: "kg/m³"
             }
         }
@@ -199,21 +199,21 @@ Page
             {
                 width: parent.width * 0.3
                 title: qsTr("Surface")
-                value: formatExponentialNumber(planetConfig.surface)
+                value: formatExponentialNumber(solarBody.surface)
                 unit: "km²"
             }
             DetailsElement
             {
                 width: parent.width * 0.35
                 title: qsTr("Gravity")
-                value: planetConfig.surfaceGravity.toFixed(2)
+                value: solarBody.surfaceGravity.toFixed(2)
                 unit: "m/s²"
             }
             DetailsElement
             {
                 width: parent.width * 0.35
                 title: qsTr("Escape Velocity")
-                value: (planetConfig.escapeVelocity / 1000).toFixed(2)
+                value: (solarBody.escapeVelocity / 1000).toFixed(2)
                 unit: "km/s"
             }
         }
@@ -225,7 +225,7 @@ Page
             {
                 width: parent.width * 0.3
                 title: qsTr("Satellites")
-                value: planetConfig.satelliteCount
+                value: solarBody.satelliteCount
                 unit: ""
             }
             DetailsElement
@@ -235,9 +235,9 @@ Page
                 value:
                 {
                     if (settings.temperatureUnit === "°C")
-                        return "~ " + (planetConfig.averageTemperature - 273.15).toFixed(0);
+                        return "~ " + (solarBody.averageTemperature - 273.15).toFixed(0);
                     else
-                        return "~ " + planetConfig.averageTemperature.toFixed(0);
+                        return "~ " + solarBody.averageTemperature.toFixed(0);
                 }
                 unit: settings.temperatureUnit
             }
@@ -247,21 +247,21 @@ Page
                 title: qsTr("Pressure")
                 value:
                 {
-                    if (planetConfig.pressure < 0)
+                    if (solarBody.pressure < 0)
                         return qsTr("plenty");
-                    else if (planetConfig.pressure < 0.1)
+                    else if (solarBody.pressure < 0.1)
                         return qsTr("trace");
                     else
                     {
                         if (settings.pressureUnit === "bar")
-                            return (planetConfig.pressure / 100000).toFixed(2);
+                            return (solarBody.pressure / 100000).toFixed(2);
                         else
-                            return formatExponentialNumber(planetConfig.pressure);
+                            return formatExponentialNumber(solarBody.pressure);
                     }
                 }
                 unit:
                 {
-                    if (planetConfig.pressure > 0.1)
+                    if (solarBody.pressure > 0.1)
                         return settings.pressureUnit;
                     return "";
                 }
@@ -280,21 +280,21 @@ Page
             {
                 width: parent.width * 0.3
                 title: qsTr("Orb. Period")
-                value: planetConfig.orbitalPeriod.toFixed(2)
+                value: solarBody.orbitalElements.period.toFixed(2)
                 unit: "a"
             }
             DetailsElement
             {
                 width: parent.width * 0.35
                 title: qsTr("Velocity")
-                value: (planetConfig.orbitalVelocity / 1000).toFixed(2)
+                value: (solarBody.orbitalElements.averageVelocity / 1000).toFixed(2)
                 unit: "km/s"
             }
             DetailsElement
             {
                 width: parent.width * 0.35
                 title: qsTr("Inclination")
-                value: planetConfig.i1.toFixed(2)
+                value: (solarBody.orbitalElements.inclination * 180 / Math.PI).toFixed(2)
                 unit: "°"
             }
         }
@@ -311,21 +311,21 @@ Page
             {
                 width: parent.width * 0.3
                 title: qsTr("Average")
-                value: planetConfig.orbitAverageDistance.toFixed(2)
+                value: solarBody.orbitalElements.averageDistance.toFixed(2)
                 unit: "AU"
             }
             DetailsElement
             {
                 width: parent.width * 0.35
                 title: qsTr("Minimum")
-                value: planetConfig.orbitPerihelion.toFixed(2)
+                value: solarBody.orbitalElements.minimumDistance.toFixed(2)
                 unit: "AU"
             }
             DetailsElement
             {
                 width: parent.width * 0.35
                 title: qsTr("Maximum")
-                value: planetConfig.orbitAphelion.toFixed(2)
+                value: solarBody.orbitalElements.maximumDistance.toFixed(2)
                 unit: "AU"
             }
         }
@@ -341,15 +341,15 @@ Page
         {
             width: parent.width
             height: parent.height
-            model: planetConfigs.length
+            model: solarSystem.solarBodies.length
             delegate: Item {
-                property PlanetConfig planetConfig: planetConfigs[index]
-                property real sizePercent: Math.sqrt(planetConfig.radius / jupiter.radius)
-                property bool isDisplayed: planetConfig === page.planetConfig
+                property SolarBody solarBody: solarSystem.solarBodies[index]
+                property real sizePercent: Math.sqrt(solarBody.radius / solarSystem.jupiter.radius)
+                property bool isDisplayed: solarBody === page.solarBody
 
-                width: planetComparisonRow.width / visiblePlanetCount
+                width: planetComparisonRow.width / solarSystem.visiblePlanetCount
                 height: planetComparisonRow.height
-                visible: planetConfig.visible
+                visible: solarBody.visible && !solarBody.parentSolarBody
 
                 Rectangle
                 {
@@ -365,7 +365,7 @@ Page
                     anchors { fill: parent }
                     onClicked:
                     {
-                        page.planetConfig = planetConfig;
+                        page.solarBody = solarBody;
                     }
                 }
             }

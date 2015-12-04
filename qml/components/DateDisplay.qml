@@ -1,8 +1,11 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import harbour.solarsystem.DateTime 1.0
 
 Item
 {
+    property DateTime dateTime
+
     property string dateFormat: settings.dateFormat
     property int dayLabelWidth: 30; property string dayLabelFormat: "dd"
     property int monthLabelWidth: 50; property string monthLabelFormat: "MMM"
@@ -13,7 +16,7 @@ Item
 
     // -----------------------------------------------------------------------
 
-    signal dateSelected();
+    signal dateSelected()
 
     // -----------------------------------------------------------------------
 
@@ -22,14 +25,14 @@ Item
         // open dialog
         var dialog = pageStack.push("Sailfish.Silica.DatePickerDialog",
         {
-            date: settings.date,
+            date: dateTime.value,
             allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
         })
 
         // handle accept event
         dialog.accepted.connect(function()
         {
-            settings.date = dialog.date;
+            dateTime.set(dialog.date.getYear(), dialog.date.getMonth(), dialog.date.getDay());
             dateSelected();
         })
     }
@@ -81,7 +84,7 @@ Item
 
     function getDateString(format)
     {
-        var str = Qt.formatDate(settings.date, format);
+        var str = Qt.formatDate(dateTime.value, format);
 
         // make sure "abbreviated localized month name" is always the same length
         if (format === monthLabelFormat)

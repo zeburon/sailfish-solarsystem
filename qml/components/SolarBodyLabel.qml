@@ -3,12 +3,12 @@ import Sailfish.Silica 1.0
 
 Item
 {
-    property PlanetConfig planetConfig
+    property SolarBody solarBody
     property real yOffset
 
     // -----------------------------------------------------------------------
 
-    visible: planetConfig.visible
+    visible: solarBody.visible
 
     // -----------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ Item
     {
         id: label
 
-        text: planetConfig.name
+        text: solarBody.name
         color: Theme.secondaryHighlightColor
         font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
         anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter; verticalCenterOffset: yOffset }
