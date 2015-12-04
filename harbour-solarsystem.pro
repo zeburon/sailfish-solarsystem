@@ -36,7 +36,6 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/pages/MainPage.qml \
     qml/pages/AboutPage.qml \
     qml/storage.js \
-    qml/calculation.js \
     qml/gfx/shadow2.png \
     qml/globals.js \
     qml/components/DateDisplay.qml \
@@ -62,7 +61,6 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/gfx/m_saturn.png \
     qml/gfx/m_uranus.png \
     qml/gfx/m_venus.png \
-    qml/components/PlanetPosition.qml \
     qml/components/DetailsElement.qml \
     qml/gfx/m_saturn_rings.png \
     qml/gfx/s_saturn_rings.png \

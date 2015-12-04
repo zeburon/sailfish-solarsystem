@@ -3,7 +3,6 @@ import Sailfish.Silica 1.0
 import harbour.solarsystem.DateTime 1.0
 
 import "../components"
-import "../calculation.js" as Calculation
 import "../globals.js" as Globals
 
 Page

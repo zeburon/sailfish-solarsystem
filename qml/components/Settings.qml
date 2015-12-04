@@ -3,7 +3,6 @@ import QtQuick.LocalStorage 2.0
 
 import "../storage.js" as Storage
 import "../globals.js" as Globals
-import "../calculation.js" as Calculation
 
 QtObject
 {
