@@ -227,10 +227,6 @@ grüne Zahl: abnehmende Entfernung</translation>
         <translation>Umlaufbahnen einblenden</translation>
     </message>
     <message>
-        <source>Show inclination of Pluto</source>
-        <translation>Neigung von Plutos Bahnebene einblenden</translation>
-    </message>
-    <message>
         <source>Orbits are drawn to scale.</source>
         <translation>Umlaufbahnen werden maßstabsgetreu dargestellt.</translation>
     </message>
@@ -241,10 +237,6 @@ grüne Zahl: abnehmende Entfernung</translation>
     <message>
         <source>Orbits are depicted as regular circles.</source>
         <translation>Umlaufbahnen werden als reguläre Kreise angezeigt.</translation>
-    </message>
-    <message>
-        <source>Display distance to ecliptic via y-axis.</source>
-        <translation>Abstand zur Ekliptik über Y-Achse visualisieren.</translation>
     </message>
     <message>
         <source>Date format</source>
@@ -261,10 +253,6 @@ grüne Zahl: abnehmende Entfernung</translation>
     <message>
         <source>Formats and Units</source>
         <translation>Formate und Einheiten</translation>
-    </message>
-    <message>
-        <source>Display Mode</source>
-        <translation>Darstellungsmodus</translation>
     </message>
     <message>
         <source>Top View</source>
@@ -284,6 +272,10 @@ grüne Zahl: abnehmende Entfernung</translation>
     </message>
     <message>
         <source>Show Equator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General Options</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

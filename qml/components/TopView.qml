@@ -18,7 +18,6 @@ Item
     property bool showLabels: true
     property bool showOrbits: true
     property bool showDwarfPlanets: false
-    property bool showZPosition: false
     property bool animateSun: true
     property real imageOpacity: 1.0
     property real imageScale: 1.0
@@ -172,13 +171,6 @@ Item
             updateSimplifiedOrbitRadiuses();
         }
     }
-    onShowZPositionChanged:
-    {
-        if (initialized)
-        {
-            //update();
-        }
-    }
     onSimplifiedOrbitsChanged:
     {
         if (initialized)
@@ -207,43 +199,32 @@ Item
 
             property real displayedX
             property real displayedY
-            property real displayedZ
             property real displayedOpacity: simplifiedOrbits ? 1.0 : (1.0 - ((1.0 - root.currentZoom) * (1.0 - solarBody.smallImageScaleZoomedOut) + root.currentZoom * (1.0 - solarBody.smallImageScaleZoomedIn)))
             property real displayedScale: root.imageScale * displayedOpacity
-            property real displayedShadowRotation: Math.atan2(displayedY + displayedZ, displayedX) * 180 / Math.PI;
+            property real displayedShadowRotation: Math.atan2(displayedY, displayedX) * 180 / Math.PI;
 
             function updateCoordinates()
             {
-                var newX = 0, newY = 0, newZ = 0;
+                var newX = 0, newY = 0;
                 if (simplifiedOrbits)
                 {
                     var angle = Math.atan2(solarBody.orbitalElements.y, solarBody.orbitalElements.x);
                     newX = orbitSimplifiedRadius * Math.cos(angle);
                     newY = orbitSimplifiedRadius * Math.sin(angle);
-                    newZ = 0.0;
                 }
                 else
                 {
-                    newX = solarBody.orbitalElements.x * root.auSize;
-                    newY = solarBody.orbitalElements.y * root.auSize;
-                    newZ = solarBody.orbitalElements.z * root.auSize;
-                    if (root.showZPosition && solarBody.orbitCanShowZPosition)
-                    {
-                        newY += newZ;
-                    }
-                    newX *= solarBody.orbitCorrectionFactorX;
-                    newY *= solarBody.orbitCorrectionFactorY;
+                    newX = solarBody.orbitalElements.x * root.auSize * solarBody.orbitCorrectionFactorX;
+                    newY = solarBody.orbitalElements.y * root.auSize * solarBody.orbitCorrectionFactorY;
                 }
 
                 if (parentInfo)
                 {
                     newX += parentInfo.displayedX;
                     newY += parentInfo.displayedY;
-                    newZ += parentInfo.displayedZ;
                 }
                 displayedX = newX;
                 displayedY = newY;
-                displayedZ = newZ;
             }
         }
     }
@@ -257,8 +238,6 @@ Item
 
             x: info.displayedX * root.currentZoom
             y: info.displayedY * root.currentZoom
-            zPosition: info.displayedZ * root.currentZoom
-            showZPosition: root.showZPosition && solarBody.orbitCanShowZPosition
             scale: info.displayedScale
             opacity: info.displayedOpacity
             shadowRotation: info.displayedShadowRotation

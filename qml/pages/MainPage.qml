@@ -264,7 +264,6 @@ Page
                     showLabels: settings.showLabels
                     showOrbits: settings.showOrbits
                     showDwarfPlanets: settings.showDwarfPlanets
-                    showZPosition: settings.showZPosition
                     animationIncrement: settings.animationIncrement
                     simplifiedOrbits: settings.simplifiedOrbits
                     zoomedOut: settings.zoomedOut

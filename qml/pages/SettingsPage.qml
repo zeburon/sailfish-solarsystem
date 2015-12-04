@@ -122,9 +122,11 @@ Page
                 }
             }
 
+            // -----------------------------------------------------------------------
+
             SectionHeader
             {
-                text: qsTr("Display Mode")
+                text: qsTr("General Options")
             }
 
             TextSwitch
@@ -145,6 +147,8 @@ Page
                     settings.showDwarfPlanets = checked;
                 }
             }
+
+            // -----------------------------------------------------------------------
 
             SectionHeader
             {
@@ -184,9 +188,7 @@ Page
                         return qsTr("Orbits are drawn to scale.");
                 }
             }
-
-            // optional information
-
+            // set orbit visibility
             TextSwitch
             {
                 text: qsTr("Show planet orbits")
@@ -197,19 +199,7 @@ Page
                 }
             }
 
-            // pluto settings
-
-            TextSwitch
-            {
-                text: qsTr("Show inclination of Pluto")
-                description: qsTr("Display distance to ecliptic via y-axis.")
-                checked: settings.showZPosition
-                enabled: !settings.simplifiedOrbits && settings.showDwarfPlanets
-                onCheckedChanged:
-                {
-                    settings.showZPosition = checked;
-                }
-            }
+            // -----------------------------------------------------------------------
 
             SectionHeader
             {

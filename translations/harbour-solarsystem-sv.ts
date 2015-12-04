@@ -227,10 +227,6 @@ Gröna siffror: Avståndet minskar</translation>
         <translation>Visa planetomloppsbanor</translation>
     </message>
     <message>
-        <source>Show inclination of Pluto</source>
-        <translation>Visa Plutos lutning</translation>
-    </message>
-    <message>
         <source>Orbits are drawn to scale.</source>
         <translation>Omloppsbanor är skalenliga.</translation>
     </message>
@@ -241,10 +237,6 @@ Gröna siffror: Avståndet minskar</translation>
     <message>
         <source>Orbits are depicted as regular circles.</source>
         <translation>Omloppsbanor avbildas som vanliga cirklar.</translation>
-    </message>
-    <message>
-        <source>Display distance to ecliptic via y-axis.</source>
-        <translation>Visa avståndet till ekliptikan via y-axeln.</translation>
     </message>
     <message>
         <source>Date format</source>
@@ -260,10 +252,6 @@ Gröna siffror: Avståndet minskar</translation>
     </message>
     <message>
         <source>Formats and Units</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Display Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -284,6 +272,10 @@ Gröna siffror: Avståndet minskar</translation>
     </message>
     <message>
         <source>Show Equator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General Options</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

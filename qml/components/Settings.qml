@@ -13,7 +13,6 @@ QtObject
     property bool showLabels: true;                                property string showLabelsKey: "showLabels"
     property bool showOrbits: true;                                property string showOrbitsKey: "showOrbits"
     property bool showDwarfPlanets: false;                         property string showDwarfPlanetsKey: "showDwarfPlanets"
-    property bool showZPosition: false;                            property string showZPositionKey: "showZPosition"
     property bool showSkyView: false;                              property string showSkyViewKey: "showSkyView"
     property bool showEcliptic: false;                             property string showEclipticKey: "showEcliptic"
     property bool showEquator: false;                              property string showEquatorKey: "showEquator"
@@ -47,11 +46,6 @@ QtObject
         var storedShowDwarfPlanets = Storage.getValue(showDwarfPlanetsKey);
         if (storedShowDwarfPlanets)
             showDwarfPlanets = storedShowDwarfPlanets === "true";
-
-        // load showZPosition
-        var storedShowZPosition = Storage.getValue(showZPositionKey);
-        if (storedShowZPosition)
-            showZPosition = storedShowZPosition === "true";
 
         // load showSkyView
         var storedShowSkyView = Storage.getValue(showSkyViewKey);
@@ -142,10 +136,6 @@ QtObject
     onShowDwarfPlanetsChanged:
     {
         Storage.setValue(showDwarfPlanetsKey, showDwarfPlanets);
-    }
-    onShowZPositionChanged:
-    {
-        Storage.setValue(showZPositionKey, showZPosition);
     }
     onShowSkyViewChanged:
     {

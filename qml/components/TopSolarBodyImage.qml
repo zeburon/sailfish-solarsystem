@@ -6,37 +6,8 @@ SolarBodyImage
 
     // -----------------------------------------------------------------------
 
-    property bool showZPosition: true
-    property real zPosition: 0.0
     property alias shadowOpacity: shadow.opacity
     property alias shadowRotation: shadow.rotation
-
-    // -----------------------------------------------------------------------
-    // visualization of distance to ecliptic
-    Rectangle
-    {
-        id: zIndicatorLine
-
-        width: 4
-        height: Math.abs(root.zPosition)
-        radius: 2
-        z: -20
-        color: zPosition < 0.0 ? "green" : "red"
-        opacity: 0.3
-        anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter; verticalCenterOffset: -root.zPosition / 2 }
-        visible: showZPosition
-
-        Rectangle
-        {
-            id: zIndicatorBase
-
-            width: 8
-            height: width
-            radius: width / 2
-            anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: root.zPosition < 0 ? parent.bottom : parent.top }
-            color: parent.color
-        }
-    }
 
     // -----------------------------------------------------------------------
     // shadow rendering

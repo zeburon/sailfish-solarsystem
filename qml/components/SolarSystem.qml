@@ -324,7 +324,6 @@ QtObject {
             mediumImageSourceBottom: "../gfx/m_pluto.png"
             visible: showDwarfPlanets
             orbitColor: "#55b08764"
-            orbitCanShowZPosition: true
             orbitCorrectionFactorX: 1.02
             orbitCorrectionFactorY: 0.98
             orbitalElements: OrbitalElementsPlanet

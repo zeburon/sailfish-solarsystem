@@ -21,7 +21,6 @@ QtObject
 
     // orbit visualization
     property color orbitColor
-    property bool orbitCanShowZPosition: false
     property real orbitCorrectionFactorX: 1.0
     property real orbitCorrectionFactorY: 1.0
 

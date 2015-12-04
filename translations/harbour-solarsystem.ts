@@ -225,10 +225,6 @@ green number: distance is decreasing</source>
         <translation></translation>
     </message>
     <message>
-        <source>Show inclination of Pluto</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Orbits are drawn to scale.</source>
         <translation></translation>
     </message>
@@ -238,10 +234,6 @@ green number: distance is decreasing</source>
     </message>
     <message>
         <source>Orbits are depicted as regular circles.</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Display distance to ecliptic via y-axis.</source>
         <translation></translation>
     </message>
     <message>
@@ -258,10 +250,6 @@ green number: distance is decreasing</source>
     </message>
     <message>
         <source>Formats and Units</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Display Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -282,6 +270,10 @@ green number: distance is decreasing</source>
     </message>
     <message>
         <source>Show Equator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General Options</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
