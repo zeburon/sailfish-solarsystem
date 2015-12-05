@@ -4,14 +4,13 @@ import harbour.solarsystem.DateTime 1.0
 
 import "../globals.js" as Globals
 
-Item
+Canvas
 {
     id: root
 
     // -----------------------------------------------------------------------
 
     // settings
-    property int animationIncrement: 5
     property bool simplifiedOrbits: false
     property bool zoomedOut: false
     property bool showLabels: true
@@ -38,14 +37,13 @@ Item
 
     // solar body information
     property alias solarSystem: solarSystem
-    property var solarBodyInfos: []
+    property var solarBodyPainters: []
 
     // -----------------------------------------------------------------------
 
     signal clickedOnPlanet(var solarBody)
     signal clickedOnEmptySpace()
-    signal switchedToRealisticOrbits()
-    signal switchedToSimplifiedOrbits()
+    signal showHelpText(string text)
 
     // -----------------------------------------------------------------------
 
@@ -56,26 +54,25 @@ Item
         {
             var solarBody = solarSystem.solarBodies[bodyIdx];
 
-            var info = solarBodyInfo.createObject(null, {"solarBody": solarBody});
-            solarBodyInfos.push(info);
+            var painter = solarBodyPainter.createObject(null, {"solarBody": solarBody});
+            solarBodyPainters.push(painter);
 
             var bodyZ = solarSystem.solarBodies.length - bodyIdx;
-            var image = solarBodyImageComponent.createObject(images, {"solarBody": solarBody, "info": info, "z": bodyZ});
-            var label = solarBodyLabelComponent.createObject(labels, {"solarBody": solarBody, "info": info, "z": bodyZ, "yOffset": image.imageHeight * 0.75});
+            var image = solarBodyImageComponent.createObject(images, {"solarBody": solarBody, "painter": painter, "z": bodyZ});
+            var label = solarBodyLabelComponent.createObject(labels, {"solarBody": solarBody, "painter": painter, "z": bodyZ, "yOffset": image.imageHeight * 0.75});
         }
         // link to parent instances
-        for (var infoIdx = 0; infoIdx < solarBodyInfos.length; ++infoIdx)
+        for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)
         {
-            var info = solarBodyInfos[infoIdx];
-            var parentSolarBody = info.solarBody.parentSolarBody;
+            var painter = solarBodyPainters[painterIdx];
+            var parentSolarBody = painter.solarBody.parentSolarBody;
             if (parentSolarBody)
             {
-                info.parentInfo = solarBodyInfos[solarSystem.getIndex(parentSolarBody)];
+                painter.parentPainter = solarBodyPainters[solarSystem.getIndex(parentSolarBody)];
             }
         }
         initialized = true;
         updateSimplifiedOrbitRadiuses();
-        //update();
     }
 
     // -----------------------------------------------------------------------
@@ -83,11 +80,11 @@ Item
     function update(dateTime)
     {
         solarSystem.dateTime.string = dateTime.string;
-        for (var infoIdx = 0; infoIdx < solarBodyInfos.length; ++infoIdx)
+        for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)
         {
-            solarBodyInfos[infoIdx].updateCoordinates();
+            solarBodyPainters[painterIdx].updateCoordinates();
         }
-        paintOrbits();
+        requestPaint();
     }
 
     // -----------------------------------------------------------------------
@@ -95,50 +92,43 @@ Item
     function updateSimplifiedOrbitRadiuses()
     {
         var visibleBodyCount = 0;
-        for (var infoIdx = 0; infoIdx < solarBodyInfos.length; ++infoIdx)
+        for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)
         {
-            var info = solarBodyInfos[infoIdx];
-            if (info.solarBody.visible && !info.solarBody.parentSolarBody)
+            var painter = solarBodyPainters[painterIdx];
+            if (painter.solarBody.visible && !painter.solarBody.parentSolarBody)
             {
                 ++visibleBodyCount;
             }
         }
         var radiusIncrement = radiusRange / (visibleBodyCount - 1);
         var visibleBodyIdx = 0;
-        for (var infoIdx = 0; infoIdx < solarBodyInfos.length; ++infoIdx)
+        for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)
         {
-            var info = solarBodyInfos[infoIdx];
-            if (info.solarBody.parentSolarBody)
+            var painter = solarBodyPainters[painterIdx];
+            if (painter.solarBody.parentSolarBody)
             {
-                info.orbitSimplifiedRadius = radiusIncrement / 2;
+                painter.orbitSimplifiedRadius = radiusIncrement / 2;
             }
-            else if (info.solarBody.visible)
+            else if (painter.solarBody.visible)
             {
-                info.orbitSimplifiedRadius = radiusSunOffset + radiusIncrement * visibleBodyIdx;
+                painter.orbitSimplifiedRadius = radiusSunOffset + radiusIncrement * visibleBodyIdx;
                 ++visibleBodyIdx;
             }
         }
-        auSize = solarBodyInfos[solarSystem.getIndex(solarSystem.earth)].orbitSimplifiedRadius;
-    }
-
-    // -----------------------------------------------------------------------
-
-    function paintOrbits()
-    {
-        orbits.requestPaint();
+        auSize = solarBodyPainters[solarSystem.getIndex(solarSystem.earth)].orbitSimplifiedRadius;
     }
 
     // -----------------------------------------------------------------------
 
     function click(mouseX, mouseY)
     {
-        var closestInfo;
+        var closestPainter;
         var minDistance = 99999;
 
         for (var bodyIdx = 0; bodyIdx < images.children.length; ++bodyIdx)
         {
             var image = images.children[bodyIdx];
-            if (image.scale < 0.4 || image.info.parentInfo)
+            if (image.scale < 0.4 || image.painter.parentPainter)
                 continue;
 
             var dx = image.x + width / 2 - mouseX;
@@ -146,19 +136,29 @@ Item
             var distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < minDistance && distance < Globals.PLANET_CLICK_AREA_SIZE)
             {
-                closestInfo = image.info;
+                closestPainter = image.painter;
                 minDistance = distance;
             }
         }
 
-        if (closestInfo)
+        if (closestPainter)
         {
-            clickedOnPlanet(closestInfo.solarBody);
+            clickedOnPlanet(closestPainter.solarBody);
         }
         else
         {
             clickedOnEmptySpace();
         }
+    }
+
+    // -----------------------------------------------------------------------
+
+    function generateHelpText()
+    {
+        if (simplifiedOrbits)
+            showHelpText(qsTr("Click on planets for details"));
+        else
+            showHelpText(qsTr("Click to toggle zoom"))
     }
 
     // -----------------------------------------------------------------------
@@ -174,7 +174,52 @@ Item
     {
         if (initialized)
         {
-            //update();
+            requestPaint();
+        }
+        generateHelpText();
+    }
+    onCurrentZoomChanged:
+    {
+        if (initialized)
+        {
+            requestPaint();
+        }
+    }
+    onVisibleChanged:
+    {
+        if (visible)
+        {
+            generateHelpText();
+        }
+    }
+    onPaint:
+    {
+        var context = getContext("2d");
+        context.reset();
+
+        for (var bodyIdx = 0; bodyIdx < solarBodyPainters.length; ++bodyIdx)
+        {
+            var painter = solarBodyPainters[bodyIdx];
+            if (painter.solarBody.visible && !painter.parentInfo)
+            {
+                var rotation = -painter.orbitRotation;
+                var offset = -painter.orbitOffset * root.currentZoom;
+                var a = painter.orbitA * root.currentZoom;
+                var b = painter.orbitB * root.currentZoom;
+
+                context.save();
+                context.translate(width / 2.0, height / 2.0);
+                context.rotate(rotation);
+                context.translate(offset, 0.0);
+                context.scale(1.0, b / a);
+                context.beginPath();
+                context.arc(0.0, 0.0, a, 0.0, 2.0 * Math.PI);
+                context.restore();
+                context.globalAlpha = painter.displayedOpacity;
+                context.lineWidth = root.orbitThickness;
+                context.strokeStyle = painter.solarBody.orbitColor;
+                context.stroke();
+            }
         }
     }
 
@@ -182,12 +227,12 @@ Item
 
     Component
     {
-        id: solarBodyInfo
+        id: solarBodyPainter
 
         Item
         {
             property SolarBody solarBody
-            property var parentInfo: null
+            property var parentPainter: null
 
             property real orbitProjectionFactor: Math.cos(solarBody.orbitalElements.inclination) // adjust orbit dimensions according to inclination
             property real orbitOffset: simplifiedOrbits ? 0.0 : ((solarBody.orbitalElements.maximumDistance - solarBody.orbitalElements.minimumDistance) / 2.0) * root.auSize * orbitProjectionFactor
@@ -217,10 +262,10 @@ Item
                     newY = solarBody.orbitalElements.y * root.auSize * solarBody.orbitCorrectionFactorY;
                 }
 
-                if (parentInfo)
+                if (parentPainter)
                 {
-                    newX += parentInfo.displayedX;
-                    newY += parentInfo.displayedY;
+                    newX += parentPainter.displayedX;
+                    newY += parentPainter.displayedY;
                 }
                 displayedX = newX;
                 displayedY = newY;
@@ -233,13 +278,13 @@ Item
 
         TopSolarBodyImage
         {
-            property var info
+            property var painter
 
-            x: info.displayedX * root.currentZoom
-            y: info.displayedY * root.currentZoom
-            scale: info.displayedScale
-            opacity: info.displayedOpacity
-            shadowRotation: info.displayedShadowRotation
+            x: painter.displayedX * root.currentZoom
+            y: painter.displayedY * root.currentZoom
+            scale: painter.displayedScale
+            opacity: painter.displayedOpacity
+            shadowRotation: painter.displayedShadowRotation
         }
     }
     Component
@@ -248,11 +293,11 @@ Item
 
         SolarBodyLabel
         {
-            property var info
+            property var painter
 
-            x: info.displayedX * root.currentZoom
-            y: info.displayedY * root.currentZoom
-            opacity: info.displayedOpacity
+            x: painter.displayedX * root.currentZoom
+            y: painter.displayedY * root.currentZoom
+            opacity: painter.displayedOpacity
         }
     }
 
@@ -274,17 +319,6 @@ Item
         opacity: root.imageOpacity
         anchors { centerIn: parent }
         z: 0
-    }
-    TopOrbitPainter
-    {
-        id: orbits
-
-        zoom: root.currentZoom
-        solarBodyInfos: root.solarBodyInfos
-        lineThickness: root.orbitThickness
-        visible: root.showOrbits
-        anchors { fill: parent }
-        z: 1
     }
     Item
     {

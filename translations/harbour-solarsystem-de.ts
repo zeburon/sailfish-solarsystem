@@ -54,20 +54,12 @@
         <translation>Über Sonnensystem</translation>
     </message>
     <message>
-        <source>Click to toggle zoom</source>
-        <translation>Klicke um zu zoomen</translation>
-    </message>
-    <message>
         <source>Animation Speed</source>
         <translation>Geschwindigkeit</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation>Einstellungen</translation>
-    </message>
-    <message>
-        <source>Click on planets for details</source>
-        <translation>Klicke auf Planeten für Details</translation>
     </message>
     <message>
         <source>Switch to Top View</source>
@@ -280,6 +272,25 @@ grüne Zahl: abnehmende Entfernung</translation>
     </message>
 </context>
 <context>
+    <name>SkyView</name>
+    <message>
+        <source>E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>N</source>
+        <translation type="unfinished">N</translation>
+    </message>
+    <message>
+        <source>W</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>S</source>
+        <translation type="unfinished">S</translation>
+    </message>
+</context>
+<context>
     <name>SolarSystem</name>
     <message>
         <source>Mercury</source>
@@ -320,6 +331,17 @@ grüne Zahl: abnehmende Entfernung</translation>
     <message>
         <source>Pluto</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TopView</name>
+    <message>
+        <source>Click on planets for details</source>
+        <translation type="unfinished">Klicke auf Planeten für Details</translation>
+    </message>
+    <message>
+        <source>Click to toggle zoom</source>
+        <translation type="unfinished">Klicke um zu zoomen</translation>
     </message>
 </context>
 </TS>

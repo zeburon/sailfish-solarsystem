@@ -11,13 +11,13 @@ Page
 
     // -----------------------------------------------------------------------
 
-    property bool pageActive: status === PageStatus.Active
+    property bool active: status === PageStatus.Active
     property bool initialized: false
     property bool animatingBackward: settings.animationEnabled && settings.animationDirection === -1
     property bool animatingForward: settings.animationEnabled && settings.animationDirection === 1
-    property bool busy: pageStack.acceptAnimationRunning
     property bool showHelpTextWhenActivated: true
-    property SolarSystem solarSystem: topView.solarSystem
+    property alias solarSystem: topView.solarSystem
+    property alias dateTime: dateTime
 
     // -----------------------------------------------------------------------
 
@@ -28,7 +28,6 @@ Page
         topView.init();
         skyView.init();
         initialized = true;
-        update();
     }
 
     // -----------------------------------------------------------------------
@@ -67,16 +66,9 @@ Page
     function repaint()
     {
         if (topView.visible)
-            topView.paintOrbits();
+            topView.requestPaint();
         else
             skyView.requestPaint();
-    }
-
-    // -----------------------------------------------------------------------
-
-    function stopAnimation()
-    {
-        settings.animationEnabled = false;
     }
 
     // -----------------------------------------------------------------------
@@ -99,36 +91,17 @@ Page
 
     // -----------------------------------------------------------------------
 
-    function handleOrbitStyleChange()
+    function showHelpText(text)
     {
-        showHelpTextWhenActivated = true;
+        helpText.text = text;
+        helpTextTimer.start();
     }
 
     // -----------------------------------------------------------------------
 
-    onPageActiveChanged:
+    onActiveChanged:
     {
-        //stopAnimation();
-        if (pageActive)
-        {
-            //pageStack.pushAttached(distancePage);
-
-            if (showHelpTextWhenActivated)
-            {
-                showHelpTextWhenActivated = false;
-
-                if (topView.simplifiedOrbits)
-                    detailsHelpTimer.start();
-                else
-                    zoomHelpTimer.start();
-            }
-        }
-    }
-    Component.onCompleted:
-    {
-        //distancePage.updated.connect(stopAnimation);
-        topView.switchedToRealisticOrbits.connect(handleOrbitStyleChange);
-        topView.switchedToSimplifiedOrbits.connect(handleOrbitStyleChange);
+        settings.animationEnabled = false;
     }
 
     // -----------------------------------------------------------------------
@@ -173,38 +146,11 @@ Page
             width: page.width
             spacing: Theme.paddingSmall
 
-            // header: title, help text and zoom button
+            // header: zoom button, help text and title
             PageHeader
             {
                 title: qsTr("Solar System")
 
-                // simplified orbits
-                Text
-                {
-                    id: detailsHelpText
-
-                    anchors { left: parent.left; leftMargin: Theme.paddingLarge; verticalCenter: parent.verticalCenter }
-                    text: qsTr("Click on planets for details")
-                    visible: settings.simplifiedOrbits
-                    color: Theme.secondaryHighlightColor
-                    font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
-                    opacity: detailsHelpTimer.running ? 1 : 0
-
-                    Behavior on opacity
-                    {
-                        NumberAnimation { easing.type: Easing.InOutQuart; duration: 500 }
-                    }
-                }
-                Timer
-                {
-                    id: detailsHelpTimer
-
-                    repeat: false
-                    running: false
-                    interval: 3000
-                }
-
-                // realistic orbits
                 Image
                 {
                     id: zoomImage
@@ -215,14 +161,12 @@ Page
                 }
                 Text
                 {
-                    id: zoomHelpText
+                    id: helpText
 
-                    anchors { left: zoomImage.right; verticalCenter: zoomImage.verticalCenter; margins: Theme.paddingSmall }
-                    text: qsTr("Click to toggle zoom")
-                    visible: zoomImage.visible
+                    anchors { left: zoomImage.left; leftMargin: zoomImage.visible ? zoomImage.width : 0; verticalCenter: zoomImage.verticalCenter; margins: Theme.paddingSmall }
                     color: Theme.secondaryHighlightColor
                     font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
-                    opacity: zoomHelpTimer.running ? 1 : 0
+                    opacity: helpTextTimer.running ? 1 : 0
 
                     Behavior on opacity
                     {
@@ -231,7 +175,7 @@ Page
                 }
                 Timer
                 {
-                    id: zoomHelpTimer
+                    id: helpTextTimer
 
                     repeat: false
                     running: false
@@ -247,7 +191,7 @@ Page
                 }
             }
 
-            // the main solar system item
+            // solar system visualization
             Item
             {
                 width: column.width
@@ -263,16 +207,16 @@ Page
                     showLabels: settings.showLabels
                     showOrbits: settings.showOrbits
                     showDwarfPlanets: settings.showDwarfPlanets
-                    animationIncrement: settings.animationIncrement
-                    simplifiedOrbits: settings.simplifiedOrbits
                     zoomedOut: settings.zoomedOut
-                    animateSun: pageActive && app.active
+                    animateSun: active && app.active
                     animateZoom: app.initialized
+                    simplifiedOrbits: settings.simplifiedOrbits
                     visible: !settings.showSkyView
                     Component.onCompleted:
                     {
-                        topView.clickedOnEmptySpace.connect(toggleZoom);
-                        topView.clickedOnPlanet.connect(showPlanetDetailsPage);
+                        clickedOnEmptySpace.connect(page.toggleZoom);
+                        clickedOnPlanet.connect(page.showPlanetDetailsPage);
+                        showHelpText.connect(page.showHelpText);
                     }
                     onVisibleChanged:
                     {
@@ -304,6 +248,10 @@ Page
                     showAzimuth: settings.showAzimuth
                     showEcliptic: settings.showEcliptic
                     showEquator: settings.showEquator
+                    Component.onCompleted:
+                    {
+                        showHelpText.connect(page.showHelpText);
+                    }
                     onVisibleChanged:
                     {
                         if (visible)
@@ -317,7 +265,7 @@ Page
             // labels displaying the selected date
             DateDisplay
             {
-                dateTime: skyView.solarSystem.dateTime
+                dateTime: page.dateTime
                 width: column.width
             }
 
@@ -385,7 +333,7 @@ Page
         }
     }
 
-    // animation timer: if triggered, update time and solar system
+    // time information used by top and sky views
     DateTime
     {
         id: dateTime

@@ -18,6 +18,7 @@ CoverBackground
     function init()
     {
         topView.init();
+        solarSystem.dateTime.signalValueChanged.connect(updatePlanetDistanceLabel);
         update();
     }
 
@@ -25,16 +26,8 @@ CoverBackground
 
     function update()
     {
-        // only update planet positions once a day
-        /*
-        var currentDate = new Date(Date.now());
-        if (currentDate.getDate() !== topView.date.getDate() || currentDate.getMonth() !== topView.date.getMonth())
-        {
-            solarSystem.dateTime.setNow();
-            updatePlanetDistanceLabel();
-        }
-        */
-        topView.paintOrbits();
+        solarSystem.dateTime.setToday();
+        topView.update(solarSystem.dateTime);
     }
 
     // -----------------------------------------------------------------------
@@ -73,7 +66,7 @@ CoverBackground
         {
             --bodyIdx;
             var solarBody = solarSystem.solarBodies[bodyIdx];
-            if (bodyIdx !== solarSystem.getIndex(solarSystem.earth) && solarBody.visible)
+            if (bodyIdx !== solarSystem.getIndex(solarSystem.earth) && solarBody.visible && !solarBody.parentSolarBody)
             {
                 settings.distancePlanetIdx = bodyIdx;
                 updatePlanetDistanceLabel();
@@ -91,7 +84,7 @@ CoverBackground
         {
             ++bodyIdx;
             var solarBody = solarSystem.solarBodies[bodyIdx];
-            if (bodyIdx !== 2 && solarBody.visible)
+            if (bodyIdx !== solarSystem.getIndex(solarSystem.earth) && solarBody.visible && !solarBody.parentSolarBody)
             {
                 settings.distancePlanetIdx = bodyIdx;
                 updatePlanetDistanceLabel();

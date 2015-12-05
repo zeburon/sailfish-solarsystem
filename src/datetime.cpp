@@ -28,7 +28,19 @@ void DateTime::set(int year, int month, int day, int hours, int minutes, int sec
 
 void DateTime::setNow()
 {
-    setDateTimeAndUpdate(QDateTime::currentDateTime());
+    QDateTime date_time = QDateTime::currentDateTime();
+    setDateTimeAndUpdate(date_time);
+}
+
+// -----------------------------------------------------------------------
+
+void DateTime::setToday()
+{
+    QDateTime date_time = QDateTime::currentDateTime();
+    if (date_time.date() != m_date_time.date())
+    {
+        setDateTimeAndUpdate(date_time);
+    }
 }
 
 // -----------------------------------------------------------------------

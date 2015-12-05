@@ -10,7 +10,7 @@ Page
 
     // -----------------------------------------------------------------------
 
-    property bool pageActive: status === PageStatus.Active
+    property bool active: status === PageStatus.Active
     property SolarBody solarBody
     property SolarSystem solarSystem
 

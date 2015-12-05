@@ -11,7 +11,7 @@ Page
     // -----------------------------------------------------------------------
 
     property SolarSystem solarSystem
-    property bool pageActive: status === PageStatus.Active
+    property bool active: status === PageStatus.Active
 
     // properties used by PlanetImage items
     property int solarBodyImageSize: column.width / (solarSystem.visiblePlanetCount + 1)
@@ -160,7 +160,7 @@ Page
             {
                 width: solarBodyImageSize
                 height: solarBodyImageSize
-                animated: pageActive
+                animated: active
             }
 
             Component.onCompleted:

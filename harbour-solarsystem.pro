@@ -85,7 +85,6 @@ HEADERS += \
 
 DISTFILES += \
     qml/components/SolarBody.qml \
-    qml/components/TopOrbitPainter.qml \
     qml/gfx/m_moon.png \
     qml/gfx/s_moon.png \
     qml/components/SolarSystem.qml \

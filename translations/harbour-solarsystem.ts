@@ -50,10 +50,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>Click to toggle zoom</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Today</source>
         <translation></translation>
     </message>
@@ -64,10 +60,6 @@
     <message>
         <source>Settings</source>
         <translation></translation>
-    </message>
-    <message>
-        <source>Click on planets for details</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Switch to Top View</source>
@@ -278,6 +270,25 @@ green number: distance is decreasing</source>
     </message>
 </context>
 <context>
+    <name>SkyView</name>
+    <message>
+        <source>E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>N</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>W</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>S</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SolarSystem</name>
     <message>
         <source>Mercury</source>
@@ -317,6 +328,17 @@ green number: distance is decreasing</source>
     </message>
     <message>
         <source>Pluto</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TopView</name>
+    <message>
+        <source>Click on planets for details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click to toggle zoom</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
