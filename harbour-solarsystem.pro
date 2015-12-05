@@ -67,8 +67,7 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/gfx/zoom_in.png \
     qml/gfx/zoom_out.png \
     qml/components/TopView.qml \
-    qml/components/SkyView.qml \
-    qml/components/StarConfig.qml
+    qml/components/SkyView.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line
@@ -93,5 +92,7 @@ DISTFILES += \
     qml/components/TopSolarBodyImage.qml \
     qml/components/SolarBodyLabel.qml \
     qml/components/SideSolarBodyImage.qml \
-    qml/components/SkySolarBodyImage.qml
+    qml/components/SkySolarBodyImage.qml \
+    qml/components/Galaxy.qml \
+    qml/components/Star.qml
 

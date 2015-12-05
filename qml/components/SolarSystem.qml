@@ -3,7 +3,8 @@ import harbour.solarsystem.OrbitalElementsPlanet 1.0
 import harbour.solarsystem.OrbitalElementsMoon 1.0
 import harbour.solarsystem.DateTime 1.0
 
-QtObject {
+QtObject
+{
     property DateTime dateTime: DateTime { }
 
     // -----------------------------------------------------------------------

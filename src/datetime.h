@@ -32,9 +32,11 @@ public:
     explicit DateTime(QObject *parent = 0);
     virtual ~DateTime();
 
-    Q_INVOKABLE void set(int year, int month, int day, int hours, int minutes, int seconds = 0);
+    Q_INVOKABLE void set(int year, int month, int day, int hours, int minutes, int seconds);
+    Q_INVOKABLE void setDate(int year, int month, int day);
+    Q_INVOKABLE void setTodaysDate();
+    Q_INVOKABLE void setTime(int hours, int minutes, int seconds);
     Q_INVOKABLE void setNow();
-    Q_INVOKABLE void setToday();
 
     Q_INVOKABLE void addDays(int days);
     Q_INVOKABLE void addSeconds(int seconds);

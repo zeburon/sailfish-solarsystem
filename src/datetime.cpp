@@ -1,6 +1,5 @@
 #include "datetime.h"
 #include <QtMath>
-#include <QStringList>
 
 // -----------------------------------------------------------------------
 
@@ -26,21 +25,34 @@ void DateTime::set(int year, int month, int day, int hours, int minutes, int sec
 
 // -----------------------------------------------------------------------
 
-void DateTime::setNow()
+void DateTime::setDate(int year, int month, int day)
 {
-    QDateTime date_time = QDateTime::currentDateTime();
-    setDateTimeAndUpdate(date_time);
+    setDateTimeAndUpdate(QDateTime(QDate(year, month, day), m_date_time.time()));
 }
 
 // -----------------------------------------------------------------------
 
-void DateTime::setToday()
+void DateTime::setTodaysDate()
 {
     QDateTime date_time = QDateTime::currentDateTime();
     if (date_time.date() != m_date_time.date())
     {
         setDateTimeAndUpdate(date_time);
     }
+}
+
+// -----------------------------------------------------------------------
+
+void DateTime::setTime(int hours, int minutes, int seconds)
+{
+    setDateTimeAndUpdate(QDateTime(m_date_time.date(), QTime(hours, minutes, seconds)));
+}
+
+// -----------------------------------------------------------------------
+
+void DateTime::setNow()
+{
+    setDateTimeAndUpdate(QDateTime::currentDateTime());
 }
 
 // -----------------------------------------------------------------------
@@ -79,6 +91,12 @@ QString DateTime::getString() const
 
 void DateTime::setDateTimeAndUpdate(const QDateTime &date_time)
 {
+    if (!date_time.isValid())
+    {
+        setDateTimeAndUpdate(QDateTime::currentDateTime());
+        return;
+    }
+
     if (date_time == m_date_time)
         return;
 

@@ -151,9 +151,9 @@ Canvas
         context.lineWidth = 4;
         context.strokeStyle = "white";
         var equatorCoordinates = [];
-        for (skyLongitude = 0; skyLongitude <= 360; skyLongitude += 10)
+        for (skyLongitude = -fieldOfView / 2; skyLongitude <= fieldOfView / 2; skyLongitude += 10)
         {
-            equatorCoordinates.push(projector.sphericalAzimuthalToScreenCoordinates(skyLongitude, 0));
+            equatorCoordinates.push(projector.sphericalAzimuthalToScreenCoordinates(skyLongitude + longitudeLookOffset - 90, 0));
         }
         context.beginPath();
         drawPath(context, equatorCoordinates);
@@ -166,25 +166,29 @@ Canvas
             var direction;
             switch (skyLongitude)
             {
-                case 0: direction = qsTr("E"); break;
-                case 90: direction = qsTr("N"); break;
+                case 0:   direction = qsTr("E"); break;
+                case 90:  direction = qsTr("N"); break;
                 case 180: direction = qsTr("W"); break;
                 case 270: direction = qsTr("S"); break;
             }
             drawLabel(context, projector.sphericalAzimuthalToScreenCoordinates(skyLongitude, 0), "white", direction);
         }
-        drawCircle(context, projector.sphericalAzimuthalToScreenCoordinates(0, 90), "#9999ff", 5);
-        drawCircle(context, projector.sphericalAzimuthalToScreenCoordinates(0, -90), "#88cc00", 5);
+
+        // zenith
+        drawCircle(context, projector.sphericalAzimuthalToScreenCoordinates(0, 90), "#9999ff", 3);
+        // nadir
+        drawCircle(context, projector.sphericalAzimuthalToScreenCoordinates(0, -90), "#88cc00", 3);
     }
 
     // -----------------------------------------------------------------------
 
     function drawEquator(context)
     {
+        var offset = -longitudeLookOffset - (dateTime.meanSiderealTime / 24) * 360;
         var coordinates = [];
-        for (var skyLongitude = 0; skyLongitude <= 360; skyLongitude += 10)
+        for (var skyLongitude = -fieldOfView; skyLongitude <= fieldOfView; skyLongitude += 15)
         {
-            coordinates.push(projector.sphericalEquatorialToScreenCoordinates(skyLongitude, 0));
+            coordinates.push(projector.sphericalEquatorialToScreenCoordinates(skyLongitude + offset, 0));
         }
         context.globalAlpha = 0.3;
         context.lineWidth = 4;
@@ -198,10 +202,11 @@ Canvas
 
     function drawEcliptic(context)
     {
+        var offset = -longitudeLookOffset - (dateTime.meanSiderealTime / 24) * 360;
         var coordinates = [];
-        for (var skyLongitude = 0; skyLongitude <= 360; skyLongitude += 10)
+        for (var skyLongitude = -fieldOfView; skyLongitude <= fieldOfView; skyLongitude += 15)
         {
-            coordinates.push(projector.sphericalEclipticToScreenCoordinates(skyLongitude, 0));
+            coordinates.push(projector.sphericalEclipticToScreenCoordinates(skyLongitude + offset, 0));
         }
         context.globalAlpha = 0.3;
         context.lineWidth = 4;
@@ -232,7 +237,6 @@ Canvas
         var context = getContext("2d");
         context.reset();
         context.translate(width / 2.0, height / 2.0);
-
         context.font = "bold 12pt sans-serif";
         context.textAlign = "center";
 
@@ -248,12 +252,11 @@ Canvas
         context.globalAlpha = 1.0;
 
         // stars
-        var maxMagnitude = starConfigs[0].magnitude;
-        for (var starIdx = 0; starIdx < starConfigs.length; ++starIdx)
+        for (var starIdx = 0; starIdx < galaxy.stars.length; ++starIdx)
         {
-            var starConfig = starConfigs[starIdx];
-            var projectedStarCoordinates = projector.sphericalEclipticToScreenCoordinates(starConfig.raDegrees, starConfig.declination);
-            drawCircle(context, projectedStarCoordinates, "yellow", 4 * (1.0 - (starConfig.magnitude - maxMagnitude) / 6));
+            var star = galaxy.stars[starIdx];
+            var projectedStarCoordinates = projector.sphericalEclipticToScreenCoordinates(star.rightAscensionDegrees, star.declination);
+            drawCircle(context, projectedStarCoordinates, "yellow", star.displayedSize);
         }
 
         // sun
@@ -383,6 +386,10 @@ Canvas
         id: solarSystem
 
         showDwarfPlanets: settings.showDwarfPlanets
+    }
+    Galaxy
+    {
+        id: galaxy
     }
     Projector
     {

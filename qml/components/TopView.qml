@@ -91,6 +91,7 @@ Canvas
 
     function updateSimplifiedOrbitRadiuses()
     {
+        // calculate number of visible bodies
         var visibleBodyCount = 0;
         for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)
         {
@@ -100,6 +101,8 @@ Canvas
                 ++visibleBodyCount;
             }
         }
+
+        // calculate new simplified radiuses
         var radiusIncrement = radiusRange / (visibleBodyCount - 1);
         var visibleBodyIdx = 0;
         for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)

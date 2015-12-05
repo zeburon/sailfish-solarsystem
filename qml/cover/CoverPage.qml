@@ -26,7 +26,7 @@ CoverBackground
 
     function update()
     {
-        solarSystem.dateTime.setToday();
+        solarSystem.dateTime.setTodaysDate();
         topView.update(solarSystem.dateTime);
     }
 

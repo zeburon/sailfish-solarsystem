@@ -32,7 +32,7 @@ Item
         // handle accept event
         dialog.accepted.connect(function()
         {
-            dateTime.set(dialog.date.getYear(), dialog.date.getMonth(), dialog.date.getDay());
+            dateTime.setDate(dialog.date.getFullYear(), dialog.date.getMonth() + 1, dialog.date.getDate());
             dateSelected();
         })
     }
