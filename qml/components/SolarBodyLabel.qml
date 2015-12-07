@@ -5,6 +5,7 @@ Item
 {
     property SolarBody solarBody
     property real yOffset
+    property real yOffsetScale: 1.0
 
     // -----------------------------------------------------------------------
 
@@ -19,6 +20,6 @@ Item
         text: solarBody.name
         color: Theme.secondaryHighlightColor
         font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
-        anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter; verticalCenterOffset: yOffset }
+        anchors { horizontalCenter: parent.horizontalCenter; top: parent.verticalCenter; topMargin: yOffset * yOffsetScale }
     }
 }

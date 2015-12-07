@@ -56,7 +56,7 @@ Canvas
             solarBodyPainters.push(painter);
 
             var planetImage = planetImageComponent.createObject(items, {"solarBody": solarBody, "painter": painter});
-            var planetLabel = planetLabelComponent.createObject(items, {"solarBody": solarBody, "painter": painter, "yOffset": planetImage.imageHeight * 0.75});
+            var planetLabel = planetLabelComponent.createObject(items, {"solarBody": solarBody, "painter": painter, "yOffset": planetImage.imageHeight * 0.3});
         }
     }
 
@@ -224,10 +224,7 @@ Canvas
             drawLabel(context, projector.sphericalAzimuthalToScreenCoordinates(skyLongitude, 0), "white", direction);
         }
         context.globalAlpha = 0.6;
-
-        // zenith
         drawCircle(context, projector.sphericalAzimuthalToScreenCoordinates(0, 90), "#9999ff", 3);
-        // nadir
         drawCircle(context, projector.sphericalAzimuthalToScreenCoordinates(0, -90), "#88cc00", 3);
     }
 
@@ -306,6 +303,7 @@ Canvas
         context.font = "bold 12pt sans-serif";
         context.textAlign = "center";
 
+        // enable clipping
         context.beginPath();
         context.arc(width / 2.0, height / 2.0, visibleRadius, 0, Math.PI * 2, false);
         context.clip();
@@ -313,6 +311,7 @@ Canvas
 
         projector.update();
 
+        // helper lines
         if (showAzimuth)
             drawAzimuth(context);
         if (showEquator)
@@ -320,12 +319,12 @@ Canvas
         if (showEcliptic)
             drawEcliptic(context);
 
+        // background
         context.globalAlpha = 0.3;
         context.lineWidth = 4;
         var gradient = context.createRadialGradient(0, 0, visibleRadius / 2, 0, 0, visibleRadius);
         gradient.addColorStop(0, "black");
         gradient.addColorStop(1, "#005ddb");
-
         context.beginPath();
         context.arc(0, 0, visibleRadius, 0, 2 * Math.PI, false);
         context.fillStyle = gradient;
@@ -333,9 +332,8 @@ Canvas
         context.strokeStyle = "#999999";
         context.stroke();
 
-        context.globalAlpha = 1.0;
-
         // stars
+        context.globalAlpha = 1.0;
         for (var starIdx = 0; starIdx < galaxy.stars.length; ++starIdx)
         {
             var star = galaxy.stars[starIdx];
@@ -386,6 +384,7 @@ Canvas
                     return;
                 }
 
+                // calculate geocentric coordinates
                 var dx = solarBody.orbitalElements.x;
                 var dy = solarBody.orbitalElements.y;
                 var dz = solarBody.orbitalElements.z;
@@ -400,6 +399,7 @@ Canvas
                 dy -= earth.orbitalElements.y;
                 dz -= earth.orbitalElements.z;
 
+                // calculate geocentric longitude
                 var newLongitudeFromEarth = Math.atan2(dy, dx) * 180 / Math.PI;
                 if (newLongitudeFromEarth < 0.0)
                 {
@@ -407,6 +407,7 @@ Canvas
                 }
                 longitudeFromEarth = newLongitudeFromEarth;
 
+                // apply new values
                 var projectedCoordinates = projector.rectangularEclipticToScreenCoordinates(dx, dy, dz);
                 displayedX = projectedCoordinates.x + root.width / 2;
                 displayedY = projectedCoordinates.y + root.height / 2;
@@ -415,6 +416,7 @@ Canvas
                 displayedRotation = projector.getImageRotation(longitudeFromEarth, solarBody.orbitalElements.latitude);
                 visible = projectedCoordinates.z > 0;
 
+                // calulate new phase
                 if (solarBody.orbitalElements.distance < solarSystem.earth.orbitalElements.distance)
                 {
                     var age = (solarBody.orbitalElements.longitude - root.sunLongitude + 180) % 360.0;
@@ -464,6 +466,7 @@ Canvas
             z: painter.displayedZ + 1
             visible: painter.visible && root.showLabels
             opacity: painter.displayedOpacity
+            yOffsetScale: root.currentZoom
         }
     }
 

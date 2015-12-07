@@ -59,7 +59,7 @@ Canvas
 
             var bodyZ = solarSystem.solarBodies.length - bodyIdx;
             var image = solarBodyImageComponent.createObject(images, {"solarBody": solarBody, "painter": painter, "z": bodyZ});
-            var label = solarBodyLabelComponent.createObject(labels, {"solarBody": solarBody, "painter": painter, "z": bodyZ, "yOffset": image.imageHeight * 0.75});
+            var label = solarBodyLabelComponent.createObject(labels, {"solarBody": solarBody, "painter": painter, "z": bodyZ, "yOffset": image.imageHeight * 0.3});
         }
         // link to parent instances
         for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)
