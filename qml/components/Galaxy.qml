@@ -310,11 +310,14 @@ QtObject
 
     Component.onCompleted:
     {
+        var minMagnitude = stars[stars.length - 1].magnitude;
         var maxMagnitude = stars[0].magnitude;
+        var range = minMagnitude - maxMagnitude;
+
         for (var starIdx = 0; starIdx < stars.length; ++starIdx)
         {
             var star = stars[starIdx];
-            star.displayedSize = 4 * (1.0 - (star.magnitude - maxMagnitude) / 6);
+            star.displayedSize = 4 * (1.0 - 0.75 * (star.magnitude - maxMagnitude) / range);
         }
     }
 }

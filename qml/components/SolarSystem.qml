@@ -6,6 +6,7 @@ import harbour.solarsystem.DateTime 1.0
 QtObject
 {
     property DateTime dateTime: DateTime { }
+    property bool valid: dateTime.valid
 
     // -----------------------------------------------------------------------
 

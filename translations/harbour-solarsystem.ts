@@ -33,7 +33,7 @@
     </message>
 </context>
 <context>
-    <name>CoverPage</name>
+    <name>MainCover</name>
     <message>
         <source>Distance to %1</source>
         <translation type="unfinished"></translation>

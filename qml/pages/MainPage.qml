@@ -156,7 +156,7 @@ Page
                     id: zoomImage
 
                     anchors { left: parent.left; leftMargin: Theme.paddingLarge; verticalCenter: parent.verticalCenter }
-                    visible: !settings.simplifiedOrbits && topView.visible
+                    visible: (!settings.simplifiedOrbits && topView.visible) || skyView.visible
                     source: settings.zoomedOut ? "../gfx/zoom_in.png" : "../gfx/zoom_out.png"
                 }
                 Text
@@ -248,6 +248,8 @@ Page
                     showAzimuth: settings.showAzimuth
                     showEcliptic: settings.showEcliptic
                     showEquator: settings.showEquator
+                    zoomedOut: settings.zoomedOut
+                    animateZoom: app.initialized
                     Component.onCompleted:
                     {
                         showHelpText.connect(page.showHelpText);

@@ -22,7 +22,6 @@ SOURCES += src/harbour-solarsystem.cpp \
     src/datetime.cpp
 
 OTHER_FILES += qml/harbour-solarsystem.qml \
-    qml/cover/CoverPage.qml \
     rpm/harbour-solarsystem.changes.in \
     rpm/harbour-solarsystem.spec \
     rpm/harbour-solarsystem.yaml \
@@ -94,5 +93,6 @@ DISTFILES += \
     qml/components/SideSolarBodyImage.qml \
     qml/components/SkySolarBodyImage.qml \
     qml/components/Galaxy.qml \
-    qml/components/Star.qml
+    qml/components/Star.qml \
+    qml/cover/MainCover.qml
 

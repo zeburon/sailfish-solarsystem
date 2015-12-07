@@ -10,7 +10,8 @@ CoverBackground
 
     // -----------------------------------------------------------------------
 
-    property bool coverActive: status === Cover.Active
+    property bool active: status === Cover.Active
+    property bool initialized: false
     property SolarSystem solarSystem: topView.solarSystem
 
     // -----------------------------------------------------------------------
@@ -19,6 +20,7 @@ CoverBackground
     {
         topView.init();
         solarSystem.dateTime.signalValueChanged.connect(updatePlanetDistanceLabel);
+        initialized = true;
         update();
     }
 
@@ -26,6 +28,9 @@ CoverBackground
 
     function update()
     {
+        if (!initialized)
+            return;
+
         solarSystem.dateTime.setTodaysDate();
         topView.update(solarSystem.dateTime);
     }
@@ -95,16 +100,20 @@ CoverBackground
 
     // -----------------------------------------------------------------------
 
-    onCoverActiveChanged:
+    onActiveChanged:
     {
-        if (coverActive)
+        if (active)
+        {
             update();
+        }
     }
 
     // -----------------------------------------------------------------------
 
     Column
     {
+        id: column
+
         anchors { fill: parent }
         spacing: 0
 
@@ -112,8 +121,8 @@ CoverBackground
         {
             id: topView
 
-            width: parent.width
-            height: width
+            width: column.width
+            height: column.width
             orbitThickness: 2
             showOrbits: settings.showOrbits
             showLabels: false

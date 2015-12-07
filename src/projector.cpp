@@ -197,7 +197,7 @@ QVector3D Projector::toEyeCoordinates(const QVector3D &coordinates) const
 
 QVector3D Projector::eyeToScreenCoordinates(const QVector3D &eye_coordinates) const
 {
-    float distance = m_zoom / eye_coordinates.y();
+    float distance = qAbs(eye_coordinates.y()) < 0.001f ? 0.0f : m_zoom / eye_coordinates.y();
 
     QVector3D normalized_coordinates;
     normalized_coordinates.setX(distance * eye_coordinates.x() / m_field_of_view_tan);
@@ -205,17 +205,16 @@ QVector3D Projector::eyeToScreenCoordinates(const QVector3D &eye_coordinates) co
     float normalized_length = qCos(normalized_coordinates.length());
 
     QVector3D projected_coordinates;
-    if (normalized_length < 0.3f)
-    {
-        projected_coordinates.setZ(-1.0f);
-    }
-    else
+    if (normalized_length >= 0.3f && distance)
     {
         float k = (1.0f * m_zoom) * (1.0f + normalized_length);
         projected_coordinates.setX(m_projected_size * normalized_coordinates.x() * k);
         projected_coordinates.setY(-m_projected_size * normalized_coordinates.z() * k);
         projected_coordinates.setZ(eye_coordinates.y());
     }
-
+    else
+    {
+        projected_coordinates.setZ(-1.0f);
+    }
     return projected_coordinates;
 }

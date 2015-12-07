@@ -2,35 +2,43 @@ import QtQuick 2.0
 import harbour.solarsystem.Projector 1.0
 import harbour.solarsystem.DateTime 1.0
 
+import "../globals.js" as Globals
+
 Canvas
 {
     id: root
 
     // -----------------------------------------------------------------------
 
+    // settings
     property bool showLabels: true
     property bool showAzimuth: true
     property bool showEquator: true
     property bool showEcliptic: true
+    property bool zoomedOut: false
+    property bool animateZoom: false
 
-    property alias solarSystem: solarSystem
-    property alias earth: solarSystem.earth
-    property var solarBodyPainters: []
-
+    // view-related properties
     property real latitude: 47.066
     property real longitude: 15.433
+    property real fieldOfView: zoomedOut ? 90 : 120
+    property real currentZoom: zoomedOut ? 0.5 : 1.0
+    property real visibleRadius: 1.175 * Math.sqrt(2.0 * Math.pow(Math.max(width, height), 2.0)) * currentZoom / 2.0
+    property real visibleRadiusFadeStart: visibleRadius - 40
 
-    property real fieldOfView: 120
-    property real currentZoom: 1.0
-
-    property real sunLongitude
-
+    // mouse-look properties
     property real longitudeLookOffset: 0.01
     property real latitudeLookOffset: 40
     property int mouseXStart
     property int mouseLongitudeOffsetStart
     property int mouseYStart
     property int mouseLatitudeOffsetStart
+
+    // solar body information
+    property alias solarSystem: solarSystem
+    property alias earth: solarSystem.earth
+    property real sunLongitude
+    property var solarBodyPainters: []
 
     // -----------------------------------------------------------------------
 
@@ -79,6 +87,7 @@ Canvas
     {
         if (coordinates.z > 0)
         {
+            context.globalAlpha = 0.6 * getOpacity(coordinates.x, coordinates.y);
             drawCircle(context, coordinates, color, 5);
             context.fillStyle = color;
             context.fillText(label,  coordinates.x, coordinates.y - 5);
@@ -89,24 +98,57 @@ Canvas
 
     function drawPath(context, coordinates)
     {
-        var drawing = false;
+        var lastX = 0, lastY = 0, dX = 0, dY = 0, segmentLength = 0;
         for (var idx = 0; idx < coordinates.length; ++idx)
         {
             var point = coordinates[idx];
-            if (point.z > 0)
+            if (point.z > 0.0 && point.length() < visibleRadius)
             {
-                if (drawing)
+                dX = point.x - lastX;
+                dY = point.y - lastY;
+                if (segmentLength === 1)
+                {
+                    if (idx > 1)
+                    {
+                        var positionOnBorder = getPositionOnBorder(point.x, point.y, -dX, -dY);
+                        context.moveTo(positionOnBorder[0], positionOnBorder[1]);
+                    }
+                    else
+                    {
+                        context.moveTo(lastX, lastY);
+                    }
+                }
+                if (segmentLength >= 1)
+                {
                     context.lineTo(point.x, point.y);
-                else
-                    context.moveTo(point.x, point.y);
-
-                drawing = true;
+                }
+                lastX = point.x;
+                lastY = point.y;
+                ++segmentLength;
             }
             else
             {
-                drawing = false;
+                if (segmentLength >= 1)
+                {
+                    var positionOnBorder = getPositionOnBorder(lastX, lastY, dX, dY);
+                    context.lineTo(positionOnBorder[0], positionOnBorder[1]);
+                }
+                segmentLength = 0;
             }
         }
+    }
+
+    // -----------------------------------------------------------------------
+
+    function getPositionOnBorder(xPos, yPos, dX, dY)
+    {
+        var newX = xPos + dX;
+        var newY = yPos + dY;
+        var originalLength = Math.sqrt(xPos * xPos + yPos * yPos);
+        var newLength = Math.sqrt(newX * newX + newY * newY);
+
+        var factor = (visibleRadius - originalLength) / (newLength - originalLength);
+        return [xPos + factor * dX, yPos + factor * dY];
     }
 
     // -----------------------------------------------------------------------
@@ -115,52 +157,60 @@ Canvas
     {
         var skyLongitude, skyLatitude;
 
-        context.globalAlpha = 0.3;
         context.lineWidth = 2;
 
         // upper hemisphere
         context.strokeStyle = "#9999ff";
-        for (skyLongitude = 0; skyLongitude < 180; skyLongitude += 90)
+        context.globalAlpha = 0.3 * (1.0 - Math.max(0.0, Math.min(1.0, (latitudeLookOffset / -50.0))));
+        if (context.globalAlpha > 0.0)
         {
-            var upperCoordinates = [];
-            for (skyLatitude = 0; skyLatitude <= 180; skyLatitude += 10)
+            for (skyLongitude = 0; skyLongitude < 180; skyLongitude += 90)
             {
-                upperCoordinates.push(projector.sphericalAzimuthalToScreenCoordinates(skyLongitude, skyLatitude));
+                var upperCoordinates = [];
+                for (skyLatitude = 0; skyLatitude <= 180; skyLatitude += 10)
+                {
+                    upperCoordinates.push(projector.sphericalAzimuthalToScreenCoordinates(skyLongitude, skyLatitude));
+                }
+                context.beginPath();
+                drawPath(context, upperCoordinates);
+                context.stroke();
             }
-            context.beginPath();
-            drawPath(context, upperCoordinates);
-            context.stroke();
         }
 
         // lower hemisphere
         context.strokeStyle = "#88cc00";
-        for (skyLongitude = 0; skyLongitude < 180; skyLongitude += 90)
+        context.globalAlpha = 0.3 * (1.0 - Math.max(0.0, Math.min(1.0, (latitudeLookOffset / 50.0))));
+        if (context.globalAlpha > 0.0)
         {
-            var lowerCoordinates = [];
-            for (skyLatitude = 0; skyLatitude <= 180; skyLatitude += 10)
+            for (skyLongitude = 0; skyLongitude < 180; skyLongitude += 90)
             {
-                lowerCoordinates.push(projector.sphericalAzimuthalToScreenCoordinates(skyLongitude, -skyLatitude));
+                var lowerCoordinates = [];
+                for (skyLatitude = 0; skyLatitude <= 180; skyLatitude += 10)
+                {
+                    lowerCoordinates.push(projector.sphericalAzimuthalToScreenCoordinates(skyLongitude, -skyLatitude));
+                }
+                context.beginPath();
+                drawPath(context, lowerCoordinates);
+                context.stroke();
             }
-            context.beginPath();
-            drawPath(context, lowerCoordinates);
-            context.stroke();
         }
 
         // horizon
-        context.globalAlpha = 0.4;
+        context.globalAlpha = 0.4 * (1.0 - Math.max(0.0, Math.min(1.0, (Math.abs(latitudeLookOffset) / 80.0))));
         context.lineWidth = 4;
         context.strokeStyle = "white";
         var equatorCoordinates = [];
-        for (skyLongitude = -fieldOfView / 2; skyLongitude <= fieldOfView / 2; skyLongitude += 10)
+        var longitudeOffset = longitudeLookOffset - 90;
+        var longitudeRange = Math.min(180, (fieldOfView / 1) / currentZoom);
+        for (skyLongitude = -longitudeRange; skyLongitude <= longitudeRange; skyLongitude += 10)
         {
-            equatorCoordinates.push(projector.sphericalAzimuthalToScreenCoordinates(skyLongitude + longitudeLookOffset - 90, 0));
+            equatorCoordinates.push(projector.sphericalAzimuthalToScreenCoordinates(skyLongitude + longitudeOffset, 0));
         }
         context.beginPath();
         drawPath(context, equatorCoordinates);
         context.stroke();
 
         // labels
-        context.globalAlpha = 0.6;
         for (skyLongitude = 0; skyLongitude < 360; skyLongitude += 90)
         {
             var direction;
@@ -173,6 +223,7 @@ Canvas
             }
             drawLabel(context, projector.sphericalAzimuthalToScreenCoordinates(skyLongitude, 0), "white", direction);
         }
+        context.globalAlpha = 0.6;
 
         // zenith
         drawCircle(context, projector.sphericalAzimuthalToScreenCoordinates(0, 90), "#9999ff", 3);
@@ -184,11 +235,12 @@ Canvas
 
     function drawEquator(context)
     {
-        var offset = -longitudeLookOffset - (dateTime.meanSiderealTime / 24) * 360;
         var coordinates = [];
-        for (var skyLongitude = -fieldOfView; skyLongitude <= fieldOfView; skyLongitude += 15)
+        var longitudeOffset = -longitudeLookOffset - (dateTime.meanSiderealTime / 24) * 360;
+        var longitudeRange = Math.min(180, fieldOfView / currentZoom);
+        for (var skyLongitude = -longitudeRange; skyLongitude <= longitudeRange; skyLongitude += 10)
         {
-            coordinates.push(projector.sphericalEquatorialToScreenCoordinates(skyLongitude + offset, 0));
+            coordinates.push(projector.sphericalEquatorialToScreenCoordinates(skyLongitude + longitudeOffset, 0));
         }
         context.globalAlpha = 0.3;
         context.lineWidth = 4;
@@ -202,11 +254,12 @@ Canvas
 
     function drawEcliptic(context)
     {
-        var offset = -longitudeLookOffset - (dateTime.meanSiderealTime / 24) * 360;
         var coordinates = [];
-        for (var skyLongitude = -fieldOfView; skyLongitude <= fieldOfView; skyLongitude += 15)
+        var longitudeOffset = -longitudeLookOffset - (dateTime.meanSiderealTime / 24) * 360;
+        var longitudeRange = Math.min(180, fieldOfView / currentZoom);
+        for (var skyLongitude = -longitudeRange; skyLongitude <= longitudeRange; skyLongitude += 10)
         {
-            coordinates.push(projector.sphericalEclipticToScreenCoordinates(skyLongitude + offset, 0));
+            coordinates.push(projector.sphericalEclipticToScreenCoordinates(skyLongitude + longitudeOffset, 0));
         }
         context.globalAlpha = 0.3;
         context.lineWidth = 4;
@@ -214,6 +267,13 @@ Canvas
         drawPath(context, coordinates);
         context.strokeStyle = "cyan";
         context.stroke();
+    }
+
+    // -----------------------------------------------------------------------
+
+    function getOpacity(xPos, yPos)
+    {
+        return Math.max(0.0, 1.0 - Math.max(0.0, (Math.sqrt(xPos * xPos + yPos * yPos) - visibleRadiusFadeStart) / (visibleRadius - visibleRadiusFadeStart)));
     }
 
     // -----------------------------------------------------------------------
@@ -232,13 +292,24 @@ Canvas
             generateHelpText();
         }
     }
+    onCurrentZoomChanged:
+    {
+        requestPaint();
+    }
     onPaint:
     {
+        if (!solarSystem.dateTime.valid)
+            return;
+
         var context = getContext("2d");
         context.reset();
-        context.translate(width / 2.0, height / 2.0);
         context.font = "bold 12pt sans-serif";
         context.textAlign = "center";
+
+        context.beginPath();
+        context.arc(width / 2.0, height / 2.0, visibleRadius, 0, Math.PI * 2, false);
+        context.clip();
+        context.translate(width / 2.0, height / 2.0);
 
         projector.update();
 
@@ -249,6 +320,19 @@ Canvas
         if (showEcliptic)
             drawEcliptic(context);
 
+        context.globalAlpha = 0.3;
+        context.lineWidth = 4;
+        var gradient = context.createRadialGradient(0, 0, visibleRadius / 2, 0, 0, visibleRadius);
+        gradient.addColorStop(0, "black");
+        gradient.addColorStop(1, "#005ddb");
+
+        context.beginPath();
+        context.arc(0, 0, visibleRadius, 0, 2 * Math.PI, false);
+        context.fillStyle = gradient;
+        context.fill();
+        context.strokeStyle = "#999999";
+        context.stroke();
+
         context.globalAlpha = 1.0;
 
         // stars
@@ -256,7 +340,7 @@ Canvas
         {
             var star = galaxy.stars[starIdx];
             var projectedStarCoordinates = projector.sphericalEclipticToScreenCoordinates(star.rightAscensionDegrees, star.declination);
-            drawCircle(context, projectedStarCoordinates, "yellow", star.displayedSize);
+            drawCircle(context, projectedStarCoordinates, "yellow", star.displayedSize * root.currentZoom);
         }
 
         // sun
@@ -265,16 +349,15 @@ Canvas
         sun.y = projected.y + height / 2;
         sun.z = 1000 - projected.z;
         sun.visible = projected.z > 0;
-        sunLongitude = (solarSystem.earth.orbitalElements.longitude + 180) % 360;
+        sun.opacity = getOpacity(projected.x, projected.y);
         sun.rotation = projector.getImageRotation(sunLongitude, 0);
+        sunLongitude = (solarSystem.earth.orbitalElements.longitude + 180) % 360;
 
         // planets
         for (var infoIdx = 0; infoIdx < solarBodyPainters.length; ++infoIdx)
         {
             solarBodyPainters[infoIdx].updateCoordinates();
         }
-
-        items.visible = true;
     }
 
     // -----------------------------------------------------------------------
@@ -291,6 +374,7 @@ Canvas
             property real displayedY
             property real displayedZ
             property real displayedRotation
+            property real displayedOpacity
             property real displayedPhase: 0.5
             property real longitudeFromEarth
 
@@ -323,12 +407,13 @@ Canvas
                 }
                 longitudeFromEarth = newLongitudeFromEarth;
 
-                var projectedCoordinates = projector.rectangularEclipticToScreenCoordinates(dx, dy, dz)
+                var projectedCoordinates = projector.rectangularEclipticToScreenCoordinates(dx, dy, dz);
                 displayedX = projectedCoordinates.x + root.width / 2;
                 displayedY = projectedCoordinates.y + root.height / 2;
                 displayedZ = 1000 - projectedCoordinates.z;
-                visible = projectedCoordinates.z > 0;
+                displayedOpacity = getOpacity(projectedCoordinates.x, projectedCoordinates.y);
                 displayedRotation = projector.getImageRotation(longitudeFromEarth, solarBody.orbitalElements.latitude);
+                visible = projectedCoordinates.z > 0;
 
                 if (solarBody.orbitalElements.distance < solarSystem.earth.orbitalElements.distance)
                 {
@@ -360,6 +445,8 @@ Canvas
             z: painter.displayedZ
             visible: painter.visible
             rotation: painter.displayedRotation
+            scale: root.currentZoom
+            opacity: painter.displayedOpacity
             shadowPhase: painter.displayedPhase
             useSmallImage: !solarBody.parentSolarBody
         }
@@ -376,6 +463,7 @@ Canvas
             y: painter.displayedY
             z: painter.displayedZ + 1
             visible: painter.visible && root.showLabels
+            opacity: painter.displayedOpacity
         }
     }
 
@@ -411,13 +499,14 @@ Canvas
         id: items
 
         anchors { fill: parent }
-        visible: false
+        visible: solarSystem.valid
 
         Sun
         {
             id: sun
 
             animated: true
+            scale: root.currentZoom
             visible: z > 0
         }
     }
@@ -444,5 +533,18 @@ Canvas
         }
         preventStealing: true
         propagateComposedEvents: false
+    }
+
+    Behavior on currentZoom
+    {
+        enabled: root.animateZoom
+
+        NumberAnimation { easing.type: Easing.InOutQuart; duration: Globals.ZOOM_ANIMATION_DURATION_MS }
+    }
+    Behavior on fieldOfView
+    {
+        enabled: root.animateZoom
+
+        NumberAnimation { easing.type: Easing.InOutQuart; duration: Globals.ZOOM_ANIMATION_DURATION_MS }
     }
 }

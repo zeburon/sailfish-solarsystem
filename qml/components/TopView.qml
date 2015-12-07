@@ -71,8 +71,8 @@ Canvas
                 painter.parentPainter = solarBodyPainters[solarSystem.getIndex(parentSolarBody)];
             }
         }
-        initialized = true;
         updateSimplifiedOrbitRadiuses();
+        initialized = true;
     }
 
     // -----------------------------------------------------------------------
@@ -128,9 +128,9 @@ Canvas
         var closestPainter;
         var minDistance = 99999;
 
-        for (var bodyIdx = 0; bodyIdx < images.children.length; ++bodyIdx)
+        for (var imageIdx = 0; imageIdx < images.children.length; ++imageIdx)
         {
-            var image = images.children[bodyIdx];
+            var image = images.children[imageIdx];
             if (image.scale < 0.4 || image.painter.parentPainter)
                 continue;
 
@@ -197,13 +197,19 @@ Canvas
     }
     onPaint:
     {
+        if (!solarSystem.dateTime.valid)
+            return;
+
         var context = getContext("2d");
         context.reset();
 
-        for (var bodyIdx = 0; bodyIdx < solarBodyPainters.length; ++bodyIdx)
+        if (!showOrbits)
+            return;
+
+        for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)
         {
-            var painter = solarBodyPainters[bodyIdx];
-            if (painter.solarBody.visible && !painter.parentInfo)
+            var painter = solarBodyPainters[painterIdx];
+            if (painter.solarBody.visible && !painter.parentPainter)
             {
                 var rotation = -painter.orbitRotation;
                 var offset = -painter.orbitOffset * root.currentZoom;
@@ -329,14 +335,15 @@ Canvas
 
         opacity: root.imageOpacity
         anchors { centerIn: parent }
+        visible: solarSystem.valid
         z: 2
     }
     Item
     {
         id: labels
 
-        visible: root.showLabels
         anchors { centerIn: parent }
+        visible: root.showLabels && solarSystem.valid
         z: 3
     }
 

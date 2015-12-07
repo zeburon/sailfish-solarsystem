@@ -27,6 +27,7 @@ class DateTime : public QObject
 
     Q_PROPERTY(QString string READ getString WRITE setString NOTIFY signalStringChanged)
     Q_PROPERTY(QDateTime value READ getValue NOTIFY signalValueChanged)
+    Q_PROPERTY(bool valid READ isValid NOTIFY signalValidChanged)
 
 public:
     explicit DateTime(QObject *parent = 0);
@@ -56,6 +57,7 @@ public:
     void setString(const QString &string);
     QString getString() const;
     const QDateTime &getValue() const { return m_date_time; }
+    bool isValid() const { return m_date_time.isValid(); }
 
 signals:
     void signalYearChanged();
@@ -72,6 +74,7 @@ signals:
     void signalMeanSiderealTimeChanged();
     void signalStringChanged();
     void signalValueChanged();
+    void signalValidChanged();
 
 private:
     void setDateTimeAndUpdate(const QDateTime &date_time);

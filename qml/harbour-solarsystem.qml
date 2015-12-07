@@ -16,7 +16,7 @@ ApplicationWindow
 
     // -----------------------------------------------------------------------
 
-    cover: coverPage
+    cover: mainCover
     initialPage: mainPage
 
     // -----------------------------------------------------------------------
@@ -26,7 +26,7 @@ ApplicationWindow
         // load and apply settings
         settings.loadValues();
         mainPage.init();
-        coverPage.init();
+        mainCover.init();
         settingsPage.init();
         settings.startStoringValueChanges();
         initialized = true;
@@ -47,9 +47,9 @@ ApplicationWindow
         id: settings
     }
 
-    CoverPage
+    MainCover
     {
-        id: coverPage
+        id: mainCover
     }
 
     MainPage

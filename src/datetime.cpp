@@ -100,7 +100,12 @@ void DateTime::setDateTimeAndUpdate(const QDateTime &date_time)
     if (date_time == m_date_time)
         return;
 
+    bool was_valid = m_date_time.isValid();
     m_date_time = date_time;
+    if (!was_valid)
+    {
+        emit signalValidChanged();
+    }
 
     int year = date_time.date().year();
     if (year != m_year)
