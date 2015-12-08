@@ -13,7 +13,6 @@ Page
     property SolarSystem solarSystem
     property bool active: status === PageStatus.Active
 
-    // properties used by PlanetImage items
     property int solarBodyImageSize: column.width / (solarSystem.visiblePlanetCount + 1)
     property var solarBodyDistanceItems: []
 
@@ -137,13 +136,13 @@ Page
         {
             title: qsTr("Planet Distances")
         }
-        DateDisplay
+        DateTimeDisplay
         {
             width: column.width
             dateTime: solarSystem.dateTime
             Component.onCompleted:
             {
-                dateSelected.connect(page.updateDistances);
+                dateTimeSelected.connect(page.updateDistances);
             }
         }
 

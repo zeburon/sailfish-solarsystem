@@ -37,7 +37,6 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/storage.js \
     qml/gfx/shadow2.png \
     qml/globals.js \
-    qml/components/DateDisplay.qml \
     qml/pages/SettingsPage.qml \
     qml/components/Settings.qml \
     qml/components/PlayButton.qml \
@@ -94,5 +93,6 @@ DISTFILES += \
     qml/components/SkySolarBodyImage.qml \
     qml/components/Galaxy.qml \
     qml/components/Star.qml \
-    qml/cover/MainCover.qml
+    qml/cover/MainCover.qml \
+    qml/components/DateTimeDisplay.qml
 

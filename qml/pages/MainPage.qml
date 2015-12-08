@@ -264,10 +264,11 @@ Page
                 }
             }
 
-            // labels displaying the selected date
-            DateDisplay
+            // labels displaying the selected date + time
+            DateTimeDisplay
             {
                 dateTime: page.dateTime
+                showTime: settings.showSkyView
                 width: column.width
             }
 
