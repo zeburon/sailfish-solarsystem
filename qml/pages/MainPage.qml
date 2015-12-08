@@ -243,16 +243,6 @@ Page
                         }
                     }
                 }
-                MouseArea
-                {
-                    anchors { fill: parent }
-                    enabled: topView.visible
-                    onClicked:
-                    {
-                        var topViewCoordinates = parent.mapToItem(topView, mouse.x, mouse.y);
-                        topView.click(topViewCoordinates.x, topViewCoordinates.y);
-                    }
-                }
                 SkyView
                 {
                     id: skyView
@@ -269,6 +259,8 @@ Page
                     animateZoom: app.initialized && visible
                     Component.onCompleted:
                     {
+                        clickedOnEmptySpace.connect(page.toggleZoom);
+                        clickedOnPlanet.connect(page.showPlanetDetailsPage);
                         showHelpText.connect(page.showHelpText);
                     }
                     onVisibleChanged:

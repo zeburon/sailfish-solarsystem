@@ -33,6 +33,7 @@ Canvas
     property int mouseLongitudeOffsetStart
     property int mouseYStart
     property int mouseLatitudeOffsetStart
+    property bool mouseDragged: false
 
     // solar body information
     property alias solarSystem: solarSystem
@@ -41,9 +42,12 @@ Canvas
     property alias mars: solarSystem.mars
     property real sunLongitude
     property var solarBodyPainters: []
+    property var solarBodyImages: []
 
     // -----------------------------------------------------------------------
 
+    signal clickedOnPlanet(var solarBody)
+    signal clickedOnEmptySpace()
     signal showHelpText(string text)
     signal repaintImages()
 
@@ -58,9 +62,10 @@ Canvas
             var painter = solarBodyPainter.createObject(null, {"solarBody": solarBody});
             solarBodyPainters.push(painter);
 
-            var planetImage = planetImageComponent.createObject(items, {"solarBody": solarBody, "painter": painter});
-            repaintImages.connect(planetImage.requestPaint);
-            var planetLabel = planetLabelComponent.createObject(items, {"solarBody": solarBody, "painter": painter, "yOffset": planetImage.imageHeight * 0.3});
+            var image = planetImageComponent.createObject(items, {"solarBody": solarBody, "painter": painter});
+            repaintImages.connect(image.requestPaint);
+            solarBodyImages.push(image);
+            var label = planetLabelComponent.createObject(items, {"solarBody": solarBody, "painter": painter, "yOffset": image.imageHeight * 0.3});
         }
     }
 
@@ -291,6 +296,39 @@ Canvas
     function getOpacity(xPos, yPos)
     {
         return Math.max(0.0, 1.0 - Math.max(0.0, (Math.sqrt(xPos * xPos + yPos * yPos) - visibleRadiusFadeStart) / (visibleRadius - visibleRadiusFadeStart)));
+    }
+
+    // -----------------------------------------------------------------------
+
+    function click(mouseX, mouseY)
+    {
+        var closestPainter;
+        var minDistance = 99999;
+
+        for (var imageIdx = 0; imageIdx < solarBodyImages.length; ++imageIdx)
+        {
+            var image = solarBodyImages[imageIdx];
+            if (!image.visible || image.solarBody.parentSolarBody)
+                continue;
+
+            var dx = image.x - mouseX;
+            var dy = image.y - mouseY;
+            var distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < minDistance && distance < Globals.PLANET_CLICK_AREA_SIZE * currentZoom)
+            {
+                closestPainter = image.painter;
+                minDistance = distance;
+            }
+        }
+
+        if (closestPainter)
+        {
+            clickedOnPlanet(closestPainter.solarBody);
+        }
+        else
+        {
+            clickedOnEmptySpace();
+        }
     }
 
     // -----------------------------------------------------------------------
@@ -581,6 +619,7 @@ Canvas
             mouseYStart = mouse.y;
             mouseLongitudeOffsetStart = longitudeLookOffset;
             mouseLatitudeOffsetStart = latitudeLookOffset;
+            mouseDragged = false;
         }
         onPositionChanged:
         {
@@ -588,8 +627,27 @@ Canvas
             longitudeLookOffset = longitudeLookOffset % 360;
             latitudeLookOffset = mouseLatitudeOffsetStart + (180 / height) * -(mouse.y - mouseYStart);
             latitudeLookOffset = Math.max(-89.0, Math.min(89.0, latitudeLookOffset));
+
+            if (!mouseDragged)
+            {
+                var dx = mouseLongitudeOffsetStart - longitudeLookOffset;
+                var dy = mouseLatitudeOffsetStart - latitudeLookOffset;
+                if (Math.sqrt(dx * dx + dy * dy) > 2)
+                    mouseDragged = true;
+            }
+
             requestPaint();
         }
+        onPressAndHold:
+        {
+            mouseDragged = true;
+        }
+        onClicked:
+        {
+            if (!mouseDragged)
+                root.click(mouse.x, mouse.y);
+        }
+
         preventStealing: true
         propagateComposedEvents: false
     }

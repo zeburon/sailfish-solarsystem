@@ -347,6 +347,15 @@ Canvas
         z: 3
     }
 
+    MouseArea
+    {
+        anchors { fill: parent }
+        onClicked:
+        {
+            root.click(mouse.x, mouse.y);
+        }
+    }
+
     // -----------------------------------------------------------------------
 
     Behavior on currentZoomRealistic
