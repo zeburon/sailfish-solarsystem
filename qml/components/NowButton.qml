@@ -7,20 +7,24 @@ IconButton
 
     // -----------------------------------------------------------------------
 
-    property bool active
-    property int direction
+    property bool active: settings.trackNow
 
     // -----------------------------------------------------------------------
 
-    icon.source: active ? "image://theme/icon-l-pause" : "image://theme/icon-l-play"
-    icon.mirror: direction < 0 ? true : false
+    signal signalActivated()
+
+    // -----------------------------------------------------------------------
+
+    icon.source: "image://theme/icon-m-up"
+    opacity: active ? 1.0 : 0.5
     onClicked:
     {
-        if (!settings.animationEnabled || settings.animationDirection === direction)
-            settings.animationEnabled = !settings.animationEnabled;
-
-        settings.animationDirection = direction;
-        settings.trackNow = false;
+        settings.animationEnabled = false;
+        if (!active)
+        {
+            signalActivated();
+        }
+        settings.trackNow = !settings.trackNow;
     }
 
     // -----------------------------------------------------------------------
@@ -29,11 +33,11 @@ IconButton
     {
         id: activeIndicator
 
-        source: "../gfx/play.png"
+        source: "../gfx/now.png"
         anchors { centerIn: parent }
-        width: parent.width * 1.15
+        width: parent.width * 0.575
         height: width
-        opacity: root.active ? 0.35 : 0.0
+        opacity: root.active ? 0.5 : 0.0
 
         // fade in/out
         Behavior on opacity
@@ -52,7 +56,7 @@ IconButton
             paused: !root.active || fadeAnimation.running
             loops: Animation.Infinite
 
-            NumberAnimation { from: 0; to: 360 * root.direction; duration: 2000 }
+            NumberAnimation { from: 0; to: 360; duration: 20000 }
         }
     }
 }

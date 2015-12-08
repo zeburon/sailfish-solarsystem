@@ -69,6 +69,10 @@
         <source>Switch to Sky View</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Now</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlanetDetailsPage</name>

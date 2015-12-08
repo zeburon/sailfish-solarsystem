@@ -94,5 +94,7 @@ DISTFILES += \
     qml/components/Galaxy.qml \
     qml/components/Star.qml \
     qml/cover/MainCover.qml \
-    qml/components/DateTimeDisplay.qml
+    qml/components/DateTimeDisplay.qml \
+    qml/gfx/now.png \
+    qml/components/NowButton.qml
 

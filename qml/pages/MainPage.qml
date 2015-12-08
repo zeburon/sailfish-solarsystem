@@ -45,6 +45,31 @@ Page
 
     // -----------------------------------------------------------------------
 
+    function setNowAndUpdate()
+    {
+        dateTime.setNow();
+        update();
+    }
+
+    // -----------------------------------------------------------------------
+
+    function reactivate()
+    {
+        if (settings.trackNow)
+        {
+            setNowAndUpdate();
+        }
+        else
+        {
+            if (topView.visible)
+                topView.requestPaint();
+            else
+                skyView.repaintCanvasAndImages();
+        }
+    }
+
+    // -----------------------------------------------------------------------
+
     function loadAnimationIncrement()
     {
         var diff = Globals.MAX_ANIMATION_INCREMENT - Globals.MIN_ANIMATION_INCREMENT;
@@ -59,16 +84,6 @@ Page
     {
         var s = Math.pow(animationIncrementSlider.value, Globals.ANIMATION_EXPONENT);
         settings.animationIncrement = Math.round(Globals.MIN_ANIMATION_INCREMENT * (1.0 - s) + Globals.MAX_ANIMATION_INCREMENT * s);
-    }
-
-    // -----------------------------------------------------------------------
-
-    function repaint()
-    {
-        if (topView.visible)
-            topView.requestPaint();
-        else
-            skyView.requestPaint();
     }
 
     // -----------------------------------------------------------------------
@@ -102,6 +117,8 @@ Page
     onActiveChanged:
     {
         settings.animationEnabled = false;
+        if (active && settings.trackNow)
+            setNowAndUpdate();
     }
 
     // -----------------------------------------------------------------------
@@ -270,6 +287,10 @@ Page
                 dateTime: page.dateTime
                 showTime: settings.showSkyView
                 width: column.width
+                onDateTimeSelected:
+                {
+                    settings.trackNow = false;
+                }
             }
 
             // animation controls: start/stop animation and jump to current date
@@ -283,27 +304,22 @@ Page
                     id: toggleAnimateBackward
 
                     direction: -1
-                    playing: animatingBackward
-                    icon.mirror: true
+                    active: animatingBackward
                 }
                 Column
                 {
                     spacing: 0
 
-                    IconButton
+                    NowButton
                     {
-                        id: restart
-
-                        icon.source: "image://theme/icon-m-up"
-                        opacity: 0.75
-                        onClicked:
+                        onSignalActivated:
                         {
                             dateTime.setNow();
                         }
                     }
                     Label
                     {
-                        text: qsTr("Today")
+                        text: topView.visible ? qsTr("Today") : qsTr("Now")
                         color: Theme.secondaryHighlightColor
                         font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
                         anchors { horizontalCenter: parent.horizontalCenter }
@@ -314,7 +330,7 @@ Page
                     id: toggleAnimateForward
 
                     direction: 1
-                    playing: animatingForward
+                    active: animatingForward
                 }
             }
             // set animation speed
@@ -365,6 +381,18 @@ Page
             {
                 dateTime.addDays(settings.animationIncrement * settings.animationDirection);
             }
+        }
+    }
+    Timer
+    {
+        id: trackNowTimer
+
+        interval: 10000
+        running: settings.trackNow && page.active
+        repeat: true
+        onTriggered:
+        {
+            setNowAndUpdate();
         }
     }
 }

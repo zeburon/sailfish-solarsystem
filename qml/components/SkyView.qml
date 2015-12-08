@@ -45,6 +45,7 @@ Canvas
     // -----------------------------------------------------------------------
 
     signal showHelpText(string text)
+    signal repaintImages()
 
     // -----------------------------------------------------------------------
 
@@ -58,6 +59,7 @@ Canvas
             solarBodyPainters.push(painter);
 
             var planetImage = planetImageComponent.createObject(items, {"solarBody": solarBody, "painter": painter});
+            repaintImages.connect(planetImage.requestPaint);
             var planetLabel = planetLabelComponent.createObject(items, {"solarBody": solarBody, "painter": painter, "yOffset": planetImage.imageHeight * 0.3});
         }
     }
@@ -76,6 +78,14 @@ Canvas
             }
         }
         requestPaint();
+    }
+
+    // -----------------------------------------------------------------------
+
+    function repaintCanvasAndImages()
+    {
+        requestPaint();
+        repaintImages();
     }
 
     // -----------------------------------------------------------------------

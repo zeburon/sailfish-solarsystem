@@ -37,7 +37,7 @@ ApplicationWindow
         settings.animationEnabled = false;
 
         if (active)
-            mainPage.repaint();
+            mainPage.reactivate();
     }
 
     // -----------------------------------------------------------------------

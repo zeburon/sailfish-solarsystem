@@ -23,6 +23,7 @@ QtObject
     property int animationIncrement: 1;                            property string animationIncrementKey: "animationIncrement"
     property bool simplifiedOrbits: true;                          property string simplifiedOrbitsKey: "simplifiedOrbits"
     property bool zoomedOut: false;                                property string zoomedOutKey: "zoomedOut"
+    property bool trackNow: false;                                 property string trackNowKey: "trackNow"
     property int distancePlanetIdx: 0;                             property string distancePlanetIdxKey: "distancePlanetIdx"
 
     // -----------------------------------------------------------------------
@@ -100,6 +101,11 @@ QtObject
         var storedZoomedOut = Storage.getValue(zoomedOutKey);
         if (storedZoomedOut)
             zoomedOut = storedZoomedOut === "true";
+
+        // load trackNow
+        var storedTrackNow = Storage.getValue(trackNowKey);
+        if (storedTrackNow)
+            trackNow = storedTrackNow === "true";
 
         // load distancePlanetIdx
         var storedDistancePlanetIdx = Storage.getValue(distancePlanetIdxKey);
@@ -183,6 +189,10 @@ QtObject
     onZoomedOutChanged:
     {
         Storage.setValue(zoomedOutKey, zoomedOut);
+    }
+    onTrackNowChanged:
+    {
+        Storage.setValue(trackNowKey, trackNow);
     }
     onDistancePlanetIdxChanged:
     {

@@ -11,9 +11,16 @@ SolarBodyImage
 
     // -----------------------------------------------------------------------
 
-    onShadowPhaseChanged:
+    function requestPaint()
     {
         shadowOnPlanet.requestPaint();
+    }
+
+    // -----------------------------------------------------------------------
+
+    onShadowPhaseChanged:
+    {
+        requestPaint();
     }
 
     // -----------------------------------------------------------------------
