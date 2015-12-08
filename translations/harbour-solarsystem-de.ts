@@ -153,14 +153,6 @@
         <translation>Monde</translation>
     </message>
     <message>
-        <source>N</source>
-        <translation>N</translation>
-    </message>
-    <message>
-        <source>S</source>
-        <translation>S</translation>
-    </message>
-    <message>
         <source>Temperature</source>
         <translation>Temperatur</translation>
     </message>
@@ -176,24 +168,9 @@
         <source>Pressure</source>
         <translation>Druck</translation>
     </message>
-</context>
-<context>
-    <name>PlanetDistancePage</name>
     <message>
-        <source>Planet Distances</source>
-        <translation type="unfinished">Entfernungen der Planeten</translation>
-    </message>
-    <message>
-        <source>All distances are in astronomical units (AU).
-1 AU is roughly the distance from earth to sun, or about 150 million kilometers.</source>
-        <translation type="unfinished">Werte in astronomischen Einheiten (AU).
-1 AU entspricht dem mittleren Abstand zwischen Erde und Sonne, ungefähr 150 Millionen Kilometer.</translation>
-    </message>
-    <message>
-        <source>red number: distance is increasing
-green number: distance is decreasing</source>
-        <translation type="unfinished">rote Zahl: zunehmende Entfernung
-grüne Zahl: abnehmende Entfernung</translation>
+        <source>AU</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -273,6 +250,17 @@ grüne Zahl: abnehmende Entfernung</translation>
     <message>
         <source>General Options</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SideSolarBodyImage</name>
+    <message>
+        <source>N</source>
+        <translation type="unfinished">N</translation>
+    </message>
+    <message>
+        <source>S</source>
+        <translation type="unfinished">S</translation>
     </message>
 </context>
 <context>

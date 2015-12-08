@@ -56,12 +56,6 @@ ApplicationWindow
     {
         id: mainPage
     }
-    PlanetDistancePage
-    {
-        id: planetDistancePage
-
-        solarSystem: mainPage.solarSystem
-    }
     PlanetDetailsPage
     {
         id: planetDetailsPage

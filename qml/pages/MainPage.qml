@@ -98,9 +98,10 @@ Page
 
     // -----------------------------------------------------------------------
 
-    function showPlanetDetailsPage(solarBody)
+    function showPlanetDetailsPage(solarBody, solarSystem)
     {
         planetDetailsPage.solarBody = solarBody;
+        planetDetailsPage.solarSystem = solarSystem;
         pageStack.push(planetDetailsPage);
     }
 

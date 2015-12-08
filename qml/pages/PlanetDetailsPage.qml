@@ -85,53 +85,7 @@ Page
             solarBody: page.solarBody
             anchors { left: parent.left; leftMargin: 75; top: parent.top; topMargin: 75 }
             shadowRotation: 180
-
-            Item
-            {
-                id: axialTiltInfo
-
-                anchors { centerIn: parent }
-                rotation: solarBody.axialTilt
-                opacity: 0.85
-
-                Rectangle
-                {
-                    anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.top; bottomMargin: planetImage.imageHeight / 2 }
-                    width: 2
-                    height: 6
-                    color: "red"
-
-                    Label
-                    {
-                        id: northLabel
-
-                        text: qsTr("N")
-                        anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.top }
-                        color: parent.color
-                        horizontalAlignment: Text.AlignHCenter
-                        font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny * 0.75 }
-                    }
-                }
-
-                Rectangle
-                {
-                    anchors { horizontalCenter: parent.horizontalCenter; top: parent.bottom; topMargin: planetImage.imageHeight / 2 }
-                    width: 2
-                    height: 6
-                    color: "green"
-
-                    Label
-                    {
-                        id: southLabel
-
-                        text: qsTr("S")
-                        anchors { horizontalCenter: parent.horizontalCenter; top: parent.bottom }
-                        color: parent.color
-                        horizontalAlignment: Text.AlignHCenter
-                        font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny * 0.75 }
-                    }
-                }
-            }
+            axialTilt: solarBody.axialTilt
         }
 
         SectionHeader
@@ -329,43 +283,73 @@ Page
                 unit: "AU"
             }
         }
-    }
-    Row
-    {
-        id: planetComparisonRow
-
-        anchors { left: parent.left; right: parent.right; bottom: parent.bottom; bottomMargin: Theme.paddingLarge }
-        height: 50
-
-        Repeater
+        Item
         {
+            width: 1
+            height: Theme.paddingLarge
+        }
+
+        Row
+        {
+            id: planetComparisonRow
+
             width: parent.width
-            height: parent.height
-            model: solarSystem.solarBodies.length
-            delegate: Item {
-                property SolarBody solarBody: solarSystem.solarBodies[index]
-                property real sizePercent: Math.sqrt(solarBody.radius / solarSystem.jupiter.radius)
-                property bool isDisplayed: solarBody === page.solarBody
+            height: 100
 
-                width: planetComparisonRow.width / solarSystem.visiblePlanetCount
-                height: planetComparisonRow.height
-                visible: solarBody.visible && !solarBody.parentSolarBody
+            Repeater
+            {
+                width: parent.width
+                height: parent.height
+                model: solarSystem.solarBodies.length
+                delegate: Item {
+                    property SolarBody solarBody: solarSystem.solarBodies[index]
+                    property real sizePercent: Math.sqrt(solarBody.radius / solarSystem.jupiter.radius)
+                    property bool isDisplayed: solarBody === page.solarBody
 
-                Rectangle
-                {
-                    anchors { centerIn: parent }
-                    width: parent.width * sizePercent
-                    height: width
-                    radius: width / 2
-                    color: isDisplayed ? Theme.highlightColor : Theme.secondaryHighlightColor
-                    opacity: isDisplayed ? 0.75 : 0.15
-                }
-                MouseArea
-                {
-                    anchors { fill: parent }
-                    onClicked:
+                    width: planetComparisonRow.width / solarSystem.visiblePlanetCount
+                    height: planetComparisonRow.height
+                    visible: solarBody.visible && !solarBody.parentSolarBody
+
+                    Rectangle
                     {
-                        page.solarBody = solarBody;
+                        anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.top; verticalCenterOffset: parent.width / 2 }
+                        width: parent.width * sizePercent
+                        height: width
+                        radius: width / 2
+                        color: isDisplayed ? Theme.highlightColor : Theme.secondaryHighlightColor
+                        opacity: isDisplayed ? 0.75 : 0.15
+                    }
+                    Label
+                    {
+                        anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom }
+                        text:
+                        {
+                            if (isDisplayed)
+                                return "↔";
+
+                            var distance = solarSystem.getDistanceBetweenBodies(solarBody, page.solarBody);
+                            return distance[0].toFixed(1) + "<sub>" + qsTr("AU") + "</unit>";
+                        }
+                        color:
+                        {
+                            if (isDisplayed)
+                                return Theme.highlightColor;
+                            else
+                                return Theme.secondaryHighlightColor;
+                        }
+                        height: contentHeight
+                        textFormat: Text.RichText
+                        horizontalAlignment: Text.horizontalCenter
+                        font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
+                    }
+
+                    MouseArea
+                    {
+                        anchors { fill: parent }
+                        onClicked:
+                        {
+                            page.solarBody = solarBody;
+                        }
                     }
                 }
             }

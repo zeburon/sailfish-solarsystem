@@ -41,7 +41,7 @@ Canvas
 
     // -----------------------------------------------------------------------
 
-    signal clickedOnPlanet(var solarBody)
+    signal clickedOnPlanet(var solarBody, var solarSystem)
     signal clickedOnEmptySpace()
     signal showHelpText(string text)
 
@@ -146,7 +146,7 @@ Canvas
 
         if (closestPainter)
         {
-            clickedOnPlanet(closestPainter.solarBody);
+            clickedOnPlanet(closestPainter.solarBody, solarSystem);
         }
         else
         {

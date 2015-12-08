@@ -153,14 +153,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>N</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Temperature</source>
         <translation type="unfinished"></translation>
     </message>
@@ -176,21 +168,8 @@
         <source>Pressure</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>PlanetDistancePage</name>
     <message>
-        <source>Planet Distances</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>All distances are in astronomical units (AU).
-1 AU is roughly the distance from earth to sun, or about 150 million kilometers.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>red number: distance is increasing
-green number: distance is decreasing</source>
+        <source>AU</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -270,6 +249,17 @@ green number: distance is decreasing</source>
     </message>
     <message>
         <source>General Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SideSolarBodyImage</name>
+    <message>
+        <source>N</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>S</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

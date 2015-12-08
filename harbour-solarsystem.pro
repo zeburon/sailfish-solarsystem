@@ -85,7 +85,6 @@ DISTFILES += \
     qml/gfx/m_moon.png \
     qml/gfx/s_moon.png \
     qml/components/SolarSystem.qml \
-    qml/pages/PlanetDistancePage.qml \
     qml/components/SolarBodyImage.qml \
     qml/components/TopSolarBodyImage.qml \
     qml/components/SolarBodyLabel.qml \
