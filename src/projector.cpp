@@ -5,8 +5,9 @@
 
 // -----------------------------------------------------------------------
 
-const float Projector::AXIAL_TILT_COS = qCos(qDegreesToRadians(-23.43f));
-const float Projector::AXIAL_TILT_SIN = qSin(qDegreesToRadians(-23.43f));
+const float Projector::AXIAL_TILT_COS                   = qCos(qDegreesToRadians(-23.43f));
+const float Projector::AXIAL_TILT_SIN                   = qSin(qDegreesToRadians(-23.43f));
+const QVector3D Projector::INVISIBLE_SCREEN_COORDINATES = QVector3D(0.0f, 0.0f, -1.0f);
 
 // -----------------------------------------------------------------------
 
@@ -132,7 +133,7 @@ float Projector::getImageRotation(float longitude, float latitude) const
     QVector3D projected_coordinates1 = sphericalEclipticToScreenCoordinates(longitude, latitude, 1.0f);
     QVector3D projected_coordinates2 = sphericalEclipticToScreenCoordinates(longitude + 0.01f, latitude, 1.0f);
     return qRadiansToDegrees(qAtan2(projected_coordinates2.x() - projected_coordinates1.x(),
-                                    -(projected_coordinates2.y() - projected_coordinates1.y()))) + 90;
+                                    -(projected_coordinates2.y() - projected_coordinates1.y()))) + 90.0f;
 }
 
 // -----------------------------------------------------------------------
@@ -197,24 +198,25 @@ QVector3D Projector::toEyeCoordinates(const QVector3D &coordinates) const
 
 QVector3D Projector::eyeToScreenCoordinates(const QVector3D &eye_coordinates) const
 {
-    float distance = qAbs(eye_coordinates.y()) < 0.001f ? 0.0f : m_zoom / eye_coordinates.y();
+    // make sure we only calculate visible coordinates
+    if (eye_coordinates.y() < 0.001f)
+        return INVISIBLE_SCREEN_COORDINATES;
+
+    float distance = m_zoom / eye_coordinates.y();
 
     QVector3D normalized_coordinates;
     normalized_coordinates.setX(distance * eye_coordinates.x() / m_field_of_view_tan);
     normalized_coordinates.setZ(distance * eye_coordinates.z() / m_field_of_view_tan);
     float normalized_length = qCos(normalized_coordinates.length());
 
+    // hide coordinates that are not facing the user
+    if (normalized_length < 0.3f)
+        return INVISIBLE_SCREEN_COORDINATES;
+
+    float k = m_zoom * (1.0f + normalized_length);
     QVector3D projected_coordinates;
-    if (normalized_length >= 0.3f && distance)
-    {
-        float k = (1.0f * m_zoom) * (1.0f + normalized_length);
-        projected_coordinates.setX(m_projected_size * normalized_coordinates.x() * k);
-        projected_coordinates.setY(-m_projected_size * normalized_coordinates.z() * k);
-        projected_coordinates.setZ(eye_coordinates.y());
-    }
-    else
-    {
-        projected_coordinates.setZ(-1.0f);
-    }
+    projected_coordinates.setX(m_projected_size * normalized_coordinates.x() * k);
+    projected_coordinates.setY(-m_projected_size * normalized_coordinates.z() * k);
+    projected_coordinates.setZ(eye_coordinates.y());
     return projected_coordinates;
 }

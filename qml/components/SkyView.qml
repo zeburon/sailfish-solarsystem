@@ -64,7 +64,15 @@ Canvas
 
     function update(dateTime)
     {
-        solarSystem.dateTime.string = dateTime.string;
+        if (dateTime.string !== solarSystem.dateTime.string)
+        {
+            solarSystem.dateTime.string = dateTime.string;
+            sunLongitude = (earth.orbitalElements.longitude + 180) % 360;
+            for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)
+            {
+                solarBodyPainters[painterIdx].calculateRelativeCoordinates();
+            }
+        }
         requestPaint();
     }
 
@@ -322,14 +330,18 @@ Canvas
         // background
         context.globalAlpha = 0.3;
         context.lineWidth = 4;
+        /*
         var gradient = context.createRadialGradient(0, 0, visibleRadius / 2, 0, 0, visibleRadius);
         gradient.addColorStop(0, "black");
         gradient.addColorStop(1, "#005ddb");
+        */
         context.beginPath();
-        context.arc(0, 0, visibleRadius, 0, 2 * Math.PI, false);
+        context.arc(0, 0, visibleRadius - 2, 0, 2 * Math.PI, false);
+        /*
         context.fillStyle = gradient;
         context.fill();
-        context.strokeStyle = "#999999";
+        */
+        context.strokeStyle = "#88b0e7";
         context.stroke();
 
         // stars
@@ -349,12 +361,11 @@ Canvas
         sun.visible = projected.z > 0;
         sun.opacity = getOpacity(projected.x, projected.y);
         sun.rotation = projector.getImageRotation(sunLongitude, 0);
-        sunLongitude = (solarSystem.earth.orbitalElements.longitude + 180) % 360;
 
         // planets
-        for (var infoIdx = 0; infoIdx < solarBodyPainters.length; ++infoIdx)
+        for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)
         {
-            solarBodyPainters[infoIdx].updateCoordinates();
+            solarBodyPainters[painterIdx].applyRelativeCoordinates();
         }
     }
 
@@ -368,15 +379,18 @@ Canvas
         {
             property SolarBody solarBody
 
+            property real relativeX
+            property real relativeY
+            property real relativeZ
             property real displayedX
             property real displayedY
             property real displayedZ
             property real displayedRotation
             property real displayedOpacity
             property real displayedPhase: 0.5
-            property real longitudeFromEarth
+            property real geocentricLongitude
 
-            function updateCoordinates()
+            function calculateRelativeCoordinates()
             {
                 if (!solarBody.visible)
                 {
@@ -385,36 +399,27 @@ Canvas
                 }
 
                 // calculate geocentric coordinates
-                var dx = solarBody.orbitalElements.x;
-                var dy = solarBody.orbitalElements.y;
-                var dz = solarBody.orbitalElements.z;
+                relativeX = solarBody.orbitalElements.x;
+                relativeY = solarBody.orbitalElements.y;
+                relativeZ = solarBody.orbitalElements.z;
                 if (solarBody.parentSolarBody)
                 {
                     var parentSolarBody = solarBody.parentSolarBody;
-                    dx += parentSolarBody.orbitalElements.x;
-                    dy += parentSolarBody.orbitalElements.y;
-                    dz += parentSolarBody.orbitalElements.z;
+                    relativeX += parentSolarBody.orbitalElements.x;
+                    relativeY += parentSolarBody.orbitalElements.y;
+                    relativeZ += parentSolarBody.orbitalElements.z;
                 }
-                dx -= earth.orbitalElements.x;
-                dy -= earth.orbitalElements.y;
-                dz -= earth.orbitalElements.z;
+                relativeX -= earth.orbitalElements.x;
+                relativeY -= earth.orbitalElements.y;
+                relativeZ -= earth.orbitalElements.z;
 
                 // calculate geocentric longitude
-                var newLongitudeFromEarth = Math.atan2(dy, dx) * 180 / Math.PI;
+                var newLongitudeFromEarth = Math.atan2(relativeY, relativeX) * 180 / Math.PI;
                 if (newLongitudeFromEarth < 0.0)
                 {
                     newLongitudeFromEarth += 360.0;
                 }
-                longitudeFromEarth = newLongitudeFromEarth;
-
-                // apply new values
-                var projectedCoordinates = projector.rectangularEclipticToScreenCoordinates(dx, dy, dz);
-                displayedX = projectedCoordinates.x + root.width / 2;
-                displayedY = projectedCoordinates.y + root.height / 2;
-                displayedZ = 1000 - projectedCoordinates.z;
-                displayedOpacity = getOpacity(projectedCoordinates.x, projectedCoordinates.y);
-                displayedRotation = projector.getImageRotation(longitudeFromEarth, solarBody.orbitalElements.latitude);
-                visible = projectedCoordinates.z > 0;
+                geocentricLongitude = newLongitudeFromEarth;
 
                 // calulate new phase
                 if (solarBody.orbitalElements.distance < solarSystem.earth.orbitalElements.distance)
@@ -425,12 +430,31 @@ Canvas
                         age += 360;
                     }
                     var phase = 1.0 - 0.5 * (1.0 - Math.cos(0.5 * age * Math.PI / 180));
+
+                    // phase is inverted if body is not orbiting the sun
                     if (solarBody.parentSolarBody)
                     {
                         phase = (phase + 0.5) % 1.0;
                     }
                     displayedPhase = phase;
                 }
+            }
+
+            function applyRelativeCoordinates()
+            {
+                if (!solarBody.visible)
+                {
+                    visible = false;
+                    return;
+                }
+
+                var projectedCoordinates = projector.rectangularEclipticToScreenCoordinates(relativeX, relativeY, relativeZ);
+                displayedX = projectedCoordinates.x + root.width / 2;
+                displayedY = projectedCoordinates.y + root.height / 2;
+                displayedZ = 1000 - projectedCoordinates.z;
+                displayedOpacity = getOpacity(projectedCoordinates.x, projectedCoordinates.y);
+                displayedRotation = projector.getImageRotation(geocentricLongitude, solarBody.orbitalElements.latitude);
+                visible = projectedCoordinates.z > 0;
             }
         }
     }

@@ -58,6 +58,7 @@ signals:
 private:
     static const float AXIAL_TILT_COS;
     static const float AXIAL_TILT_SIN;
+    static const QVector3D INVISIBLE_SCREEN_COORDINATES;
 
     QVector3D sphericalToRectangularCoordinates(float longitude, float latitude, float distance) const;
     QVector3D eclipticToEquatorialCoordinates(const QVector3D &coordinates) const;

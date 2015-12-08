@@ -209,7 +209,7 @@ Page
                     showDwarfPlanets: settings.showDwarfPlanets
                     zoomedOut: settings.zoomedOut
                     animateSun: active && app.active
-                    animateZoom: app.initialized
+                    animateZoom: app.initialized && visible
                     simplifiedOrbits: settings.simplifiedOrbits
                     visible: !settings.showSkyView
                     Component.onCompleted:
@@ -249,7 +249,7 @@ Page
                     showEcliptic: settings.showEcliptic
                     showEquator: settings.showEquator
                     zoomedOut: settings.zoomedOut
-                    animateZoom: app.initialized
+                    animateZoom: app.initialized && visible
                     Component.onCompleted:
                     {
                         showHelpText.connect(page.showHelpText);
