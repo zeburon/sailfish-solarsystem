@@ -35,8 +35,8 @@ void Projector::update()
     m_field_of_view_tan = qTan(qDegreesToRadians(m_field_of_view / 2.0f));
 
     float limited_latitude = qMax(-89.9f, qMin(89.9f, m_latitude));
-    float offset = (m_date_time->getMeanSiderealTime() / 24.0f) * 360.0f;
-    m_azimuthal_up = sphericalToRectangularCoordinates(m_longitude - offset, qMin(89.9f, limited_latitude), 1.0f);
+    float offset = -(m_date_time->getMeanSiderealTime() / 24.0f) * 360.0f;
+    m_azimuthal_up = sphericalToRectangularCoordinates(offset, qMin(89.9f, limited_latitude), 1.0f);
     m_azimuthal_right.setX(m_azimuthal_up.y());
     m_azimuthal_right.setY(-m_azimuthal_up.x());
     m_azimuthal_right.normalize();
