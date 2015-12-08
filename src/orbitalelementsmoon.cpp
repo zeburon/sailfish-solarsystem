@@ -84,7 +84,7 @@ void OrbitalElementsMoon::updateCoordinates()
             (-0.58f * qCos(m_mean_anomaly - 2.0f * mean_elongation)
             - 0.46f * qCos(2.0f * mean_elongation));
 
-    longitude = -qDegreesToRadians(longitude);
+    longitude = qDegreesToRadians(longitude);
     latitude = qDegreesToRadians(latitude);
     x_ecliptic = distance * qCos(latitude) * qCos(longitude);
     y_ecliptic = distance * qCos(latitude) * qSin(longitude);

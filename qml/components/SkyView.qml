@@ -434,7 +434,7 @@ Canvas
                     // phase is inverted if body is not orbiting the sun
                     if (solarBody.parentSolarBody)
                     {
-                        phase = (phase + 0.5) % 1.0;
+                        phase = (1.5 - phase) % 1.0;
                     }
                     displayedPhase = phase;
                 }
