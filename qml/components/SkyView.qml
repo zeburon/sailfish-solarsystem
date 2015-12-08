@@ -37,6 +37,8 @@ Canvas
     // solar body information
     property alias solarSystem: solarSystem
     property alias earth: solarSystem.earth
+    property alias moon: solarSystem.moon
+    property alias mars: solarSystem.mars
     property real sunLongitude
     property var solarBodyPainters: []
 
@@ -432,11 +434,31 @@ Canvas
                     var phase = 1.0 - 0.5 * (1.0 - Math.cos(0.5 * age * Math.PI / 180));
 
                     // phase is inverted if body is not orbiting the sun
-                    if (solarBody.parentSolarBody)
+                    if (solarBody === moon)
                     {
                         phase = (1.5 - phase) % 1.0;
                     }
                     displayedPhase = phase;
+                }
+                else if (solarBody === mars)
+                {
+                    var heliocentricDistance = solarBody.orbitalElements.distance;
+                    var geocentricDistance = Math.sqrt(relativeX * relativeX + relativeY * relativeY + relativeZ * relativeZ);
+                    var distanceToSun = earth.orbitalElements.distance;
+
+                    var longitudeDifference = (earth.orbitalElements.longitude - solarBody.orbitalElements.longitude) % 360.0;
+                    if (longitudeDifference < 0.0)
+                    {
+                        longitudeDifference += 360.0;
+                    }
+
+                    var age = Math.acos((heliocentricDistance * heliocentricDistance + geocentricDistance * geocentricDistance - distanceToSun * distanceToSun) / (2.0 * heliocentricDistance * geocentricDistance));
+                    var phase = 0.5 * Math.cos(age);
+                    if (longitudeDifference < 180.0)
+                    {
+                        phase = 1.0 - phase;
+                    }
+                    displayedPhase = 1.0 - phase;
                 }
             }
 
@@ -474,7 +496,7 @@ Canvas
             scale: root.currentZoom
             opacity: painter.displayedOpacity
             shadowPhase: painter.displayedPhase
-            useSmallImage: !solarBody.parentSolarBody
+            useSmallImage: solarBody !== moon
         }
     }
     Component
