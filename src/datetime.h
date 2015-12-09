@@ -15,7 +15,6 @@ class DateTime : public QObject
     Q_PROPERTY(int day READ getDay NOTIFY signalDayChanged)
     Q_PROPERTY(int hours READ getHours NOTIFY signalHoursChanged)
     Q_PROPERTY(int minutes READ getMinutes NOTIFY signalMinutesChanged)
-    Q_PROPERTY(int seconds READ getSeconds NOTIFY signalSecondsChanged)
 
     Q_PROPERTY(int julianDay READ getJulianDay NOTIFY signalJulianDayChanged)
     Q_PROPERTY(float daysSinceJ2000 READ getDaysSinceJ2000 NOTIFY signalDaysSinceJ2000Changed)
@@ -33,21 +32,21 @@ public:
     explicit DateTime(QObject *parent = 0);
     virtual ~DateTime();
 
-    Q_INVOKABLE void set(int year, int month, int day, int hours, int minutes, int seconds);
+    Q_INVOKABLE void set(int year, int month, int day, int hours, int minutes);
     Q_INVOKABLE void setDate(int year, int month, int day);
     Q_INVOKABLE void setTodaysDate();
-    Q_INVOKABLE void setTime(int hours, int minutes, int seconds);
+    Q_INVOKABLE void setTime(int hours, int minutes);
+    Q_INVOKABLE void setCurrentTime();
     Q_INVOKABLE void setNow();
 
     Q_INVOKABLE void addDays(int days);
-    Q_INVOKABLE void addSeconds(int seconds);
+    Q_INVOKABLE void addMinutes(int minutes);
 
     int getYear() const { return m_year; }
     int getMonth() const { return m_month; }
     int getDay() const { return m_day; }
     int getHours() const { return m_hours; }
     int getMinutes() const { return m_minutes; }
-    int getSeconds() const { return m_seconds; }
     bool isDaylightSavingsTime() const { return m_daylight_savings_time; }
     const QString &getTimezone() const { return m_timezone; }
     int getJulianDay() const { return m_julian_day; }
@@ -65,7 +64,6 @@ signals:
     void signalDayChanged();
     void signalHoursChanged();
     void signalMinutesChanged();
-    void signalSecondsChanged();
     void signalDaylightSavingsTimeChanged();
     void signalTimezoneChanged();
     void signalDaysSinceJ2000Changed();
@@ -86,7 +84,6 @@ private:
     int m_day;
     int m_hours;
     int m_minutes;
-    int m_seconds;
     bool m_daylight_savings_time;
     QString m_timezone;
 

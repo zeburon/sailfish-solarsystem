@@ -45,21 +45,9 @@ Page
 
     // -----------------------------------------------------------------------
 
-    function setNowAndUpdate()
-    {
-        dateTime.setNow();
-        update();
-    }
-
-    // -----------------------------------------------------------------------
-
     function reactivate()
     {
-        if (settings.trackNow)
-        {
-            setNowAndUpdate();
-        }
-        else
+        if (!settings.trackNow)
         {
             if (topView.visible)
                 topView.requestPaint();
@@ -118,8 +106,6 @@ Page
     onActiveChanged:
     {
         settings.animationEnabled = false;
-        if (active && settings.trackNow)
-            setNowAndUpdate();
     }
 
     // -----------------------------------------------------------------------
@@ -368,7 +354,7 @@ Page
             if (settings.showSkyView)
             {
                 var increment = 60 * 24.0 * (settings.animationIncrement / Globals.MAX_ANIMATION_INCREMENT);
-                dateTime.addSeconds(increment * settings.animationDirection * 60);
+                dateTime.addMinutes(increment * settings.animationDirection);
             }
             else
             {
@@ -380,12 +366,13 @@ Page
     {
         id: trackNowTimer
 
-        interval: 10000
-        running: settings.trackNow && page.active
+        interval: Globals.TRACK_NOW_INTERVAL_MS
+        running: settings.trackNow && page.active && app.active
         repeat: true
+        triggeredOnStart: true
         onTriggered:
         {
-            setNowAndUpdate();
+            dateTime.setNow();
         }
     }
 }

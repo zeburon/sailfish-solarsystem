@@ -4,9 +4,9 @@
 // -----------------------------------------------------------------------
 
 DateTime::DateTime(QObject *parent) :
-    QObject(parent), m_year(0), m_month(0), m_day(0), m_hours(0), m_minutes(0), m_seconds(0),
-    m_daylight_savings_time(false), m_julian_day(0), m_days_since_j2000(0.0f), m_centuries_since_j2000(0.0f),
-    m_mean_sidereal_time(0.0f)
+    QObject(parent), m_year(0), m_month(0), m_day(0), m_hours(0), m_minutes(0),
+    m_daylight_savings_time(false), m_julian_day(0), m_days_since_j2000(0.0f),
+    m_centuries_since_j2000(0.0f), m_mean_sidereal_time(0.0f)
 {
 }
 
@@ -18,9 +18,9 @@ DateTime::~DateTime()
 
 // -----------------------------------------------------------------------
 
-void DateTime::set(int year, int month, int day, int hours, int minutes, int seconds)
+void DateTime::set(int year, int month, int day, int hours, int minutes)
 {
-    setDateTimeAndUpdate(QDateTime(QDate(year, month, day), QTime(hours, minutes, seconds)));
+    setDateTimeAndUpdate(QDateTime(QDate(year, month, day), QTime(hours, minutes)));
 }
 
 // -----------------------------------------------------------------------
@@ -34,18 +34,21 @@ void DateTime::setDate(int year, int month, int day)
 
 void DateTime::setTodaysDate()
 {
-    QDateTime date_time = QDateTime::currentDateTime();
-    if (date_time.date() != m_date_time.date())
-    {
-        setDateTimeAndUpdate(date_time);
-    }
+    setDateTimeAndUpdate(QDateTime(QDate::currentDate(), m_date_time.time()));
 }
 
 // -----------------------------------------------------------------------
 
-void DateTime::setTime(int hours, int minutes, int seconds)
+void DateTime::setTime(int hours, int minutes)
 {
-    setDateTimeAndUpdate(QDateTime(m_date_time.date(), QTime(hours, minutes, seconds)));
+    setDateTimeAndUpdate(QDateTime(m_date_time.date(), QTime(hours, minutes)));
+}
+
+// -----------------------------------------------------------------------
+
+void DateTime::setCurrentTime()
+{
+    setDateTimeAndUpdate(QDateTime(m_date_time.date(), QTime::currentTime()));
 }
 
 // -----------------------------------------------------------------------
@@ -64,9 +67,9 @@ void DateTime::addDays(int days)
 
 // -----------------------------------------------------------------------
 
-void DateTime::addSeconds(int seconds)
+void DateTime::addMinutes(int minutes)
 {
-    setDateTimeAndUpdate(m_date_time.addSecs(seconds));
+    setDateTimeAndUpdate(m_date_time.addSecs(minutes * 60));
 }
 
 // -----------------------------------------------------------------------
@@ -93,57 +96,51 @@ void DateTime::setDateTimeAndUpdate(const QDateTime &date_time)
 {
     if (!date_time.isValid())
     {
-        setDateTimeAndUpdate(QDateTime::currentDateTime());
+        setNow();
         return;
     }
-
-    if (date_time == m_date_time)
+    QDateTime date_time_without_seconds = QDateTime(date_time.date(), QTime(date_time.time().hour(), date_time.time().minute()));
+    if (date_time_without_seconds == m_date_time)
         return;
 
     bool was_valid = m_date_time.isValid();
-    m_date_time = date_time;
+    m_date_time = date_time_without_seconds;
     if (!was_valid)
     {
         emit signalValidChanged();
     }
 
-    int year = date_time.date().year();
+    int year = m_date_time.date().year();
     if (year != m_year)
     {
         m_year = year;
         emit signalYearChanged();
     }
-    int month = date_time.date().month();
+    int month = m_date_time.date().month();
     if (month != m_month)
     {
         m_month = month;
         emit signalMonthChanged();
     }
-    int day = date_time.date().day();
+    int day = m_date_time.date().day();
     if (day != m_day)
     {
         m_day = day;
         emit signalDayChanged();
     }
-    int hours = date_time.time().hour();
+    int hours = m_date_time.time().hour();
     if (hours != m_hours)
     {
         m_hours = hours;
         emit signalHoursChanged();
     }
-    int minutes = date_time.time().minute();
+    int minutes = m_date_time.time().minute();
     if (minutes != m_minutes)
     {
         m_minutes = minutes;
         emit signalMinutesChanged();
     }
-    int seconds = date_time.time().second();
-    if (seconds != m_seconds)
-    {
-        m_seconds = seconds;
-        emit signalSecondsChanged();
-    }
-    bool daylight_savings_time = date_time.isDaylightTime();
+    bool daylight_savings_time = m_date_time.isDaylightTime();
     if (daylight_savings_time != m_daylight_savings_time)
     {
         m_daylight_savings_time = daylight_savings_time;
@@ -151,14 +148,14 @@ void DateTime::setDateTimeAndUpdate(const QDateTime &date_time)
     }
 
     // calculate julian date
-    float total_hours = m_hours + m_minutes / 60.0f + m_seconds / 3600.0f;
+    float total_hours = m_hours + m_minutes / 60.0f;
     if (m_daylight_savings_time)
     {
         total_hours -= 1.0f;
     }
-    m_julian_day = date_time.date().toJulianDay();
+    m_julian_day = m_date_time.date().toJulianDay();
     m_days_since_j2000 = m_julian_day - 2451543.5f + total_hours / 24.0f;
-    m_centuries_since_j2000 = m_days_since_j2000 / 36525.0f;;
+    m_centuries_since_j2000 = m_days_since_j2000 / 36525.0f;
 
     // calculate mean sidereal time
     float t0 = 6.697374558f + m_centuries_since_j2000 * (2400.051336f + m_centuries_since_j2000 * 0.000025862f);
@@ -171,4 +168,3 @@ void DateTime::setDateTimeAndUpdate(const QDateTime &date_time)
     emit signalValueChanged();
     emit signalStringChanged();
 }
-

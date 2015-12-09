@@ -53,7 +53,7 @@ IconButton
         SequentialAnimation on rotation
         {
             running: true
-            paused: !root.active || fadeAnimation.running
+            paused: !root.active || !page.active || !app.active
             loops: Animation.Infinite
 
             NumberAnimation { from: 0; to: 360; duration: 20000 }
