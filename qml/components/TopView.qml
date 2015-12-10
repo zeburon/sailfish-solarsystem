@@ -16,10 +16,10 @@ Canvas
     property bool showLabels: true
     property bool showOrbits: true
     property bool showDwarfPlanets: false
-    property bool animateSun: true
     property real imageOpacity: 1.0
     property real imageScale: 1.0
     property int orbitThickness: 3
+    property bool animateSun: true
     property bool animateZoom: false
     property bool initialized: false
 

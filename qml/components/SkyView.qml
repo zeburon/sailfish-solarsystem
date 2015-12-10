@@ -16,6 +16,7 @@ Canvas
     property bool showEquator: true
     property bool showEcliptic: true
     property bool zoomedOut: false
+    property bool animateSun: true
     property bool animateZoom: false
 
     // view-related properties
@@ -602,7 +603,7 @@ Canvas
         {
             id: sun
 
-            animated: true
+            animated: root.animateSun
             scale: root.currentZoom
             visible: z > 0
         }
