@@ -59,6 +59,8 @@ Canvas
         for (var bodyIdx = 0; bodyIdx < solarSystem.solarBodies.length; ++bodyIdx)
         {
             var solarBody = solarSystem.solarBodies[bodyIdx];
+            if (solarBody === earth)
+                continue;
 
             var painter = solarBodyPainter.createObject(null, {"solarBody": solarBody});
             solarBodyPainters.push(painter);
@@ -80,7 +82,9 @@ Canvas
             sunLongitude = (earth.orbitalElements.longitude + 180) % 360;
             for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)
             {
-                solarBodyPainters[painterIdx].calculateRelativeCoordinates();
+                var painter = solarBodyPainters[painterIdx];
+                painter.calculateRelativeCoordinates();
+                painter.calculatePhase();
             }
         }
         requestPaint();
@@ -471,38 +475,44 @@ Canvas
                     newLongitudeFromEarth += 360.0;
                 }
                 geocentricLongitude = newLongitudeFromEarth;
+            }
 
-                // calulate new phase
-                if (solarBody.orbitalElements.distance < solarSystem.earth.orbitalElements.distance)
+            function calculatePhase()
+            {
+                if (solarBody === moon)
                 {
-                    var age = (solarBody.orbitalElements.longitude - root.sunLongitude + 180) % 360.0;
-                    if (age < 0)
+                    var longitudeDifference = (root.sunLongitude - solarBody.orbitalElements.longitude) % 360.0;
+                    if (longitudeDifference < 0.0)
                     {
-                        age += 360;
+                        longitudeDifference += 360.0;
                     }
-                    var phase = 1.0 - 0.5 * (1.0 - Math.cos(0.5 * age * Math.PI / 180));
 
-                    // phase is inverted if body is not orbiting the sun
-                    if (solarBody === moon)
+                    var elongation = Math.acos(Math.cos((sunLongitude - solarBody.orbitalElements.longitude) * Math.PI / 180) * Math.cos(solarBody.orbitalElements.latitude * Math.PI / 180));
+                    var phase = 1.0 - (1.0 + Math.cos(Math.PI - elongation)) / 4.0;
+                    if (longitudeDifference > 180.0)
                     {
-                        phase = (1.5 - phase) % 1.0;
+                        phase = 1.0 - phase;
                     }
                     displayedPhase = phase;
                 }
-                else if (solarBody === mars)
+                else if (solarBody.orbitalElements.distance <= mars.orbitalElements.distance)
                 {
-                    var heliocentricDistance = solarBody.orbitalElements.distance;
-                    var geocentricDistance = Math.sqrt(relativeX * relativeX + relativeY * relativeY + relativeZ * relativeZ);
-                    var distanceToSun = earth.orbitalElements.distance;
-
                     var longitudeDifference = (earth.orbitalElements.longitude - solarBody.orbitalElements.longitude) % 360.0;
                     if (longitudeDifference < 0.0)
                     {
                         longitudeDifference += 360.0;
                     }
 
-                    var age = Math.acos((heliocentricDistance * heliocentricDistance + geocentricDistance * geocentricDistance - distanceToSun * distanceToSun) / (2.0 * heliocentricDistance * geocentricDistance));
-                    var phase = 0.5 * Math.cos(age);
+                    var heliocentricDistance = solarBody.orbitalElements.distance;
+                    var geocentricDistance = Math.sqrt(relativeX * relativeX + relativeY * relativeY + relativeZ * relativeZ);
+                    var distanceToSun = earth.orbitalElements.distance;
+
+                    var phaseAngle = Math.acos((heliocentricDistance * heliocentricDistance + geocentricDistance * geocentricDistance - distanceToSun * distanceToSun) / (2.0 * heliocentricDistance * geocentricDistance));
+                    if (solarBody.orbitalElements.distance < earth.orbitalElements.distance)
+                    {
+                        phaseAngle *= 0.5;
+                    }
+                    var phase = 0.5 * Math.cos(phaseAngle);
                     if (longitudeDifference < 180.0)
                     {
                         phase = 1.0 - phase;
