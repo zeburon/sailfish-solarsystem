@@ -25,6 +25,7 @@ Canvas
     property real fieldOfView: zoomedOut ? 90 : 120
     property real currentZoom: zoomedOut ? 0.5 : 1.0
     property real visibleRadius: 1.175 * Math.sqrt(2.0 * Math.pow(Math.max(width, height), 2.0)) * currentZoom / 2.0
+    property real visibleRadiusSquared: visibleRadius * visibleRadius
     property real visibleRadiusFadeStart: visibleRadius - 40
 
     // mouse-look properties
@@ -172,12 +173,12 @@ Canvas
 
     function getPositionOnBorder(xPos, yPos, dX, dY)
     {
-        var newX = xPos + dX;
-        var newY = yPos + dY;
-        var originalLength = Math.sqrt(xPos * xPos + yPos * yPos);
-        var newLength = Math.sqrt(newX * newX + newY * newY);
+        var xPosSquared = xPos * xPos;
+        var yPosSquared = yPos * yPos;
+        var dXSquared = dX * dX;
+        var dYSquared = dY * dY;
 
-        var factor = (visibleRadius - originalLength) / (newLength - originalLength);
+        var factor = (Math.sqrt(-(dYSquared * xPosSquared - 2.0 * dX * dY * xPos * yPos + dXSquared * yPosSquared - visibleRadiusSquared * (dXSquared + dYSquared))) - dX * xPos - dY * yPos) / (dXSquared + dYSquared);
         return [xPos + factor * dX, yPos + factor * dY];
     }
 
@@ -365,11 +366,6 @@ Canvas
         context.reset();
         context.font = "bold 12pt sans-serif";
         context.textAlign = "center";
-
-        // enable clipping
-        context.beginPath();
-        context.arc(width / 2.0, height / 2.0, visibleRadius, 0, Math.PI * 2, false);
-        context.clip();
         context.translate(width / 2.0, height / 2.0);
 
         projector.update();
@@ -383,19 +379,15 @@ Canvas
             drawEcliptic(context);
 
         // background
-        context.globalAlpha = 0.3;
+        context.globalAlpha = 0.5;
         context.lineWidth = 4;
-        /*
         var gradient = context.createRadialGradient(0, 0, visibleRadius / 2, 0, 0, visibleRadius);
-        gradient.addColorStop(0, "black");
+        gradient.addColorStop(0.4, "black");
         gradient.addColorStop(1, "#005ddb");
-        */
         context.beginPath();
-        context.arc(0, 0, visibleRadius - 2, 0, 2 * Math.PI, false);
-        /*
+        context.arc(0, 0, visibleRadius, 0, 2 * Math.PI, false);
         context.fillStyle = gradient;
         context.fill();
-        */
         context.strokeStyle = "#88b0e7";
         context.stroke();
 
