@@ -12,7 +12,7 @@ const QVector3D Projector::INVISIBLE_SCREEN_COORDINATES = QVector3D(0.0f, 0.0f, 
 // -----------------------------------------------------------------------
 
 Projector::Projector(QObject *parent) : QObject(parent), m_date_time(0),
-    m_longitude(0.0f), m_latitude(0.0f), m_longitude_offset(0.0f), m_latitude_offset(0.0f),
+    m_longitude(0.0f), m_latitude(0.0f), m_longitude_look_offset(0.0f), m_latitude_look_offset(0.0f),
     m_width(0.0f), m_height(0.0f), m_projected_size(0.0f), m_zoom(0.0f), m_field_of_view(0.0f),
     m_field_of_view_tan(0.0f)
 {
@@ -34,33 +34,48 @@ void Projector::update()
     m_projected_size = qMax(m_width, m_height) / 2.0f;
     m_field_of_view_tan = qTan(qDegreesToRadians(m_field_of_view / 2.0f));
 
-    float limited_latitude = qMax(-89.9f, qMin(89.9f, m_latitude));
-    float offset = -(m_date_time->getMeanSiderealTime() / 24.0f) * 360.0f;
-    m_azimuthal_up = sphericalToRectangularCoordinates(offset, qMin(89.9f, limited_latitude), 1.0f);
+    // azimuthal coordinate system @current point in time
+    float latitude_limited = qMax(-89.9f, qMin(89.9f, m_latitude));
+    float longitude_offset = -(m_date_time->getMeanSiderealTime() / 24.0f) * 360.0f;
+    m_azimuthal_up = sphericalToRectangularCoordinates(longitude_offset, qMin(89.9f, latitude_limited));
     m_azimuthal_right.setX(m_azimuthal_up.y());
     m_azimuthal_right.setY(-m_azimuthal_up.x());
     m_azimuthal_right.normalize();
     m_azimuthal_view = QVector3D::crossProduct(m_azimuthal_right, m_azimuthal_up);
     m_azimuthal_view.normalize();
 
-    m_eye_view = sphericalToRectangularCoordinates(m_longitude_offset - 90.0f, m_latitude_offset, 1.0f);
-    m_eye_right.setX(m_eye_view.y());
-    m_eye_right.setY(-m_eye_view.x());
-    m_eye_right.setZ(0.0f);
-    m_eye_right.normalize();
-    m_eye_up = QVector3D::crossProduct(m_eye_right, m_eye_view);
-    m_eye_up.normalize();
+    // coordinate system @current location
+    m_current_view = sphericalToRectangularCoordinates(-90.0f, 0.0f);
+    m_current_right.setX(m_current_view.y());
+    m_current_right.setY(-m_current_view.x());
+    m_current_right.setZ(0.0f);
+    m_current_right.normalize();
+    m_current_up = QVector3D::crossProduct(m_current_right, m_current_view);
+    m_current_up.normalize();
 
-    m_eye_right = toAzimuthalCoordinates(m_eye_right);
-    m_eye_view = toAzimuthalCoordinates(m_eye_view);
-    m_eye_up = toAzimuthalCoordinates(m_eye_up);
+    m_current_right = toAzimuthalCoordinates(m_current_right);
+    m_current_view = toAzimuthalCoordinates(m_current_view);
+    m_current_up = toAzimuthalCoordinates(m_current_up);
+
+    // coordinate system @current location using view direction
+    m_look_view = sphericalToRectangularCoordinates(m_longitude_look_offset - 90.0f, m_latitude_look_offset);
+    m_look_right.setX(m_look_view.y());
+    m_look_right.setY(-m_look_view.x());
+    m_look_right.setZ(0.0f);
+    m_look_right.normalize();
+    m_look_up = QVector3D::crossProduct(m_look_right, m_look_view);
+    m_look_up.normalize();
+
+    m_look_right = toAzimuthalCoordinates(m_look_right);
+    m_look_view = toAzimuthalCoordinates(m_look_view);
+    m_look_up = toAzimuthalCoordinates(m_look_up);
 }
 
 // -----------------------------------------------------------------------
 
 QVector3D Projector::rectangularEquatorialToScreenCoordinates(const QVector3D &coordinates) const
 {
-    return eyeToScreenCoordinates(toEyeCoordinates(coordinates));
+    return toScreenCoordinates(coordinates);
 }
 
 // -----------------------------------------------------------------------
@@ -103,13 +118,7 @@ QVector3D Projector::sphericalEclipticToScreenCoordinates(float longitude, float
 
 QVector3D Projector::rectangularAzimuthalToScreenCoordinates(const QVector3D &coordinates) const
 {
-    QVector3D azimuthal_coordinates = toAzimuthalCoordinates(coordinates);
-
-    QVector3D eye_coordinates;
-    eye_coordinates.setX(azimuthal_coordinates.x() * m_eye_right.x() + azimuthal_coordinates.y() * m_eye_right.y() + azimuthal_coordinates.z() * m_eye_right.z());
-    eye_coordinates.setY(azimuthal_coordinates.x() * m_eye_view.x()  + azimuthal_coordinates.y() * m_eye_view.y()  + azimuthal_coordinates.z() * m_eye_view.z());
-    eye_coordinates.setZ(azimuthal_coordinates.x() * m_eye_up.x()    + azimuthal_coordinates.y() * m_eye_up.y()    + azimuthal_coordinates.z() * m_eye_up.z());
-    return eyeToScreenCoordinates(eye_coordinates);
+    return toScreenCoordinates(toAzimuthalCoordinates(coordinates));
 }
 
 // -----------------------------------------------------------------------
@@ -124,6 +133,21 @@ QVector3D Projector::rectangularAzimuthalToScreenCoordinates(float x, float y, f
 QVector3D Projector::sphericalAzimuthalToScreenCoordinates(float longitude, float latitude, float distance) const
 {
     return rectangularAzimuthalToScreenCoordinates(sphericalToRectangularCoordinates(longitude, latitude, distance));
+}
+
+// -----------------------------------------------------------------------
+
+QVector2D Projector::eclipticToAzimuthalCoordinates(float longitude, float latitude) const
+{
+    QVector3D azimuthal_coordinates = (toCurrentCoordinates(eclipticToEquatorialCoordinates(sphericalToRectangularCoordinates(longitude, latitude))));
+
+    float azimuthal_longitude = qRadiansToDegrees(qAtan2(-azimuthal_coordinates.y(), -azimuthal_coordinates.x()));
+    if (azimuthal_longitude < 0.0f)
+    {
+        azimuthal_longitude += 360.0f;
+    }
+    float azimuthal_latitude = qRadiansToDegrees(qAsin(azimuthal_coordinates.z()));
+    return QVector2D(azimuthal_longitude, azimuthal_latitude);
 }
 
 // -----------------------------------------------------------------------
@@ -185,28 +209,33 @@ QVector3D Projector::toAzimuthalCoordinates(const QVector3D &coordinates) const
 
 // -----------------------------------------------------------------------
 
-QVector3D Projector::toEyeCoordinates(const QVector3D &coordinates) const
+QVector3D Projector::toCurrentCoordinates(const QVector3D &coordinates) const
 {
-    QVector3D eye_coordinates;
-    eye_coordinates.setX(coordinates.x() * m_eye_right.x() + coordinates.y() * m_eye_right.y() + coordinates.z() * m_eye_right.z());
-    eye_coordinates.setY(coordinates.x() * m_eye_view.x()  + coordinates.y() * m_eye_view.y()  + coordinates.z() * m_eye_view.z());
-    eye_coordinates.setZ(coordinates.x() * m_eye_up.x()    + coordinates.y() * m_eye_up.y()    + coordinates.z() * m_eye_up.z());
-    return eye_coordinates;
+    QVector3D normal_coordinates;
+    normal_coordinates.setX(coordinates.x() * m_current_right.x() + coordinates.y() * m_current_right.y() + coordinates.z() * m_current_right.z());
+    normal_coordinates.setY(coordinates.x() * m_current_view.x()  + coordinates.y() * m_current_view.y()  + coordinates.z() * m_current_view.z());
+    normal_coordinates.setZ(coordinates.x() * m_current_up.x()    + coordinates.y() * m_current_up.y()    + coordinates.z() * m_current_up.z());
+    return normal_coordinates;
 }
 
 // -----------------------------------------------------------------------
 
-QVector3D Projector::eyeToScreenCoordinates(const QVector3D &eye_coordinates) const
+QVector3D Projector::toScreenCoordinates(const QVector3D &coordinates) const
 {
+    QVector3D look_coordinates;
+    look_coordinates.setX(coordinates.x() * m_look_right.x() + coordinates.y() * m_look_right.y() + coordinates.z() * m_look_right.z());
+    look_coordinates.setY(coordinates.x() * m_look_view.x()  + coordinates.y() * m_look_view.y()  + coordinates.z() * m_look_view.z());
+    look_coordinates.setZ(coordinates.x() * m_look_up.x()    + coordinates.y() * m_look_up.y()    + coordinates.z() * m_look_up.z());
+
     // make sure we only calculate visible coordinates
-    if (eye_coordinates.y() < 0.001f)
+    if (look_coordinates.y() < 0.001f)
         return INVISIBLE_SCREEN_COORDINATES;
 
-    float distance = m_zoom / eye_coordinates.y();
+    float distance = m_zoom / look_coordinates.y();
 
     QVector3D normalized_coordinates;
-    normalized_coordinates.setX(distance * eye_coordinates.x() / m_field_of_view_tan);
-    normalized_coordinates.setZ(distance * eye_coordinates.z() / m_field_of_view_tan);
+    normalized_coordinates.setX(distance * look_coordinates.x() / m_field_of_view_tan);
+    normalized_coordinates.setZ(distance * look_coordinates.z() / m_field_of_view_tan);
     float normalized_length = qCos(normalized_coordinates.length());
 
     // hide coordinates that are not facing the user
@@ -217,6 +246,6 @@ QVector3D Projector::eyeToScreenCoordinates(const QVector3D &eye_coordinates) co
     QVector3D projected_coordinates;
     projected_coordinates.setX(m_projected_size * normalized_coordinates.x() * k);
     projected_coordinates.setY(-m_projected_size * normalized_coordinates.z() * k);
-    projected_coordinates.setZ(eye_coordinates.y());
+    projected_coordinates.setZ(look_coordinates.y());
     return projected_coordinates;
 }

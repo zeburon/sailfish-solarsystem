@@ -369,6 +369,12 @@ Canvas
         context.translate(width / 2.0, height / 2.0);
 
         projector.update();
+        /*
+        var followCoordinates = projector.eclipticToAzimuthalCoordinates(solarBodyPainters[1].geocentricLongitude, solarBodyPainters[1].geocentricLatitude);
+        longitudeLookOffset = followCoordinates.x + 90;
+        latitudeLookOffset = followCoordinates.y;
+        projector.update();
+        */
 
         // helper lines
         if (showAzimuth)
@@ -436,6 +442,7 @@ Canvas
             property real displayedOpacity
             property real displayedPhase: 0.5
             property real geocentricLongitude
+            property real geocentricLatitude
 
             function calculateRelativeCoordinates()
             {
@@ -445,7 +452,7 @@ Canvas
                     return;
                 }
 
-                // calculate geocentric coordinates
+                // calculate geocentric rectangular coordinates
                 relativeX = solarBody.orbitalElements.x;
                 relativeY = solarBody.orbitalElements.y;
                 relativeZ = solarBody.orbitalElements.z;
@@ -460,13 +467,14 @@ Canvas
                 relativeY -= earth.orbitalElements.y;
                 relativeZ -= earth.orbitalElements.z;
 
-                // calculate geocentric longitude
+                // calculate geocentric spherical coordinates
                 var newLongitudeFromEarth = Math.atan2(relativeY, relativeX) * 180 / Math.PI;
                 if (newLongitudeFromEarth < 0.0)
                 {
                     newLongitudeFromEarth += 360.0;
                 }
                 geocentricLongitude = newLongitudeFromEarth;
+                geocentricLatitude = Math.asin(relativeZ / Math.sqrt(relativeX * relativeX + relativeY * relativeY + relativeZ * relativeZ)) * 180 / Math.PI;
             }
 
             function calculatePhase()
@@ -586,8 +594,8 @@ Canvas
         dateTime: solarSystem.dateTime
         longitude: root.longitude
         latitude: root.latitude
-        longitudeOffset: longitudeLookOffset
-        latitudeOffset: latitudeLookOffset
+        longitudeLookOffset: root.longitudeLookOffset
+        latitudeLookOffset: root.latitudeLookOffset
         width: root.width
         height: root.height
         zoom: root.currentZoom
