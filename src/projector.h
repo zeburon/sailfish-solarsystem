@@ -59,8 +59,6 @@ signals:
     void signalFieldOfViewChanged();
 
 private:
-    static const float AXIAL_TILT_COS;
-    static const float AXIAL_TILT_SIN;
     static const QVector3D INVISIBLE_SCREEN_COORDINATES;
 
     QVector3D sphericalToRectangularCoordinates(float longitude, float latitude, float distance = 1.0f) const;
@@ -93,6 +91,8 @@ private:
     float m_zoom;
     float m_field_of_view;
     float m_field_of_view_tan;
+    float m_obliquity_of_ecliptic_sin;
+    float m_obliquity_of_ecliptic_cos;
 
 };
 

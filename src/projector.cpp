@@ -5,8 +5,6 @@
 
 // -----------------------------------------------------------------------
 
-const float Projector::AXIAL_TILT_COS                   = qCos(qDegreesToRadians(-23.43f));
-const float Projector::AXIAL_TILT_SIN                   = qSin(qDegreesToRadians(-23.43f));
 const QVector3D Projector::INVISIBLE_SCREEN_COORDINATES = QVector3D(0.0f, 0.0f, -1.0f);
 
 // -----------------------------------------------------------------------
@@ -14,7 +12,7 @@ const QVector3D Projector::INVISIBLE_SCREEN_COORDINATES = QVector3D(0.0f, 0.0f, 
 Projector::Projector(QObject *parent) : QObject(parent), m_date_time(0),
     m_longitude(0.0f), m_latitude(0.0f), m_longitude_look_offset(0.0f), m_latitude_look_offset(0.0f),
     m_width(0.0f), m_height(0.0f), m_projected_size(0.0f), m_zoom(0.0f), m_field_of_view(0.0f),
-    m_field_of_view_tan(0.0f)
+    m_field_of_view_tan(0.0f), m_obliquity_of_ecliptic_sin(0.0f), m_obliquity_of_ecliptic_cos(0.0f)
 {
 }
 
@@ -33,6 +31,8 @@ void Projector::update()
 
     m_projected_size = qMax(m_width, m_height) / 2.0f;
     m_field_of_view_tan = qTan(qDegreesToRadians(m_field_of_view / 2.0f));
+    m_obliquity_of_ecliptic_sin = qSin(qDegreesToRadians(-m_date_time->getObliquityOfEcliptic()));
+    m_obliquity_of_ecliptic_cos = qCos(qDegreesToRadians(-m_date_time->getObliquityOfEcliptic()));
 
     // azimuthal coordinate system @current point in time
     float latitude_limited = qMax(-89.9f, qMin(89.9f, m_latitude));
@@ -180,8 +180,8 @@ QVector3D Projector::eclipticToEquatorialCoordinates(const QVector3D &ecliptic_c
 {
     QVector3D equatorial_coordinates;
     equatorial_coordinates.setX(ecliptic_coordinates.x());
-    equatorial_coordinates.setY(AXIAL_TILT_COS * ecliptic_coordinates.y() - AXIAL_TILT_SIN * ecliptic_coordinates.z());
-    equatorial_coordinates.setZ(AXIAL_TILT_SIN * ecliptic_coordinates.y() + AXIAL_TILT_COS * ecliptic_coordinates.z());
+    equatorial_coordinates.setY(m_obliquity_of_ecliptic_cos * ecliptic_coordinates.y() - m_obliquity_of_ecliptic_sin * ecliptic_coordinates.z());
+    equatorial_coordinates.setZ(m_obliquity_of_ecliptic_sin * ecliptic_coordinates.y() + m_obliquity_of_ecliptic_cos * ecliptic_coordinates.z());
     return equatorial_coordinates;
 }
 
@@ -191,8 +191,8 @@ QVector3D Projector::equatorialToEclipticCoordinates(const QVector3D &equatorial
 {
     QVector3D ecliptic_coordinates;
     ecliptic_coordinates.setX(equatorial_coordinates.x());
-    ecliptic_coordinates.setY(AXIAL_TILT_COS * equatorial_coordinates.y() + AXIAL_TILT_SIN * equatorial_coordinates.z());
-    ecliptic_coordinates.setZ(-AXIAL_TILT_SIN * equatorial_coordinates.y() + AXIAL_TILT_COS * equatorial_coordinates.z());
+    ecliptic_coordinates.setY(m_obliquity_of_ecliptic_cos * equatorial_coordinates.y() + m_obliquity_of_ecliptic_sin * equatorial_coordinates.z());
+    ecliptic_coordinates.setZ(-m_obliquity_of_ecliptic_sin * equatorial_coordinates.y() + m_obliquity_of_ecliptic_cos * equatorial_coordinates.z());
     return ecliptic_coordinates;
 }
 
