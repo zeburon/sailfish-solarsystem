@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import harbour.solarsystem.OrbitalElementsPlanet 1.0
 import harbour.solarsystem.OrbitalElementsMoon 1.0
+import harbour.solarsystem.OrbitalElementsSun 1.0
 import harbour.solarsystem.DateTime 1.0
 
 QtObject
@@ -33,6 +34,27 @@ QtObject
 
     // -----------------------------------------------------------------------
 
+    property SolarBody sun: SolarBody
+    {
+        name: qsTr("Sun")
+        smallImageScaleZoomedOut: 0.1
+        largeImageSourceBottom: "../gfx/l_sun.png"
+        largeImageSourceTop: "../gfx/l_sun_flares.png"
+        orbitalElements: OrbitalElementsSun { }
+
+        axialTilt: 7.25
+        rotationPeriod: 25.05
+        satelliteCount: 0
+        radius: 696342
+        volume: 1.41e18
+        mass: 1.98855e30
+        surface: 6.09e12
+        surfaceGravity: 274.0
+        escapeVelocity: 617700
+        averageTemperature: 5788
+        pressure: -1
+    }
+
     property list<SolarBody> solarBodies:
     [
         SolarBody
@@ -42,7 +64,7 @@ QtObject
             name: qsTr("Mercury")
             smallImageSourceBottom: "../gfx/s_mercury.png"
             smallImageScaleZoomedOut: 0.0
-            mediumImageSourceBottom: "../gfx/m_mercury.png"
+            largeImageSourceBottom: "../gfx/l_mercury.png"
             orbitColor: "#558d8d8d"
             orbitalElements: OrbitalElementsPlanet
             {
@@ -74,7 +96,7 @@ QtObject
             name: qsTr("Venus")
             smallImageSourceBottom: "../gfx/s_venus.png"
             smallImageScaleZoomedOut: 0.1
-            mediumImageSourceBottom: "../gfx/m_venus.png"
+            largeImageSourceBottom: "../gfx/l_venus.png"
             orbitColor: "#55e8bb79"
             orbitalElements: OrbitalElementsPlanet
             {
@@ -106,7 +128,7 @@ QtObject
             name: qsTr("Earth")
             smallImageSourceBottom: "../gfx/s_earth.png"
             smallImageScaleZoomedOut: 0.2
-            mediumImageSourceBottom: "../gfx/m_earth.png"
+            largeImageSourceBottom: "../gfx/l_earth.png"
             orbitColor: "#66ffffff"
             orbitalElements: OrbitalElementsPlanet
             {
@@ -141,17 +163,30 @@ QtObject
             smallImageSourceBottom: "../gfx/s_moon.png"
             smallImageScaleZoomedOut: 0.0
             mediumImageSourceBottom: "../gfx/m_moon.png"
+            largeImageSourceBottom: "../gfx/l_moon.png"
             orbitColor: "#55ffffff"
             orbitalElements: OrbitalElementsMoon
             {
                 centuriesSinceJ2000: dateTime.centuriesSinceJ2000
-                meanDistanceStart: 0.15//0.00257
+                meanDistanceStart: 0.00257
                 eccentricityStart: 0.054900
                 inclinationStart: 5.1454
                 meanAnomalyStart: 115.3654; meanAnomalyPerCentury: 477198.8675316225
                 argumentOfPeriapsisStart: 318.0634; argumentOfPeriapsisPerCentury: 6003.1511970075
                 longitudeOfAscendingNodeStart: 125.1228; longitudeOfAscendingNodePerCentury: -1934.1378481575
             }
+
+            axialTilt: 6.687 // to orbit plane
+            rotationPeriod: 27.321582
+            satelliteCount: 0
+            radius: 1738.1
+            volume: 2.1958e10
+            mass: 7.342e22
+            surface: 3.793e7
+            surfaceGravity: 1.62
+            escapeVelocity: 2380
+            averageTemperature: 220
+            pressure: 1e-7
         },
         SolarBody
         {
@@ -159,8 +194,8 @@ QtObject
 
             name: qsTr("Mars")
             smallImageSourceBottom: "../gfx/s_mars.png"
-            smallImageScaleZoomedOut: 0.3
-            mediumImageSourceBottom: "../gfx/m_mars.png"
+            smallImageScaleZoomedOut: 0.2
+            largeImageSourceBottom: "../gfx/l_mars.png"
             orbitColor: "#55e58e5c"
             orbitalElements: OrbitalElementsPlanet
             {
@@ -192,7 +227,7 @@ QtObject
             name: qsTr("Jupiter")
             smallImageSourceBottom: "../gfx/s_jupiter.png"
             smallImageScaleZoomedIn: 0.0
-            mediumImageSourceBottom: "../gfx/m_jupiter.png"
+            largeImageSourceBottom: "../gfx/l_jupiter.png"
             orbitColor: "#55e4d6cd"
             orbitalElements: OrbitalElementsPlanet
             {
@@ -225,8 +260,8 @@ QtObject
             smallImageSourceBottom: "../gfx/s_saturn.png"
             smallImageSourceTop: "../gfx/s_saturn_rings.png"
             smallImageScaleZoomedIn: 0.0
-            mediumImageSourceBottom: "../gfx/m_saturn.png"
-            mediumImageSourceTop: "../gfx/m_saturn_rings.png"
+            largeImageSourceBottom: "../gfx/l_saturn.png"
+            largeImageSourceTop: "../gfx/m_saturn_rings.png"
             orbitColor: "#55e3c9a3"
             orbitalElements: OrbitalElementsPlanet
             {
@@ -259,7 +294,7 @@ QtObject
             name: qsTr("Uranus")
             smallImageSourceBottom: "../gfx/s_uranus.png"
             smallImageScaleZoomedIn: 0.0
-            mediumImageSourceBottom: "../gfx/m_uranus.png"
+            largeImageSourceBottom: "../gfx/l_uranus.png"
             orbitColor: "#55c2e5eb"
             orbitalElements: OrbitalElementsPlanet
             {
@@ -291,7 +326,7 @@ QtObject
             name: qsTr("Neptune")
             smallImageSourceBottom: "../gfx/s_neptune.png"
             smallImageScaleZoomedIn: 0.0
-            mediumImageSourceBottom: "../gfx/m_neptune.png"
+            largeImageSourceBottom: "../gfx/l_neptune.png"
             orbitColor: "#5573a7fe"
             orbitalElements: OrbitalElementsPlanet
             {
@@ -323,7 +358,7 @@ QtObject
             name: qsTr("Pluto")
             smallImageSourceBottom: "../gfx/s_pluto.png"
             smallImageScaleZoomedIn: 0.0
-            mediumImageSourceBottom: "../gfx/m_pluto.png"
+            largeImageSourceBottom: "../gfx/l_pluto.png"
             visible: showDwarfPlanets
             orbitColor: "#55b08764"
             orbitCorrectionFactorX: 1.02
@@ -358,30 +393,15 @@ QtObject
 
     function getDistanceBetweenBodies(solarBody1, solarBody2)
     {
-        var previousDx = solarBody1.orbitalElements.previousX - solarBody2.orbitalElements.previousX;
-        var previousDy = solarBody1.orbitalElements.previousY - solarBody2.orbitalElements.previousY;
-        var previousDz = solarBody1.orbitalElements.previousZ - solarBody2.orbitalElements.previousZ;
-        var oldDistance = Math.sqrt(previousDx * previousDx + previousDy * previousDy + previousDz * previousDz);
-
         var dx = solarBody1.orbitalElements.x - solarBody2.orbitalElements.x;
         var dy = solarBody1.orbitalElements.y - solarBody2.orbitalElements.y;
         var dz = solarBody1.orbitalElements.z - solarBody2.orbitalElements.z;
-        var newDistance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-        return [newDistance, newDistance > oldDistance ? 1 : -1];
+        return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
     function getDistanceToEarth(solarBody)
     {
         return getDistanceBetweenBodies(solarBody, earth);
-    }
-
-    function getDistanceToSun(solarBody)
-    {
-        var oldDistance = solarBody.orbitalElements.previousDistance;
-        var newDistance = solarBody.orbitalElements.distance;
-
-        return [newDistance, newDistance > oldDistance ? 1 : -1];
     }
 
     function getIndex(solarBody)

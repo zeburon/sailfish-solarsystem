@@ -8,9 +8,7 @@ OrbitalElements::OrbitalElements(QObject *parent) :
     m_mean_anomaly(0.0f), m_argument_of_periapsis(0.0f), m_longitude_of_ascending_node(0.0f),
     m_orbital_characteristics_calculated(false), m_average_distance(0.0f), m_minimum_distance(0.0f),
     m_maximum_distance(0.0f), m_period(0.0f), m_average_velocity(0.0f), m_centuries_since_j2000(0.0f),
-    m_x(0.0f), m_y(0.0f), m_z(0.0f), m_longitude(0.0f), m_latitude(0.0f), m_distance(0.0f),
-    m_previous_x(0.0f), m_previous_y(0.0f), m_previous_z(0.0f),
-    m_previous_longitude(0.0f), m_previous_latitude(0.0f), m_previous_distance(0.0f)
+    m_x(0.0f), m_y(0.0f), m_z(0.0f), m_longitude(0.0f), m_latitude(0.0f), m_distance(0.0f)
 {
 }
 
@@ -92,8 +90,6 @@ void OrbitalElements::setCenturiesSinceJ2000(float value)
 {
     if (value != m_centuries_since_j2000)
     {
-        storePreviousCoordinates();
-
         m_centuries_since_j2000 = value;
         emit signalCenturiesSinceJ2000Changed();
 
@@ -106,6 +102,15 @@ void OrbitalElements::setCenturiesSinceJ2000(float value)
 // -----------------------------------------------------------------------
 
 void OrbitalElements::updateOrbitalCharacteristics()
+{
+    updateOrbitalDistances();
+    updateOrbitalPeriod();
+    updateOrbitalVelocity();
+}
+
+// -----------------------------------------------------------------------
+
+void OrbitalElements::updateOrbitalDistances()
 {
     float average_distance = m_semi_major_axis * (1.0f + m_eccentricity * m_eccentricity / 2.0f);
     if (average_distance != m_average_distance)
@@ -127,14 +132,24 @@ void OrbitalElements::updateOrbitalCharacteristics()
         m_maximum_distance = maximum_distance;
         emit signalMaximumDistanceChanged();
     }
+}
 
+// -----------------------------------------------------------------------
+
+void OrbitalElements::updateOrbitalPeriod()
+{
     float period = 360.0f / m_mean_anomaly;
     if (period != m_period)
     {
         m_period = period;
         emit signalPeriodChanged();
     }
+}
 
+// -----------------------------------------------------------------------
+
+void OrbitalElements::updateOrbitalVelocity()
+{
     float average_velocity = ((2.0f * M_PI * m_semi_major_axis * 1.4960e11) / (m_period * 365.25f * 24.0f * 3600.0f)) * (1.0f - (1.0f * qPow(m_eccentricity, 2)) / 4.0f - (3.0f * qPow(m_eccentricity, 4)) / 64.0f - (5.0f * qPow(m_eccentricity, 6)) / 256.0f - (175.0f * qPow(m_eccentricity, 8)) / 16384.0f);
     if (average_velocity != m_average_velocity)
     {
@@ -180,42 +195,6 @@ void OrbitalElements::setCoordinates(float x, float y, float z)
     {
         m_distance = distance;
         emit signalDistanceChanged();
-    }
-}
-
-// -----------------------------------------------------------------------
-
-void OrbitalElements::storePreviousCoordinates()
-{
-    if (m_x != m_previous_x)
-    {
-        m_previous_x = m_x;
-        emit signalPreviousXChanged();
-    }
-    if (m_y != m_previous_y)
-    {
-        m_previous_y = m_y;
-        emit signalPreviousYChanged();
-    }
-    if (m_z != m_previous_z)
-    {
-        m_previous_z = m_z;
-        emit signalPreviousZChanged();
-    }
-    if (m_longitude != m_previous_longitude)
-    {
-        m_previous_longitude = m_longitude;
-        emit signalPreviousLongitudeChanged();
-    }
-    if (m_latitude != m_previous_latitude)
-    {
-        m_previous_latitude = m_latitude;
-        emit signalPreviousLatitudeChanged();
-    }
-    if (m_distance != m_previous_distance)
-    {
-        m_previous_distance = m_distance;
-        emit signalPreviousDistanceChanged();
     }
 }
 

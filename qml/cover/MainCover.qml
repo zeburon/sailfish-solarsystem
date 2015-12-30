@@ -46,20 +46,7 @@ CoverBackground
         var solarBody = solarSystem.solarBodies[settings.distancePlanetIdx];
         var result = topView.solarSystem.getDistanceToEarth(solarBody);
         labelName.text = qsTr("Distance to %1").arg(solarBody.name);
-        labelDistance.text = result[0].toFixed(2) + " AU";
-
-        // distance is increasing
-        if (result[1] === 1)
-        {
-            labelDirection.text = "↑";
-            labelDirection.color = Globals.DISTANCE_INCREASING_COLOR;
-        }
-        // distance is decreasing
-        else
-        {
-            labelDirection.text = "↓";
-            labelDirection.color = Globals.DISTANCE_DECREASING_COLOR;
-        }
+        labelDistance.text = result.toFixed(2) + " AU";
     }
 
     // -----------------------------------------------------------------------
@@ -149,15 +136,6 @@ CoverBackground
             horizontalAlignment: Text.AlignHCenter
             color: Theme.highlightColor
             font { family: Theme.fontFamily; pixelSize: Theme.fontSizeSmall }
-        }
-        Label
-        {
-            id: labelDirection
-
-            width: parent.width
-            horizontalAlignment: Text.AlignHCenter
-            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeMedium; bold: true }
-            opacity: 0.9
         }
     }
 

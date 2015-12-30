@@ -1,16 +1,24 @@
 import QtQuick 2.0
+import Sailfish.Silica 1.0
 
 Item
 {
+    id: root
+
+    // -----------------------------------------------------------------------
+
     property bool animated
+    property bool highlighted: false
 
     // -----------------------------------------------------------------------
 
     Image
     {
+        id: lightImage
+
         source: "../gfx/sun_light.png"
         anchors { centerIn: parent }
-        opacity: 0.35
+        opacity: 0.35 * parent.opacity // fade out even more
         scale: 2
 
         SequentialAnimation on rotation
@@ -23,6 +31,8 @@ Item
     }
     Image
     {
+        id: bottomFlamesImage
+
         source: "../gfx/sun_flames.png"
         anchors { centerIn: parent }
         opacity: 0.75
@@ -45,6 +55,8 @@ Item
     }
     Image
     {
+        id: flaresImage
+
         source: "../gfx/sun_flares.png"
         opacity: 0.65
         anchors { centerIn: parent }
@@ -67,6 +79,8 @@ Item
     }
     Image
     {
+        id: topFlamesImage
+
         source: "../gfx/sun_flames.png"
         anchors { centerIn: parent }
         opacity: 0.35
@@ -87,5 +101,19 @@ Item
             NumberAnimation { from: 0.95; to: 1.0; duration: 800; easing.type: Easing.InOutSine }
             NumberAnimation { from: 1.0; to: 0.95; duration: 700; easing.type: Easing.InOutSine }
         }
+    }
+
+    // -----------------------------------------------------------------------
+    // optional highlight rendering
+    Rectangle
+    {
+        anchors { centerIn: parent }
+        width: bottomFlamesImage.width
+        height: bottomFlamesImage.height
+        radius: width / 2
+        color: "transparent"
+        border { color: Theme.highlightColor; width: 2 }
+        z: 20
+        visible: root.highlighted
     }
 }

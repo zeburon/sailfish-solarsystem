@@ -31,13 +31,6 @@ class OrbitalElements : public QObject
     Q_PROPERTY(float latitude READ getLatitude NOTIFY signalLatitudeChanged)
     Q_PROPERTY(float distance READ getDistance NOTIFY signalDistanceChanged)
 
-    Q_PROPERTY(float previousX READ getPreviousX NOTIFY signalPreviousXChanged)
-    Q_PROPERTY(float previousY READ getPreviousY NOTIFY signalPreviousYChanged)
-    Q_PROPERTY(float previousZ READ getPreviousZ NOTIFY signalPreviousZChanged)
-    Q_PROPERTY(float previousLongitude READ getPreviousLongitude NOTIFY signalPreviousLongitudeChanged)
-    Q_PROPERTY(float previousLatitude READ getPreviousLatitude NOTIFY signalPreviousLatitudeChanged)
-    Q_PROPERTY(float previousDistance READ getPreviousDistance NOTIFY signalPreviousDistanceChanged)
-
 public:
     explicit OrbitalElements(QObject *parent = 0);
     virtual ~OrbitalElements();
@@ -65,13 +58,6 @@ public:
     float getLatitude() const { return m_latitude; }
     float getDistance() const { return m_distance; }
 
-    float getPreviousX() const { return m_previous_x; }
-    float getPreviousY() const { return m_previous_y; }
-    float getPreviousZ() const { return m_previous_z; }
-    float getPreviousLongitude() const { return m_previous_longitude; }
-    float getPreviousLatitude() const { return m_previous_latitude; }
-    float getPreviousDistance() const { return m_previous_distance; }
-
 signals:
     void signalSemiMajorAxisChanged();
     void signalEccentricityChanged();
@@ -95,17 +81,13 @@ signals:
     void signalLatitudeChanged();
     void signalDistanceChanged();
 
-    void signalPreviousXChanged();
-    void signalPreviousYChanged();
-    void signalPreviousZChanged();
-    void signalPreviousLongitudeChanged();
-    void signalPreviousLatitudeChanged();
-    void signalPreviousDistanceChanged();
-
 protected:
     virtual void updateElements() = 0;
     virtual void updateCoordinates() = 0;
     virtual void updateOrbitalCharacteristics();
+    virtual void updateOrbitalDistances();
+    virtual void updateOrbitalPeriod();
+    virtual void updateOrbitalVelocity();
 
     void setSemiMajorAxis(float value);
     void setEccentricity(float value);
@@ -115,7 +97,6 @@ protected:
     void setLongitudeOfAscendingNode(float value);
     void setCoordinates(float x, float y, float z);
 
-    void storePreviousCoordinates();
     float mod2pi(float angle) const;
     float calculateLongitude(float x, float y) const;
     float calculateLatitude(float z) const;
@@ -143,13 +124,6 @@ protected:
     float m_longitude;
     float m_latitude;
     float m_distance;
-
-    float m_previous_x;
-    float m_previous_y;
-    float m_previous_z;
-    float m_previous_longitude;
-    float m_previous_latitude;
-    float m_previous_distance;
 
 };
 

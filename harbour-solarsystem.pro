@@ -19,7 +19,8 @@ SOURCES += src/harbour-solarsystem.cpp \
     src/orbitalelements.cpp \
     src/orbitalelementsmoon.cpp \
     src/projector.cpp \
-    src/datetime.cpp
+    src/datetime.cpp \
+    src/orbitalelementssun.cpp
 
 OTHER_FILES += qml/harbour-solarsystem.qml \
     rpm/harbour-solarsystem.changes.in \
@@ -31,7 +32,6 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/gfx/sun_flares.png \
     qml/gfx/sun_flames.png \
     qml/gfx/shadow.png \
-    qml/components/Sun.qml \
     qml/pages/MainPage.qml \
     qml/pages/AboutPage.qml \
     qml/storage.js \
@@ -50,17 +50,7 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/gfx/s_saturn.png \
     qml/gfx/s_uranus.png \
     qml/gfx/s_venus.png \
-    qml/gfx/m_earth.png \
-    qml/gfx/m_jupiter.png \
-    qml/gfx/m_mars.png \
-    qml/gfx/m_mercury.png \
-    qml/gfx/m_neptune.png \
-    qml/gfx/m_pluto.png \
-    qml/gfx/m_saturn.png \
-    qml/gfx/m_uranus.png \
-    qml/gfx/m_venus.png \
     qml/components/DetailsElement.qml \
-    qml/gfx/m_saturn_rings.png \
     qml/gfx/s_saturn_rings.png \
     qml/gfx/zoom_in.png \
     qml/gfx/zoom_out.png \
@@ -78,7 +68,8 @@ HEADERS += \
     src/orbitalelements.h \
     src/orbitalelementsmoon.h \
     src/projector.h \
-    src/datetime.h
+    src/datetime.h \
+    src/orbitalelementssun.h
 
 DISTFILES += \
     qml/components/SolarBody.qml \
@@ -95,5 +86,17 @@ DISTFILES += \
     qml/cover/MainCover.qml \
     qml/components/DateTimeDisplay.qml \
     qml/gfx/now.png \
-    qml/components/NowButton.qml
+    qml/components/NowButton.qml \
+    qml/gfx/l_earth.png \
+    qml/gfx/l_jupiter.png \
+    qml/gfx/l_mars.png \
+    qml/gfx/l_mercury.png \
+    qml/gfx/l_neptune.png \
+    qml/gfx/l_pluto.png \
+    qml/gfx/l_saturn.png \
+    qml/gfx/l_saturn_rings.png \
+    qml/gfx/l_uranus.png \
+    qml/gfx/l_venus.png \
+    qml/gfx/l_moon.png \
+    qml/components/SunImage.qml
 

@@ -13,6 +13,7 @@ Page
     property bool active: status === PageStatus.Active
     property SolarBody solarBody
     property SolarSystem solarSystem
+    property bool isSun: solarBody === solarSystem.sun
 
     // -----------------------------------------------------------------------
 
@@ -33,7 +34,27 @@ Page
         {
             return value.toFixed(2);
         }
+        else if (value > 0)
+        {
+            while (value < 1)
+            {
+                --exponent;
+                value *= 10;
+            }
+            return value.toFixed(0) + " × 10" + formatAsSuperscript(exponent);
+        }
+
         return "0";
+    }
+
+    // -----------------------------------------------------------------------
+
+    function formatExponentialNumberIfNecessary(value)
+    {
+        if (value > 1 && value < 100)
+            return value.toFixed(2);
+
+        return formatExponentialNumber(value);
     }
 
     // -----------------------------------------------------------------------
@@ -48,6 +69,7 @@ Page
         {
             switch (str[idx])
             {
+                case "-": result += "-"; break; // FIXME: "⁻" does not work
                 case "0": result += "⁰"; break;
                 case "1": result += "¹"; break;
                 case "2": result += "²"; break;
@@ -82,14 +104,18 @@ Page
             id: planetImage
 
             useSmallImage: false
+            useLargeImage: true
             solarBody: page.solarBody
             anchors { left: parent.left; leftMargin: 75; top: parent.top; topMargin: 75 }
             shadowRotation: 180
+            shadowOpacity: isSun ? 0.2 : 1.0
             axialTilt: solarBody.axialTilt
         }
 
         SectionHeader
         {
+            id: physicalCharacteristicsSection
+
             text: qsTr("Physical characteristics")
         }
         Row
@@ -224,11 +250,15 @@ Page
 
         SectionHeader
         {
+            id: orbitalCharacteristicsSection
+
             text: qsTr("Orbital characteristics")
+            opacity: isSun ? 0 : 1
         }
         Row
         {
             width: parent.width
+            opacity: orbitalCharacteristicsSection.opacity
 
             DetailsElement
             {
@@ -255,31 +285,35 @@ Page
 
         SectionHeader
         {
-            text: qsTr("Distance to sun")
+            id: distanceSection
+
+            text: qsTr("Distance to ") + (solarBody.parentSolarBody ? solarBody.parentSolarBody.name : qsTr("Sun"))
+            opacity: isSun ? 0 : 1
         }
         Row
         {
             width: parent.width
+            opacity: distanceSection.opacity
 
             DetailsElement
             {
                 width: parent.width * 0.3
                 title: qsTr("Average")
-                value: solarBody.orbitalElements.averageDistance.toFixed(2)
+                value: formatExponentialNumberIfNecessary(solarBody.orbitalElements.averageDistance)
                 unit: "AU"
             }
             DetailsElement
             {
                 width: parent.width * 0.35
                 title: qsTr("Minimum")
-                value: solarBody.orbitalElements.minimumDistance.toFixed(2)
+                value: formatExponentialNumberIfNecessary(solarBody.orbitalElements.minimumDistance)
                 unit: "AU"
             }
             DetailsElement
             {
                 width: parent.width * 0.35
                 title: qsTr("Maximum")
-                value: solarBody.orbitalElements.maximumDistance.toFixed(2)
+                value: formatExponentialNumberIfNecessary(solarBody.orbitalElements.maximumDistance)
                 unit: "AU"
             }
         }
@@ -304,7 +338,7 @@ Page
                 delegate: Item {
                     property SolarBody solarBody: solarSystem.solarBodies[index]
                     property real sizePercent: Math.sqrt(solarBody.radius / solarSystem.jupiter.radius)
-                    property bool isDisplayed: solarBody === page.solarBody
+                    property bool isDisplayed: solarBody === page.solarBody || solarBody == page.solarBody.parentSolarBody
 
                     width: planetComparisonRow.width / solarSystem.visiblePlanetCount
                     height: planetComparisonRow.height
@@ -328,7 +362,7 @@ Page
                                 return "↔";
 
                             var distance = solarSystem.getDistanceBetweenBodies(solarBody, page.solarBody);
-                            return distance[0].toFixed(1) + "<sub>" + qsTr("AU") + "</unit>";
+                            return distance.toFixed(1) + "<sub>" + qsTr("AU") + "</unit>";
                         }
                         color:
                         {

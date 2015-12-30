@@ -53,7 +53,6 @@ Canvas
         for (var bodyIdx = 0; bodyIdx < solarSystem.solarBodies.length; ++bodyIdx)
         {
             var solarBody = solarSystem.solarBodies[bodyIdx];
-
             var painter = solarBodyPainter.createObject(null, {"solarBody": solarBody});
             solarBodyPainters.push(painter);
 
@@ -71,6 +70,12 @@ Canvas
                 painter.parentPainter = solarBodyPainters[solarSystem.getIndex(parentSolarBody)];
             }
         }
+
+
+        painter = solarBodyPainter.createObject(null, {"solarBody": solarSystem.sun});
+        solarBodyPainters.push(painter);
+        sunImageComponent.createObject(images, {"solarBody": solarSystem.sun, "painter": painter});
+
         updateSimplifiedOrbitRadiuses();
         initialized = true;
     }
@@ -269,6 +274,11 @@ Canvas
                 {
                     newX = solarBody.orbitalElements.x * root.auSize * solarBody.orbitCorrectionFactorX;
                     newY = solarBody.orbitalElements.y * root.auSize * solarBody.orbitCorrectionFactorY;
+                    if (parentPainter)
+                    {
+                        newX *= 75;
+                        newY *= 75;
+                    }
                 }
 
                 if (parentPainter)
@@ -298,6 +308,21 @@ Canvas
     }
     Component
     {
+        id: sunImageComponent
+
+        SunImage
+        {
+            property var painter
+
+            x: painter.displayedX * root.currentZoom
+            y: painter.displayedY * root.currentZoom
+            scale: painter.displayedScale
+            opacity: painter.displayedOpacity
+            animated: root.animateSun
+        }
+    }
+    Component
+    {
         id: solarBodyLabelComponent
 
         SolarBodyLabel
@@ -319,16 +344,6 @@ Canvas
         showDwarfPlanets: root.showDwarfPlanets
     }
 
-    Sun
-    {
-        id: sun
-
-        scale: root.imageScale * root.currentZoom
-        animated: root.animateSun
-        opacity: root.imageOpacity
-        anchors { centerIn: parent }
-        z: 0
-    }
     Item
     {
         id: images

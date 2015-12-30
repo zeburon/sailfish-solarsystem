@@ -37,14 +37,18 @@ Canvas
     property int mouseLatitudeOffsetStart
     property bool mouseDragged: false
 
-    // solar body information
+    // solar system information
     property alias solarSystem: solarSystem
+    property alias sun: solarSystem.sun
+    property real sunLongitude
     property alias earth: solarSystem.earth
     property alias moon: solarSystem.moon
     property alias mars: solarSystem.mars
-    property real sunLongitude
-    property var solarBodyPainters: []
-    property var solarBodyImages: []
+
+    // rendering
+    property var painters: []
+    property var trackedPainter
+    property var images: []
 
     // -----------------------------------------------------------------------
 
@@ -64,13 +68,19 @@ Canvas
                 continue;
 
             var painter = solarBodyPainter.createObject(null, {"solarBody": solarBody});
-            solarBodyPainters.push(painter);
+            painters.push(painter);
 
             var image = planetImageComponent.createObject(items, {"solarBody": solarBody, "painter": painter});
+
             repaintImages.connect(image.requestPaint);
-            solarBodyImages.push(image);
-            var label = planetLabelComponent.createObject(items, {"solarBody": solarBody, "painter": painter, "yOffset": image.imageHeight * 0.3});
+            images.push(image);
+            var label = solarBodyLabelComponent.createObject(items, {"solarBody": solarBody, "painter": painter, "yOffset": image.imageHeight * 0.3});
         }
+
+        painter = solarBodyPainter.createObject(null, {"solarBody": sun});
+        painters.push(painter);
+        image = sunImageComponent.createObject(items, {"solarBody": sun, "painter": painter});
+        images.push(image);
     }
 
     // -----------------------------------------------------------------------
@@ -81,9 +91,9 @@ Canvas
         {
             solarSystem.dateTime.string = dateTime.string;
             sunLongitude = (earth.orbitalElements.longitude + 180) % 360;
-            for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)
+            for (var painterIdx = 0; painterIdx < painters.length; ++painterIdx)
             {
-                var painter = solarBodyPainters[painterIdx];
+                var painter = painters[painterIdx];
                 painter.calculateRelativeCoordinates();
                 painter.calculatePhase();
             }
@@ -118,7 +128,7 @@ Canvas
     {
         if (coordinates.z > 0)
         {
-            context.globalAlpha = 0.6 * getOpacity(coordinates.x, coordinates.y);
+            context.globalAlpha = 0.6 * calculateOpacity(coordinates.x, coordinates.y);
             drawCircle(context, coordinates, color, 5);
             context.fillStyle = color;
             context.fillText(label,  coordinates.x, coordinates.y - 5);
@@ -129,7 +139,10 @@ Canvas
 
     function drawPath(context, coordinates)
     {
-        var lastX = 0, lastY = 0, dX = 0, dY = 0, segmentLength = 0;
+        if (coordinates.length < 2)
+            return;
+
+        var lastX = coordinates[coordinates.length - 1].x, lastY = coordinates[coordinates.length - 1].y, dX = 0, dY = 0, segmentLength = 0;
         for (var idx = 0; idx < coordinates.length; ++idx)
         {
             var point = coordinates[idx];
@@ -265,8 +278,7 @@ Canvas
     {
         var coordinates = [];
         var longitudeOffset = -longitudeLookOffset - (dateTime.meanSiderealTime / 24) * 360;
-        var longitudeRange = Math.min(180, fieldOfView / currentZoom);
-        for (var skyLongitude = -longitudeRange; skyLongitude <= longitudeRange; skyLongitude += 10)
+        for (var skyLongitude = -180; skyLongitude <= 200; skyLongitude += 20)
         {
             coordinates.push(projector.sphericalEquatorialToScreenCoordinates(skyLongitude + longitudeOffset, 0));
         }
@@ -284,8 +296,7 @@ Canvas
     {
         var coordinates = [];
         var longitudeOffset = -longitudeLookOffset - (dateTime.meanSiderealTime / 24) * 360;
-        var longitudeRange = Math.min(180, fieldOfView / currentZoom);
-        for (var skyLongitude = -longitudeRange; skyLongitude <= longitudeRange; skyLongitude += 10)
+        for (var skyLongitude = -180; skyLongitude <= 200; skyLongitude += 20)
         {
             coordinates.push(projector.sphericalEclipticToScreenCoordinates(skyLongitude + longitudeOffset, 0));
         }
@@ -299,7 +310,7 @@ Canvas
 
     // -----------------------------------------------------------------------
 
-    function getOpacity(xPos, yPos)
+    function calculateOpacity(xPos, yPos)
     {
         return Math.max(0.0, 1.0 - Math.max(0.0, (Math.sqrt(xPos * xPos + yPos * yPos) - visibleRadiusFadeStart) / (visibleRadius - visibleRadiusFadeStart)));
     }
@@ -308,13 +319,40 @@ Canvas
 
     function click(mouseX, mouseY)
     {
+        var closestPainter = getClosestPainter(mouseX, mouseY);
+        if (closestPainter)
+        {
+            clickedOnPlanet(closestPainter.solarBody, solarSystem);
+        }
+        else
+        {
+            clickedOnEmptySpace();
+        }
+    }
+
+    // -----------------------------------------------------------------------
+
+    function pressAndHold(mouseX, mouseY)
+    {
+        var closestPainter = getClosestPainter(mouseX, mouseY);
+        if (closestPainter)
+        {
+            trackedPainter = closestPainter;
+            requestPaint();
+        }
+    }
+
+    // -----------------------------------------------------------------------
+
+    function getClosestPainter(mouseX, mouseY)
+    {
         var closestPainter;
         var minDistance = 99999;
 
-        for (var imageIdx = 0; imageIdx < solarBodyImages.length; ++imageIdx)
+        for (var imageIdx = 0; imageIdx < images.length; ++imageIdx)
         {
-            var image = solarBodyImages[imageIdx];
-            if (!image.visible || image.solarBody.parentSolarBody)
+            var image = images[imageIdx];
+            if (!image.visible)
                 continue;
 
             var dx = image.x - mouseX;
@@ -326,15 +364,7 @@ Canvas
                 minDistance = distance;
             }
         }
-
-        if (closestPainter)
-        {
-            clickedOnPlanet(closestPainter.solarBody, solarSystem);
-        }
-        else
-        {
-            clickedOnEmptySpace();
-        }
+        return closestPainter;
     }
 
     // -----------------------------------------------------------------------
@@ -368,13 +398,18 @@ Canvas
         context.textAlign = "center";
         context.translate(width / 2.0, height / 2.0);
 
+        // calculate new projection parameters
         projector.update();
-        /*
-        var followCoordinates = projector.eclipticToAzimuthalCoordinates(solarBodyPainters[1].geocentricLongitude, solarBodyPainters[1].geocentricLatitude);
-        longitudeLookOffset = followCoordinates.x + 90;
-        latitudeLookOffset = followCoordinates.y;
-        projector.update();
-        */
+        if (trackedPainter)
+        {
+            trackedPainter.applyRelativeCoordinates();
+            longitudeLookOffset = trackedPainter.azimuthalLongitude + 90;
+            latitudeLookOffset = trackedPainter.azimuthalLatitude;
+            projector.update();
+
+            //var projectedPainterCoordinates = projector.sphericalAzimuthalToScreenCoordinates(trackedPainter.azimuthalLongitude, trackedPainter.azimuthalLatitude);
+            //drawCircle(context, projectedPainterCoordinates, Theme.highlightColor, 40);
+        }
 
         // helper lines
         if (showAzimuth)
@@ -406,19 +441,10 @@ Canvas
             drawCircle(context, projectedStarCoordinates, "yellow", star.displayedSize * root.currentZoom);
         }
 
-        // sun
-        var projected = projector.rectangularEclipticToScreenCoordinates(-earth.orbitalElements.x, -earth.orbitalElements.y, -earth.orbitalElements.z);
-        sun.x = projected.x + width / 2;
-        sun.y = projected.y + height / 2;
-        sun.z = 1000 - projected.z;
-        sun.visible = projected.z > 0;
-        sun.opacity = getOpacity(projected.x, projected.y);
-        sun.rotation = projector.getImageRotation(sunLongitude, 0);
-
-        // planets
-        for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)
+        // sun, planets and moon
+        for (var painterIdx = 0; painterIdx < painters.length; ++painterIdx)
         {
-            solarBodyPainters[painterIdx].applyRelativeCoordinates();
+            painters[painterIdx].applyRelativeCoordinates();
         }
     }
 
@@ -443,6 +469,8 @@ Canvas
             property real displayedPhase: 0.5
             property real geocentricLongitude
             property real geocentricLatitude
+            property real azimuthalLongitude
+            property real azimuthalLatitude
 
             function calculateRelativeCoordinates()
             {
@@ -453,19 +481,28 @@ Canvas
                 }
 
                 // calculate geocentric rectangular coordinates
-                relativeX = solarBody.orbitalElements.x;
-                relativeY = solarBody.orbitalElements.y;
-                relativeZ = solarBody.orbitalElements.z;
-                if (solarBody.parentSolarBody)
+                if (solarBody === sun)
                 {
-                    var parentSolarBody = solarBody.parentSolarBody;
-                    relativeX += parentSolarBody.orbitalElements.x;
-                    relativeY += parentSolarBody.orbitalElements.y;
-                    relativeZ += parentSolarBody.orbitalElements.z;
+                    relativeX = -earth.orbitalElements.x;
+                    relativeY = -earth.orbitalElements.y;
+                    relativeZ = -earth.orbitalElements.z;
                 }
-                relativeX -= earth.orbitalElements.x;
-                relativeY -= earth.orbitalElements.y;
-                relativeZ -= earth.orbitalElements.z;
+                else
+                {
+                    relativeX = solarBody.orbitalElements.x;
+                    relativeY = solarBody.orbitalElements.y;
+                    relativeZ = solarBody.orbitalElements.z;
+                    if (solarBody.parentSolarBody)
+                    {
+                        var parentSolarBody = solarBody.parentSolarBody;
+                        relativeX += parentSolarBody.orbitalElements.x;
+                        relativeY += parentSolarBody.orbitalElements.y;
+                        relativeZ += parentSolarBody.orbitalElements.z;
+                    }
+                    relativeX -= earth.orbitalElements.x;
+                    relativeY -= earth.orbitalElements.y;
+                    relativeZ -= earth.orbitalElements.z;
+                }
 
                 // calculate geocentric spherical coordinates
                 var newLongitudeFromEarth = Math.atan2(relativeY, relativeX) * 180 / Math.PI;
@@ -479,6 +516,9 @@ Canvas
 
             function calculatePhase()
             {
+                if (solarBody === sun)
+                    return;
+
                 if (solarBody === moon)
                 {
                     var longitudeDifference = (root.sunLongitude - solarBody.orbitalElements.longitude) % 360.0;
@@ -529,12 +569,19 @@ Canvas
                     return;
                 }
 
+                var azimuthalCoordinates = projector.eclipticToAzimuthalCoordinates(geocentricLongitude, geocentricLatitude);
+                azimuthalLongitude = azimuthalCoordinates.x + 90.0;
+                azimuthalLatitude = azimuthalCoordinates.y;
+
                 var projectedCoordinates = projector.rectangularEclipticToScreenCoordinates(relativeX, relativeY, relativeZ);
                 displayedX = projectedCoordinates.x + root.width / 2;
                 displayedY = projectedCoordinates.y + root.height / 2;
                 displayedZ = 1000 - projectedCoordinates.z;
-                displayedOpacity = getOpacity(projectedCoordinates.x, projectedCoordinates.y);
-                displayedRotation = projector.getImageRotation(geocentricLongitude, solarBody.orbitalElements.latitude);
+
+                var newDisplayedOpacity = calculateOpacity(projectedCoordinates.x, projectedCoordinates.y);
+                newDisplayedOpacity *= (1.0 - 0.5 * Math.min(1.0, (Math.abs(Math.min(5, azimuthalLatitude) - 5) / 5.0)));
+                displayedOpacity = newDisplayedOpacity;
+                displayedRotation = projector.getImageRotation(geocentricLongitude, geocentricLatitude);
                 visible = projectedCoordinates.z > 0;
             }
         }
@@ -555,12 +602,32 @@ Canvas
             scale: root.currentZoom
             opacity: painter.displayedOpacity
             shadowPhase: painter.displayedPhase
-            useSmallImage: solarBody !== moon
+            useSmallImage: solarBody === moon ? false : true
+            highlighted: painter === root.trackedPainter
         }
     }
     Component
     {
-        id: planetLabelComponent
+        id: sunImageComponent
+
+        SunImage
+        {
+            property var painter
+
+            x: painter.displayedX
+            y: painter.displayedY
+            z: painter.displayedZ
+            visible: painter.visible
+            rotation: painter.displayedRotation
+            scale: root.currentZoom
+            opacity: painter.displayedOpacity
+            animated: root.animateSun
+            highlighted: painter === root.trackedPainter
+        }
+    }
+    Component
+    {
+        id: solarBodyLabelComponent
 
         SolarBodyLabel
         {
@@ -572,6 +639,7 @@ Canvas
             visible: painter.visible && root.showLabels
             opacity: painter.displayedOpacity
             yOffsetScale: root.currentZoom
+            highlight: painter === root.trackedPainter
         }
     }
 
@@ -608,15 +676,6 @@ Canvas
 
         anchors { fill: parent }
         visible: solarSystem.valid
-
-        Sun
-        {
-            id: sun
-
-            animated: root.animateSun
-            scale: root.currentZoom
-            visible: z > 0
-        }
     }
 
     MouseArea
@@ -644,14 +703,18 @@ Canvas
                 var dx = mouseLongitudeOffsetStart - longitudeLookOffset;
                 var dy = mouseLatitudeOffsetStart - latitudeLookOffset;
                 if (Math.sqrt(dx * dx + dy * dy) > 2)
+                {
                     mouseDragged = true;
+                    trackedPainter = null;
+                }
             }
 
             requestPaint();
         }
         onPressAndHold:
         {
-            mouseDragged = true;
+            if (!mouseDragged)
+                root.pressAndHold(mouse.x, mouse.y);
         }
         onClicked:
         {

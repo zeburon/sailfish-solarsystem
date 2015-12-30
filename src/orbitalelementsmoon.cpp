@@ -92,3 +92,15 @@ void OrbitalElementsMoon::updateCoordinates()
 
     setCoordinates(x_ecliptic, -y_ecliptic, z_ecliptic);
 }
+
+// -----------------------------------------------------------------------
+
+void OrbitalElementsMoon::updateOrbitalPeriod()
+{
+    float period = 1.0f / (m_mean_anomaly_per_century / 36525);
+    if (period != m_period)
+    {
+        m_period = period;
+        emit signalPeriodChanged();
+    }
+}

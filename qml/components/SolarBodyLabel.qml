@@ -6,6 +6,7 @@ Item
     property SolarBody solarBody
     property real yOffset
     property real yOffsetScale: 1.0
+    property bool highlight
 
     // -----------------------------------------------------------------------
 
@@ -18,7 +19,7 @@ Item
         id: label
 
         text: solarBody.name
-        color: Theme.secondaryHighlightColor
+        color: highlight ? Theme.highlightColor : Theme.secondaryHighlightColor
         font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
         anchors { horizontalCenter: parent.horizontalCenter; top: parent.verticalCenter; topMargin: yOffset * yOffsetScale }
     }

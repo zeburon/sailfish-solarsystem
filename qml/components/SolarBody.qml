@@ -18,6 +18,8 @@ QtObject
     property real smallImageScaleZoomedOut: 1.0
     property string mediumImageSourceBottom
     property string mediumImageSourceTop
+    property string largeImageSourceBottom
+    property string largeImageSourceTop
 
     // orbit visualization
     property color orbitColor

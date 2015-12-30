@@ -48,6 +48,7 @@ signals:
 protected:
     virtual void updateElements();
     virtual void updateCoordinates();
+    virtual void updateOrbitalPeriod();
 
 private:
     float m_mean_distance_start;

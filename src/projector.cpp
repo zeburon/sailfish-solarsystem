@@ -141,7 +141,7 @@ QVector2D Projector::eclipticToAzimuthalCoordinates(float longitude, float latit
 {
     QVector3D azimuthal_coordinates = (toCurrentCoordinates(eclipticToEquatorialCoordinates(sphericalToRectangularCoordinates(longitude, latitude))));
 
-    float azimuthal_longitude = qRadiansToDegrees(qAtan2(-azimuthal_coordinates.y(), -azimuthal_coordinates.x()));
+    float azimuthal_longitude = qRadiansToDegrees(qAtan2(-azimuthal_coordinates.y(), -azimuthal_coordinates.x())) - 90.0f;
     if (azimuthal_longitude < 0.0f)
     {
         azimuthal_longitude += 360.0f;

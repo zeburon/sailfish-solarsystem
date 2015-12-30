@@ -97,10 +97,6 @@
         <translation>Fluchtgeschw.</translation>
     </message>
     <message>
-        <source>Distance to sun</source>
-        <translation>Entfernung zur Sonne</translation>
-    </message>
-    <message>
         <source>Average</source>
         <translation>Durchschnitt</translation>
     </message>
@@ -170,6 +166,14 @@
     </message>
     <message>
         <source>AU</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Distance to </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sun</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -322,6 +326,10 @@
     </message>
     <message>
         <source>Pluto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sun</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

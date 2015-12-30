@@ -61,7 +61,7 @@ ApplicationWindow
         id: planetDetailsPage
 
         solarSystem: mainPage.solarSystem
-        solarBody: mainPage.solarSystem.solarBodies[0]
+        solarBody: mainPage.solarSystem.solarBodies[1]
     }
     SettingsPage
     {
