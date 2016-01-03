@@ -37,7 +37,7 @@ Canvas
 
     // solar body information
     property alias solarSystem: solarSystem
-    property var solarBodyPainters: []
+    property var painters: []
 
     // -----------------------------------------------------------------------
 
@@ -54,26 +54,26 @@ Canvas
         {
             var solarBody = solarSystem.solarBodies[bodyIdx];
             var painter = solarBodyPainter.createObject(null, {"solarBody": solarBody});
-            solarBodyPainters.push(painter);
+            painters.push(painter);
 
             var bodyZ = solarSystem.solarBodies.length - bodyIdx;
             var image = solarBodyImageComponent.createObject(images, {"solarBody": solarBody, "painter": painter, "z": bodyZ});
             var label = solarBodyLabelComponent.createObject(labels, {"solarBody": solarBody, "painter": painter, "z": bodyZ, "yOffset": image.imageHeight * 0.3});
         }
         // link to parent instances
-        for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)
+        for (var painterIdx = 0; painterIdx < painters.length; ++painterIdx)
         {
-            var painter = solarBodyPainters[painterIdx];
+            var painter = painters[painterIdx];
             var parentSolarBody = painter.solarBody.parentSolarBody;
             if (parentSolarBody)
             {
-                painter.parentPainter = solarBodyPainters[solarSystem.getIndex(parentSolarBody)];
+                painter.parentPainter = painters[solarSystem.getIndex(parentSolarBody)];
             }
         }
 
-
+        // create sun
         painter = solarBodyPainter.createObject(null, {"solarBody": solarSystem.sun});
-        solarBodyPainters.push(painter);
+        painters.push(painter);
         sunImageComponent.createObject(images, {"solarBody": solarSystem.sun, "painter": painter});
 
         updateSimplifiedOrbitRadiuses();
@@ -85,9 +85,9 @@ Canvas
     function update(dateTime)
     {
         solarSystem.dateTime.string = dateTime.string;
-        for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)
+        for (var painterIdx = 0; painterIdx < painters.length; ++painterIdx)
         {
-            solarBodyPainters[painterIdx].updateCoordinates();
+            painters[painterIdx].updateCoordinates();
         }
         requestPaint();
     }
@@ -98,9 +98,9 @@ Canvas
     {
         // calculate number of visible bodies
         var visibleBodyCount = 0;
-        for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)
+        for (var painterIdx = 0; painterIdx < painters.length; ++painterIdx)
         {
-            var painter = solarBodyPainters[painterIdx];
+            var painter = painters[painterIdx];
             if (painter.solarBody.visible && !painter.solarBody.parentSolarBody)
             {
                 ++visibleBodyCount;
@@ -110,9 +110,12 @@ Canvas
         // calculate new simplified radiuses
         var radiusIncrement = radiusRange / (visibleBodyCount - 1);
         var visibleBodyIdx = 0;
-        for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)
+        for (var painterIdx = 0; painterIdx < painters.length; ++painterIdx)
         {
-            var painter = solarBodyPainters[painterIdx];
+            var painter = painters[painterIdx];
+            if (painter.solarBody === solarSystem.sun)
+                continue;
+
             if (painter.solarBody.parentSolarBody)
             {
                 painter.orbitSimplifiedRadius = radiusIncrement / 2;
@@ -123,7 +126,7 @@ Canvas
                 ++visibleBodyIdx;
             }
         }
-        auSize = solarBodyPainters[solarSystem.getIndex(solarSystem.earth)].orbitSimplifiedRadius;
+        auSize = painters[solarSystem.getIndex(solarSystem.earth)].orbitSimplifiedRadius;
     }
 
     // -----------------------------------------------------------------------
@@ -211,9 +214,9 @@ Canvas
         if (!showOrbits)
             return;
 
-        for (var painterIdx = 0; painterIdx < solarBodyPainters.length; ++painterIdx)
+        for (var painterIdx = 0; painterIdx < painters.length; ++painterIdx)
         {
-            var painter = solarBodyPainters[painterIdx];
+            var painter = painters[painterIdx];
             if (painter.solarBody.visible && !painter.parentPainter)
             {
                 var rotation = -painter.orbitRotation;
