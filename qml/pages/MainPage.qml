@@ -78,7 +78,7 @@ Page
 
     function toggleZoom()
     {
-        if (!settings.simplifiedOrbits)
+        if (skyView.visible || !settings.simplifiedOrbits)
         {
             settings.zoomedOut = !settings.zoomedOut;
         }
