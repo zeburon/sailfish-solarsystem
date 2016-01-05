@@ -73,6 +73,14 @@
         <source>Now</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Stop tracking orientation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start tracking orientation</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlanetDetailsPage</name>

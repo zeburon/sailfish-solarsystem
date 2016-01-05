@@ -136,6 +136,15 @@ Page
             }
             MenuItem
             {
+                text: settings.trackOrientation ? qsTr("Stop tracking orientation") : qsTr("Start tracking orientation")
+                visible: settings.showSkyView
+                onClicked:
+                {
+                    settings.trackOrientation = !settings.trackOrientation;
+                }
+            }
+            MenuItem
+            {
                 text: settings.showSkyView ? qsTr("Switch to Top View") : qsTr("Switch to Sky View")
                 onClicked:
                 {

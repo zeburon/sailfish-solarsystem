@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtSensors 5.0 // sudo pkcon install qt5-qtdeclarative-import-sensors
 import harbour.solarsystem.Projector 1.0
 import harbour.solarsystem.DateTime 1.0
 
@@ -31,6 +32,7 @@ Canvas
     // mouse-look properties
     property real longitudeLookOffset: 0.01
     property real latitudeLookOffset: 40
+    property real lookRotation: 0
     property int mouseXStart
     property int mouseLongitudeOffsetStart
     property int mouseYStart
@@ -397,18 +399,16 @@ Canvas
         context.font = "bold 12pt sans-serif";
         context.textAlign = "center";
         context.translate(width / 2.0, height / 2.0);
+        context.rotate(lookRotation * (Math.PI / 180));
 
         // calculate new projection parameters
         projector.update();
-        if (trackedPainter)
+        if (trackedPainter && !rotationSensor.active)
         {
             trackedPainter.applyRelativeCoordinates();
             longitudeLookOffset = trackedPainter.azimuthalLongitude + 90;
             latitudeLookOffset = trackedPainter.azimuthalLatitude;
             projector.update();
-
-            //var projectedPainterCoordinates = projector.sphericalAzimuthalToScreenCoordinates(trackedPainter.azimuthalLongitude, trackedPainter.azimuthalLatitude);
-            //drawCircle(context, projectedPainterCoordinates, Theme.highlightColor, 40);
         }
 
         // helper lines
@@ -675,6 +675,7 @@ Canvas
         id: items
 
         anchors { fill: parent }
+        rotation: lookRotation
         visible: solarSystem.valid
     }
 
@@ -693,6 +694,9 @@ Canvas
         }
         onPositionChanged:
         {
+            if (rotationSensor.active)
+                return;
+
             longitudeLookOffset = mouseLongitudeOffsetStart + (360 / width) * -(mouse.x - mouseXStart);
             longitudeLookOffset = longitudeLookOffset % 360;
             latitudeLookOffset = mouseLatitudeOffsetStart + (180 / height) * -(mouse.y - mouseYStart);
@@ -713,7 +717,7 @@ Canvas
         }
         onPressAndHold:
         {
-            if (!mouseDragged)
+            if (!mouseDragged && !rotationSensor.active)
                 root.pressAndHold(mouse.x, mouse.y);
         }
         onClicked:
@@ -737,5 +741,82 @@ Canvas
         enabled: root.animateZoom
 
         NumberAnimation { easing.type: Easing.InOutQuart; duration: Globals.ZOOM_ANIMATION_DURATION_MS }
+    }
+
+    // -----------------------------------------------------------------------
+
+    // orientation tracking
+    OrientationSensor
+    {
+        id: orientationSensor
+
+        active: rotationSensor.active
+        alwaysOn: false
+    }
+    RotationSensor
+    {
+        id: rotationSensor
+
+        active: app.active && page.active && settings.trackOrientation
+        alwaysOn: false
+        onReadingChanged:
+        {
+            if (orientationSensor.reading.orientation !== OrientationReading.TopUp)
+                return;
+
+            var newLongitude = reading.z;
+            var newLatitude = -reading.x - 90;
+            var newRotation = reading.y;
+            newRotation -= 180;
+            newRotation *= -1;
+            newRotation %= 180;
+            if (newRotation > 90)
+                newRotation -= 180;
+
+            if (Math.abs(newRotation) < 30)
+            {
+                if (Math.abs(reading.y) < 90)
+                {
+                    newLatitude *= -1;
+                }
+                latitudeLookOffset = Math.max(-89.0, Math.min(89.0, newLatitude));
+                lookRotation = newRotation;
+            }
+            longitudeLookOffset = newLongitude;
+
+            if (!repaintTimer.running)
+                repaintTimer.start();
+        }
+    }
+    Behavior on longitudeLookOffset
+    {
+        enabled: rotationSensor.active
+
+        RotationAnimation { id: longitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: 400 }
+    }
+    Behavior on latitudeLookOffset
+    {
+        enabled: rotationSensor.active
+
+        RotationAnimation { id: latitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: 400 }
+    }
+    Behavior on lookRotation
+    {
+        enabled: rotationSensor.active
+
+        RotationAnimation { id: lookRotationAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: 1200 }
+    }
+    Timer
+    {
+        id: repaintTimer
+
+        interval: 40
+        repeat: false
+        onTriggered:
+        {
+            requestPaint();
+            if (longitudeLookOffsetAnimation.running || longitudeLookOffsetAnimation.running || lookRotationAnimation.running)
+                start();
+        }
     }
 }

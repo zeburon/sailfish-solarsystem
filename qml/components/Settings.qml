@@ -24,6 +24,7 @@ QtObject
     property bool simplifiedOrbits: true;                          property string simplifiedOrbitsKey: "simplifiedOrbits"
     property bool zoomedOut: false;                                property string zoomedOutKey: "zoomedOut"
     property bool trackNow: false;                                 property string trackNowKey: "trackNow"
+    property bool trackOrientation: false;                         property string trackOrientationKey: "trackOrientation"
     property int distancePlanetIdx: 0;                             property string distancePlanetIdxKey: "distancePlanetIdx"
 
     // -----------------------------------------------------------------------
@@ -106,6 +107,11 @@ QtObject
         var storedTrackNow = Storage.getValue(trackNowKey);
         if (storedTrackNow)
             trackNow = storedTrackNow === "true";
+
+        // load trackOrientation
+        var storedTrackOrientation = Storage.getValue(trackOrientationKey);
+        if (storedTrackOrientation)
+            trackOrientation = storedTrackOrientation === "true";
 
         // load distancePlanetIdx
         var storedDistancePlanetIdx = Storage.getValue(distancePlanetIdxKey);
@@ -193,6 +199,10 @@ QtObject
     onTrackNowChanged:
     {
         Storage.setValue(trackNowKey, trackNow);
+    }
+    onTrackOrientationChanged:
+    {
+        Storage.setValue(trackOrientationKey, trackOrientation);
     }
     onDistancePlanetIdxChanged:
     {
