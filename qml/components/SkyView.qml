@@ -461,12 +461,14 @@ Canvas
             property real relativeX
             property real relativeY
             property real relativeZ
+            property real relativeDistance
             property real displayedX
             property real displayedY
             property real displayedZ
             property real displayedRotation
             property real displayedOpacity
             property real displayedPhase: 0.5
+            property real displayedScale: 1.0
             property real geocentricLongitude
             property real geocentricLatitude
             property real azimuthalLongitude
@@ -503,6 +505,7 @@ Canvas
                     relativeY -= earth.orbitalElements.y;
                     relativeZ -= earth.orbitalElements.z;
                 }
+                relativeDistance = Math.sqrt(relativeX * relativeX + relativeY * relativeY + relativeZ * relativeZ);
 
                 // calculate geocentric spherical coordinates
                 var newLongitudeFromEarth = Math.atan2(relativeY, relativeX) * 180 / Math.PI;
@@ -511,7 +514,7 @@ Canvas
                     newLongitudeFromEarth += 360.0;
                 }
                 geocentricLongitude = newLongitudeFromEarth;
-                geocentricLatitude = Math.asin(relativeZ / Math.sqrt(relativeX * relativeX + relativeY * relativeY + relativeZ * relativeZ)) * 180 / Math.PI;
+                geocentricLatitude = Math.asin(relativeZ / relativeDistance) * 180 / Math.PI;
             }
 
             function calculatePhase()
@@ -583,6 +586,20 @@ Canvas
                 displayedOpacity = newDisplayedOpacity;
                 displayedRotation = projector.getImageRotation(geocentricLongitude, geocentricLatitude);
                 visible = projectedCoordinates.z > 0;
+
+                // calculate scale
+                var minimumDistance, maximumDistance;
+                if (solarBody === moon)
+                {
+                    minimumDistance = solarBody.orbitalElements.minimumDistance;
+                    maximumDistance = solarBody.orbitalElements.maximumDistance;
+                }
+                else
+                {
+                    minimumDistance = Math.abs(solarBody.orbitalElements.minimumDistance - earth.orbitalElements.minimumDistance);
+                    maximumDistance = solarBody.orbitalElements.maximumDistance + earth.orbitalElements.maximumDistance;
+                }
+                displayedScale = 1.0 - 0.5 * (1.0 - minimumDistance / maximumDistance) * ((relativeDistance - minimumDistance) / (maximumDistance - minimumDistance));
             }
         }
     }
@@ -599,7 +616,7 @@ Canvas
             z: painter.displayedZ
             visible: painter.visible
             rotation: painter.displayedRotation
-            scale: root.currentZoom
+            scale: root.currentZoom * painter.displayedScale
             opacity: painter.displayedOpacity
             shadowPhase: painter.displayedPhase
             useSmallImage: solarBody === moon ? false : true
