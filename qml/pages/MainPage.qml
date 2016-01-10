@@ -23,7 +23,11 @@ Page
 
     function init()
     {
-        dateTime.string = settings.dateTime;
+        if (settings.trackNow)
+            dateTime.setNow();
+        else
+            dateTime.string = settings.dateTime;
+
         loadAnimationIncrement();
         topView.init();
         skyView.init();

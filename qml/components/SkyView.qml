@@ -406,7 +406,7 @@ Canvas
         if (trackedPainter && !rotationSensor.active)
         {
             trackedPainter.applyRelativeCoordinates();
-            longitudeLookOffset = trackedPainter.azimuthalLongitude + 90;
+            longitudeLookOffset = 180.0 - trackedPainter.azimuthalLongitude;
             latitudeLookOffset = trackedPainter.azimuthalLatitude;
             projector.update();
         }
@@ -573,7 +573,7 @@ Canvas
                 }
 
                 var azimuthalCoordinates = projector.eclipticToAzimuthalCoordinates(geocentricLongitude, geocentricLatitude);
-                azimuthalLongitude = azimuthalCoordinates.x + 90.0;
+                azimuthalLongitude = 360.0 - azimuthalCoordinates.x;
                 azimuthalLatitude = azimuthalCoordinates.y;
 
                 var projectedCoordinates = projector.rectangularEclipticToScreenCoordinates(relativeX, relativeY, relativeZ);
