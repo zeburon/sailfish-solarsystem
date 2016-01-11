@@ -16,6 +16,7 @@ Canvas
     property bool showAzimuth: true
     property bool showEquator: true
     property bool showEcliptic: true
+    property bool showBackground: true
     property bool zoomedOut: false
     property bool animateSun: true
     property bool animateZoom: false
@@ -312,6 +313,18 @@ Canvas
 
     // -----------------------------------------------------------------------
 
+    function drawBorder(context)
+    {
+        context.globalAlpha = 0.5;
+        context.lineWidth = 4;
+        context.beginPath();
+        context.arc(0, 0, visibleRadius, 0, 2 * Math.PI, false);
+        context.strokeStyle = "#88b0e7";
+        context.stroke();
+    }
+
+    // -----------------------------------------------------------------------
+
     function calculateOpacity(xPos, yPos)
     {
         return Math.max(0.0, 1.0 - Math.max(0.0, (Math.sqrt(xPos * xPos + yPos * yPos) - visibleRadiusFadeStart) / (visibleRadius - visibleRadiusFadeStart)));
@@ -378,6 +391,7 @@ Canvas
 
     // -----------------------------------------------------------------------
 
+    clip: true
     onVisibleChanged:
     {
         if (visible)
@@ -409,6 +423,9 @@ Canvas
             longitudeLookOffset = 180.0 - trackedPainter.azimuthalLongitude;
             latitudeLookOffset = trackedPainter.azimuthalLatitude;
             projector.update();
+
+            var bla = projector.getRiseTransitSetTimes(trackedPainter.geocentricLongitude, trackedPainter.geocentricLatitude);
+            console.log(">>> " + bla);
         }
 
         // helper lines
@@ -419,18 +436,7 @@ Canvas
         if (showEcliptic)
             drawEcliptic(context);
 
-        // background
-        context.globalAlpha = 0.5;
-        context.lineWidth = 4;
-        var gradient = context.createRadialGradient(0, 0, visibleRadius / 2, 0, 0, visibleRadius);
-        gradient.addColorStop(0.4, "black");
-        gradient.addColorStop(1, "#005ddb");
-        context.beginPath();
-        context.arc(0, 0, visibleRadius, 0, 2 * Math.PI, false);
-        context.fillStyle = gradient;
-        context.fill();
-        context.strokeStyle = "#88b0e7";
-        context.stroke();
+        drawBorder(context);
 
         // stars
         context.globalAlpha = 1.0;
@@ -687,6 +693,17 @@ Canvas
         fieldOfView: root.fieldOfView
     }
 
+    Image
+    {
+        id: background
+
+        anchors { centerIn: parent }
+        z: -10000
+        source: "../gfx/background.png"
+        width: visibleRadius * 2
+        height: visibleRadius * 2
+        visible: showBackground
+    }
     Item
     {
         id: items

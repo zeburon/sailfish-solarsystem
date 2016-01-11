@@ -255,6 +255,7 @@ Page
                     showAzimuth: settings.showAzimuth
                     showEcliptic: settings.showEcliptic
                     showEquator: settings.showEquator
+                    showBackground: settings.showBackground
                     zoomedOut: settings.zoomedOut
                     animateSun: app.active && visible
                     animateZoom: app.initialized && visible

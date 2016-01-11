@@ -232,6 +232,15 @@ Page
                     settings.showEquator = checked;
                 }
             }
+            TextSwitch
+            {
+                text: qsTr("Show Background")
+                checked: settings.showBackground
+                onCheckedChanged:
+                {
+                    settings.showBackground = checked;
+                }
+            }
         }
     }
 }
