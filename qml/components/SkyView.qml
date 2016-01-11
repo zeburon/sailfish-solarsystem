@@ -775,6 +775,13 @@ Canvas
         id: rotationSensor
 
         active: app.active && page.active && settings.trackOrientation
+        onActiveChanged:
+        {
+            if (!active)
+            {
+                lookRotation = 0;
+            }
+        }
         alwaysOn: false
         onReadingChanged:
         {
