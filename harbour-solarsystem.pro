@@ -98,5 +98,7 @@ DISTFILES += \
     qml/gfx/l_uranus.png \
     qml/gfx/l_venus.png \
     qml/gfx/l_moon.png \
-    qml/components/SunImage.qml
+    qml/components/SunImage.qml \
+    qml/gfx/background.png \
+    qml/components/RiseAndSetLabel.qml
 

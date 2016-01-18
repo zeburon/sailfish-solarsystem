@@ -19,7 +19,7 @@ class DateTime : public QObject
     Q_PROPERTY(int julianDay READ getJulianDay NOTIFY signalJulianDayChanged)
     Q_PROPERTY(float daysSinceJ2000 READ getDaysSinceJ2000 NOTIFY signalDaysSinceJ2000Changed)
     Q_PROPERTY(float centuriesSinceJ2000 READ getCenturiesSinceJ2000 NOTIFY signalCenturiesSinceJ2000Changed)
-    Q_PROPERTY(float meanSiderealTime READ getMeanSiderealTime NOTIFY signalMeanSiderealTimeChanged)
+    Q_PROPERTY(float siderealTime READ getSiderealTime NOTIFY signalSiderealTimeChanged)
     Q_PROPERTY(float obliquityOfEcliptic READ getObliquityOfEcliptic NOTIFY signalObliquityOfEclipticChanged)
 
     Q_PROPERTY(bool daylightSavingsTime READ isDaylightSavingsTime NOTIFY signalDaylightSavingsTimeChanged)
@@ -53,7 +53,7 @@ public:
     int getJulianDay() const { return m_julian_day; }
     float getDaysSinceJ2000() const { return m_days_since_j2000; }
     float getCenturiesSinceJ2000() const { return m_centuries_since_j2000; }
-    float getMeanSiderealTime() const { return m_mean_sidereal_time; }
+    float getSiderealTime() const { return m_sidereal_time; }
     float getObliquityOfEcliptic() const { return m_obliquity_of_ecliptic; }
     void setString(const QString &string);
     QString getString() const;
@@ -71,7 +71,7 @@ signals:
     void signalDaysSinceJ2000Changed();
     void signalCenturiesSinceJ2000Changed();
     void signalJulianDayChanged();
-    void signalMeanSiderealTimeChanged();
+    void signalSiderealTimeChanged();
     void signalObliquityOfEclipticChanged();
     void signalStringChanged();
     void signalValueChanged();
@@ -93,7 +93,7 @@ private:
     int m_julian_day;
     float m_days_since_j2000;
     float m_centuries_since_j2000;
-    float m_mean_sidereal_time;
+    float m_sidereal_time;
     float m_obliquity_of_ecliptic;
 
 };

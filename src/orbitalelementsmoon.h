@@ -27,6 +27,8 @@ class OrbitalElementsMoon : public OrbitalElements
     Q_PROPERTY(float longitudeOfAscendingNodeStart MEMBER m_longitude_of_ascending_node_start NOTIFY signalLongitudeOfAscendingNodeStartChanged)
     Q_PROPERTY(float longitudeOfAscendingNodePerCentury MEMBER m_longitude_of_ascending_node_per_century NOTIFY signalLongitudeOfAscendingNodePerCenturyChanged)
 
+    Q_PROPERTY(float periodOverride MEMBER m_period_override NOTIFY signalPeriodOverrideChanged)
+
 public:
     explicit OrbitalElementsMoon(QObject *parent = 0);
     virtual ~OrbitalElementsMoon();
@@ -44,11 +46,13 @@ signals:
     void signalArgumentOfPeriapsisPerCenturyChanged();
     void signalLongitudeOfAscendingNodeStartChanged();
     void signalLongitudeOfAscendingNodePerCenturyChanged();
+    void signalPeriodOverrideChanged();
 
 protected:
     virtual void updateElements();
     virtual void updateCoordinates();
     virtual void updateOrbitalPeriod();
+    virtual void updateOrbitalLongitudeChangePerDay();
 
 private:
     float m_mean_distance_start;
@@ -68,6 +72,8 @@ private:
 
     float m_longitude_of_ascending_node_start;
     float m_longitude_of_ascending_node_per_century;
+
+    float m_period_override;
 };
 
 // -----------------------------------------------------------------------

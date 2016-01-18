@@ -7,8 +7,9 @@ OrbitalElements::OrbitalElements(QObject *parent) :
     QObject(parent), m_semi_major_axis(0.0f), m_eccentricity(0.0f), m_inclination(0.0f),
     m_mean_anomaly(0.0f), m_argument_of_periapsis(0.0f), m_longitude_of_ascending_node(0.0f),
     m_orbital_characteristics_calculated(false), m_average_distance(0.0f), m_minimum_distance(0.0f),
-    m_maximum_distance(0.0f), m_period(0.0f), m_average_velocity(0.0f), m_centuries_since_j2000(0.0f),
-    m_x(0.0f), m_y(0.0f), m_z(0.0f), m_longitude(0.0f), m_latitude(0.0f), m_distance(0.0f)
+    m_maximum_distance(0.0f), m_period(0.0f), m_average_longitude_change_per_day(0.0f),
+    m_average_velocity(0.0f), m_centuries_since_j2000(0.0f), m_x(0.0f), m_y(0.0f), m_z(0.0f),
+    m_longitude(0.0f), m_latitude(0.0f), m_distance(0.0f)
 {
 }
 
@@ -105,6 +106,7 @@ void OrbitalElements::updateOrbitalCharacteristics()
 {
     updateOrbitalDistances();
     updateOrbitalPeriod();
+    updateOrbitalLongitudeChangePerDay();
     updateOrbitalVelocity();
 }
 
@@ -143,6 +145,25 @@ void OrbitalElements::updateOrbitalPeriod()
     {
         m_period = period;
         emit signalPeriodChanged();
+    }
+
+    float average_longitude_change_per_day = 360.0f / (m_period * 365.25f);
+    if (average_longitude_change_per_day != m_average_longitude_change_per_day)
+    {
+        m_average_longitude_change_per_day = average_longitude_change_per_day;
+        emit signalAverageLongitudeChangePerDayChanged();
+    }
+}
+
+// -----------------------------------------------------------------------
+
+void OrbitalElements::updateOrbitalLongitudeChangePerDay()
+{
+    float average_longitude_change_per_day = 360.0f / (m_period * 365.25f);
+    if (average_longitude_change_per_day != m_average_longitude_change_per_day)
+    {
+        m_average_longitude_change_per_day = average_longitude_change_per_day;
+        emit signalAverageLongitudeChangePerDayChanged();
     }
 }
 

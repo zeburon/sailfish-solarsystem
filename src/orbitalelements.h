@@ -20,6 +20,7 @@ class OrbitalElements : public QObject
     Q_PROPERTY(float minimumDistance READ getMinimumDistance NOTIFY signalMinimumDistanceChanged)
     Q_PROPERTY(float maximumDistance READ getMaximumDistance NOTIFY signalMaximumDistanceChanged)
     Q_PROPERTY(float period READ getPeriod NOTIFY signalPeriodChanged)
+    Q_PROPERTY(float averageLongitudeChangePerDay READ getAverageLongitudeChangePerDay NOTIFY signalAverageLongitudeChangePerDayChanged)
     Q_PROPERTY(float averageVelocity READ getAverageVelocity NOTIFY signalAverageVelocityChanged)
 
     Q_PROPERTY(float centuriesSinceJ2000 READ getCenturiesSinceJ2000 WRITE setCenturiesSinceJ2000 NOTIFY signalCenturiesSinceJ2000Changed)
@@ -46,6 +47,7 @@ public:
     float getMinimumDistance() const { return m_minimum_distance; }
     float getMaximumDistance() const { return m_maximum_distance; }
     float getPeriod() const  { return m_period; }
+    float getAverageLongitudeChangePerDay() const  { return m_average_longitude_change_per_day; }
     float getAverageVelocity() const { return m_average_velocity; }
 
     void setCenturiesSinceJ2000(float value);
@@ -70,6 +72,7 @@ signals:
     void signalMinimumDistanceChanged();
     void signalMaximumDistanceChanged();
     void signalPeriodChanged();
+    void signalAverageLongitudeChangePerDayChanged();
     void signalAverageVelocityChanged();
 
     void signalCenturiesSinceJ2000Changed();
@@ -87,6 +90,7 @@ protected:
     virtual void updateOrbitalCharacteristics();
     virtual void updateOrbitalDistances();
     virtual void updateOrbitalPeriod();
+    virtual void updateOrbitalLongitudeChangePerDay();
     virtual void updateOrbitalVelocity();
 
     void setSemiMajorAxis(float value);
@@ -114,6 +118,7 @@ protected:
     float m_minimum_distance;
     float m_maximum_distance;
     float m_period;
+    float m_average_longitude_change_per_day;
     float m_average_velocity;
 
     float m_centuries_since_j2000;

@@ -36,7 +36,7 @@ void Projector::update()
 
     // azimuthal coordinate system @current point in time
     float latitude_limited = qMax(-89.9f, qMin(89.9f, m_latitude));
-    float longitude_offset = -(m_date_time->getMeanSiderealTime() / 24.0f) * 360.0f;
+    float longitude_offset = -(m_date_time->getSiderealTime() / 24.0f) * 360.0f;
     m_azimuthal_up = sphericalToRectangularCoordinates(longitude_offset, qMin(89.9f, latitude_limited));
     m_azimuthal_right.setX(m_azimuthal_up.y());
     m_azimuthal_right.setY(-m_azimuthal_up.x());
@@ -158,6 +158,63 @@ float Projector::getImageRotation(float longitude, float latitude) const
     QVector3D projected_coordinates2 = sphericalEclipticToScreenCoordinates(longitude + 0.01f, latitude, 1.0f);
     return qRadiansToDegrees(qAtan2(projected_coordinates2.x() - projected_coordinates1.x(),
                                     -(projected_coordinates2.y() - projected_coordinates1.y()))) + 90.0f;
+}
+
+// -----------------------------------------------------------------------
+
+QVector3D Projector::getRiseTransitSetTimes(float longitude, float latitude, float longitude_change_per_hour) const
+{
+    float current_hours = m_date_time->getHours() + m_date_time->getMinutes() / 60.0f;
+    float hours_till_noon = (12.0f - current_hours);
+    float longitude_noon = fmod(longitude + hours_till_noon * longitude_change_per_hour, 360.0f);
+
+    // convert ecliptic to equatorial coordinates
+    QVector3D equatorial_coordinates = eclipticToEquatorialCoordinates(sphericalToRectangularCoordinates(longitude_noon, latitude));
+    float equatorial_longitude_noon = qRadiansToDegrees(qAtan2(equatorial_coordinates.y(), equatorial_coordinates.x()));
+    if (equatorial_longitude_noon < 0.0f)
+    {
+        equatorial_longitude_noon += 360.0f;
+    }
+    float equatorial_latitude = qRadiansToDegrees(qAsin(equatorial_coordinates.z() / equatorial_coordinates.length()));
+
+    float altitude = qDegreesToRadians(0.6f);
+
+    float hour_angle = (qSin(altitude) - qSin(qDegreesToRadians(m_latitude) * qSin(qDegreesToRadians(equatorial_latitude)))) / (qCos(qDegreesToRadians(m_latitude) * qCos(qDegreesToRadians(equatorial_latitude))));
+    // stays below the horizon
+    if (hour_angle > 1.0f)
+        return QVector3D(-100.0f, -100.0f, -100.0f);
+    // never below the horizon
+    else if (hour_angle < -1.0f)
+        return QVector3D(100.0f, 100.0f, 100.0f);
+
+    hour_angle = qRadiansToDegrees(qAcos(hour_angle));
+    float hour_angle_duration = hour_angle / (15.0f + longitude_change_per_hour);
+
+    float equatorial_longitude_south = fmod(360.0f - (m_date_time->getSiderealTime() + hours_till_noon) * 15.0f, 360.0f);
+    float longitude_distance_to_south = fmod(equatorial_longitude_south - equatorial_longitude_noon, 360.0f);
+    if (longitude_distance_to_south < -180.0f)
+        longitude_distance_to_south += 360.0f;
+    else if (longitude_distance_to_south > 180.0f)
+        longitude_distance_to_south -= 360.0f;
+
+    float duration_until_noon = longitude_distance_to_south / (15.0f + longitude_change_per_hour);
+    float transit_time = fmod(12.0f + duration_until_noon, 24.0f);
+    if (transit_time < 0.0f)
+        transit_time += 24.0f;
+
+    float rise_time = fmod(transit_time - hour_angle_duration , 24.0f);
+    if (rise_time < 0.0f)
+        rise_time += 24.0f;
+
+    float set_time = fmod(transit_time + hour_angle_duration, 24.0f);
+    if (set_time < 0.0f)
+        set_time += 24.0f;
+
+    QVector3D result;
+    result.setX(rise_time);
+    result.setY(transit_time);
+    result.setZ(set_time);
+    return result;
 }
 
 // -----------------------------------------------------------------------

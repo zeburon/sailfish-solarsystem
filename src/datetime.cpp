@@ -6,7 +6,7 @@
 DateTime::DateTime(QObject *parent) :
     QObject(parent), m_year(0), m_month(0), m_day(0), m_hours(0), m_minutes(0),
     m_daylight_savings_time(false), m_julian_day(0), m_days_since_j2000(0.0f),
-    m_centuries_since_j2000(0.0f), m_mean_sidereal_time(0.0f), m_obliquity_of_ecliptic(0.0f)
+    m_centuries_since_j2000(0.0f), m_sidereal_time(0.0f), m_obliquity_of_ecliptic(0.0f)
 {
 }
 
@@ -147,19 +147,21 @@ void DateTime::setDateTimeAndUpdate(const QDateTime &date_time)
         emit signalDaylightSavingsTimeChanged();
     }
 
-    // calculate julian date
-    float total_hours = m_hours + m_minutes / 60.0f;
+    // calculate curret julian date
+    m_julian_day = m_date_time.date().toJulianDay();
+    float days_since_j2000 = m_julian_day - 2451544.0f;
+    float centuries_since_j2000 = days_since_j2000 / 36525.0f;
+    float current_hours = m_hours + m_minutes / 60.0f;
     if (m_daylight_savings_time)
     {
-        total_hours -= 1.0f;
+        current_hours -= 1.0f;
     }
-    m_julian_day = m_date_time.date().toJulianDay();
-    m_days_since_j2000 = m_julian_day - 2451543.5f + total_hours / 24.0f;
+    m_days_since_j2000 = days_since_j2000 + current_hours / 24.0f;
     m_centuries_since_j2000 = m_days_since_j2000 / 36525.0f;
 
-    // calculate mean sidereal time
-    float t0 = 6.697374558f + m_centuries_since_j2000 * (2400.051336f + m_centuries_since_j2000 * 0.000025862f);
-    m_mean_sidereal_time = fmod(t0 + total_hours * 1.002737909f, 24.0f);
+    // calculate sidereal time
+    float t0 = 6.697374558f + centuries_since_j2000 * (2400.051336f + centuries_since_j2000 * 0.000025862f);
+    m_sidereal_time = fmod(t0 + current_hours, 24.0f);
 
     // calculate obliquity of ecliptic
     m_obliquity_of_ecliptic = 23.0f + 26.0f / 60.0f + 21.448f / 3600.0f -
@@ -170,7 +172,7 @@ void DateTime::setDateTimeAndUpdate(const QDateTime &date_time)
     emit signalDaysSinceJ2000Changed();
     emit signalCenturiesSinceJ2000Changed();
     emit signalJulianDayChanged();
-    emit signalMeanSiderealTimeChanged();
+    emit signalSiderealTimeChanged();
     emit signalObliquityOfEclipticChanged();
     emit signalValueChanged();
     emit signalStringChanged();

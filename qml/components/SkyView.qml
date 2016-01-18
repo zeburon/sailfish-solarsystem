@@ -1,5 +1,6 @@
 import QtQuick 2.0
-import QtSensors 5.0 // sudo pkcon install qt5-qtdeclarative-import-sensors
+import QtSensors 5.0 // ssh to emulator and type 'sudo pkcon install qt5-qtdeclarative-import-sensors'
+import Sailfish.Silica 1.0
 import harbour.solarsystem.Projector 1.0
 import harbour.solarsystem.DateTime 1.0
 
@@ -280,7 +281,7 @@ Canvas
     function drawEquator(context)
     {
         var coordinates = [];
-        var longitudeOffset = -longitudeLookOffset - (dateTime.meanSiderealTime / 24) * 360;
+        var longitudeOffset = -longitudeLookOffset - (dateTime.siderealTime / 24) * 360;
         for (var skyLongitude = -180; skyLongitude <= 200; skyLongitude += 20)
         {
             coordinates.push(projector.sphericalEquatorialToScreenCoordinates(skyLongitude + longitudeOffset, 0));
@@ -298,7 +299,7 @@ Canvas
     function drawEcliptic(context)
     {
         var coordinates = [];
-        var longitudeOffset = -longitudeLookOffset - (dateTime.meanSiderealTime / 24) * 360;
+        var longitudeOffset = -longitudeLookOffset - (dateTime.siderealTime / 24) * 360;
         for (var skyLongitude = -180; skyLongitude <= 200; skyLongitude += 20)
         {
             coordinates.push(projector.sphericalEclipticToScreenCoordinates(skyLongitude + longitudeOffset, 0));
@@ -424,8 +425,10 @@ Canvas
             latitudeLookOffset = trackedPainter.azimuthalLatitude;
             projector.update();
 
-            var bla = projector.getRiseTransitSetTimes(trackedPainter.geocentricLongitude, trackedPainter.geocentricLatitude);
-            console.log(">>> " + bla);
+            var riseTransitSetTimes = projector.getRiseTransitSetTimes(trackedPainter.geocentricLongitude, trackedPainter.geocentricLatitude, trackedPainter.solarBody.orbitalElements.averageLongitudeChangePerDay / 24.0);
+            riseLabel.time = riseTransitSetTimes.x;
+            transitLabel.time = riseTransitSetTimes.y;
+            setLabel.time = riseTransitSetTimes.z;
         }
 
         // helper lines
@@ -712,6 +715,33 @@ Canvas
         rotation: lookRotation
         visible: solarSystem.valid
     }
+    RiseAndSetLabel
+    {
+        id: riseLabel
+
+        visible: trackedPainter !== null
+        horizontalAlignment: Text.Left
+        verticalAlignment: Text.Bottom
+        anchors { left: parent.left; bottom: parent.bottom }
+    }
+    RiseAndSetLabel
+    {
+        id: transitLabel
+
+        visible: trackedPainter !== null
+        horizontalAlignment: Text.Center
+        verticalAlignment: Text.Bottom
+        anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom }
+    }
+    RiseAndSetLabel
+    {
+        id: setLabel
+
+        visible: trackedPainter !== null
+        horizontalAlignment: Text.Right
+        verticalAlignment: Text.Bottom
+        anchors { right: parent.right; bottom: parent.bottom }
+    }
 
     MouseArea
     {
@@ -828,6 +858,7 @@ Canvas
             if (!repaintTimer.running)
                 repaintTimer.start();
         }
+
     }
     Behavior on longitudeLookOffset
     {

@@ -7,7 +7,8 @@ OrbitalElementsMoon::OrbitalElementsMoon(QObject *parent) :
     OrbitalElements(parent), m_mean_distance_start(0.0f), m_mean_distance_per_century(0.0f), m_eccentricity_start(0.0f),
     m_eccentricity_per_century(0.0f), m_inclination_start(0.0f), m_inclination_per_century(0.0f), m_mean_anomaly_start(0.0f),
     m_mean_anomaly_per_century(0.0f), m_argument_of_periapsis_start(0.0f), m_argument_of_periapsis_per_century(0.0f),
-    m_longitude_of_ascending_node_start(0.0f), m_longitude_of_ascending_node_per_century(0.0f)
+    m_longitude_of_ascending_node_start(0.0f), m_longitude_of_ascending_node_per_century(0.0f),
+    m_period_override(-1.0f)
 {
 }
 
@@ -97,10 +98,22 @@ void OrbitalElementsMoon::updateCoordinates()
 
 void OrbitalElementsMoon::updateOrbitalPeriod()
 {
-    float period = 1.0f / (m_mean_anomaly_per_century / 36525);
+    float period = m_period_override > 0.0f ? m_period_override :  1.0f / (m_mean_anomaly_per_century / 36525.0f);
     if (period != m_period)
     {
         m_period = period;
         emit signalPeriodChanged();
+    }
+}
+
+// -----------------------------------------------------------------------
+
+void OrbitalElementsMoon::updateOrbitalLongitudeChangePerDay()
+{
+    float average_longitude_change_per_day = -360.0f / (m_period * 365.25f);
+    if (average_longitude_change_per_day != m_average_longitude_change_per_day)
+    {
+        m_average_longitude_change_per_day = average_longitude_change_per_day;
+        emit signalAverageLongitudeChangePerDayChanged();
     }
 }
