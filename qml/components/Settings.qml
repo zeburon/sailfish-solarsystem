@@ -23,7 +23,8 @@ QtObject
     property string temperatureUnit: Globals.TEMPERATURE_UNITS[0]; property string temperatureUnitKey: "temperatureUnit"
     property int animationIncrement: 1;                            property string animationIncrementKey: "animationIncrement"
     property bool simplifiedOrbits: true;                          property string simplifiedOrbitsKey: "simplifiedOrbits"
-    property bool zoomedOut: false;                                property string zoomedOutKey: "zoomedOut"
+    property bool zoomedOutTopView: false;                         property string zoomedOutTopViewKey: "zoomedOutTopView"
+    property bool zoomedOutSkyView: false;                         property string zoomedOutSkyViewKey: "zoomedOutSkyView"
     property bool trackNow: false;                                 property string trackNowKey: "trackNow"
     property bool trackOrientation: false;                         property string trackOrientationKey: "trackOrientation"
     property int distancePlanetIdx: 0;                             property string distancePlanetIdxKey: "distancePlanetIdx"
@@ -104,10 +105,15 @@ QtObject
         if (storedSimplifiedOrbits)
             simplifiedOrbits = storedSimplifiedOrbits === "true";
 
-        // load zoomedOut
-        var storedZoomedOut = Storage.getValue(zoomedOutKey);
-        if (storedZoomedOut)
-            zoomedOut = storedZoomedOut === "true";
+        // load zoomedOutTopView
+        var storedZoomedOutTopView = Storage.getValue(zoomedOutTopViewKey);
+        if (storedZoomedOutTopView)
+            zoomedOutTopView = storedZoomedOutTopView === "true";
+
+        // load zoomedOutSkyView
+        var storedZoomedOutSkyView = Storage.getValue(zoomedOutSkyViewKey);
+        if (storedZoomedOutSkyView)
+            zoomedOutSkyView = storedZoomedOutSkyView === "true";
 
         // load trackNow
         var storedTrackNow = Storage.getValue(trackNowKey);
@@ -202,9 +208,13 @@ QtObject
     {
         Storage.setValue(simplifiedOrbitsKey, simplifiedOrbits);
     }
-    onZoomedOutChanged:
+    onZoomedOutTopViewChanged:
     {
-        Storage.setValue(zoomedOutKey, zoomedOut);
+        Storage.setValue(zoomedOutTopViewKey, zoomedOutTopView);
+    }
+    onZoomedOutSkyViewChanged:
+    {
+        Storage.setValue(zoomedOutSkyViewKey, zoomedOutSkyView);
     }
     onTrackNowChanged:
     {

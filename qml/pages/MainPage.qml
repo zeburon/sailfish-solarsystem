@@ -82,9 +82,14 @@ Page
 
     function toggleZoom()
     {
-        if (skyView.visible || !settings.simplifiedOrbits)
+        if (topView.visible)
         {
-            settings.zoomedOut = !settings.zoomedOut;
+            if (!settings.simplifiedOrbits)
+                settings.zoomedOutTopView = !settings.zoomedOutTopView;
+        }
+        else
+        {
+            settings.zoomedOutSkyView = !settings.zoomedOutSkyView;
         }
     }
 
@@ -173,8 +178,8 @@ Page
                     id: zoomImage
 
                     anchors { left: parent.left; leftMargin: Theme.paddingLarge; verticalCenter: parent.verticalCenter }
-                    visible: (!settings.simplifiedOrbits && topView.visible) || skyView.visible
-                    source: settings.zoomedOut ? "../gfx/zoom_in.png" : "../gfx/zoom_out.png"
+                    visible: (topView.visible && !settings.simplifiedOrbits) || skyView.visible
+                    source: (topView.visible && settings.zoomedOutTopView) || (skyView.visible && settings.zoomedOutSkyView) ? "../gfx/zoom_in.png" : "../gfx/zoom_out.png"
                 }
                 Text
                 {
@@ -224,7 +229,7 @@ Page
                     showLabels: settings.showLabels
                     showOrbits: settings.showOrbits
                     showDwarfPlanets: settings.showDwarfPlanets
-                    zoomedOut: settings.zoomedOut
+                    zoomedOut: settings.zoomedOutTopView
                     animateSun: app.active && visible
                     animateZoom: app.initialized && visible
                     simplifiedOrbits: settings.simplifiedOrbits
@@ -256,7 +261,7 @@ Page
                     showEcliptic: settings.showEcliptic
                     showEquator: settings.showEquator
                     showBackground: settings.showBackground
-                    zoomedOut: settings.zoomedOut
+                    zoomedOut: settings.zoomedOutSkyView
                     animateSun: app.active && visible
                     animateZoom: app.initialized && visible
                     Component.onCompleted:

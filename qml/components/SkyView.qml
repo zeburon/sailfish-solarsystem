@@ -32,7 +32,7 @@ Canvas
     property real visibleRadiusFadeStart: visibleRadius - 40
 
     // mouse-look properties
-    property real longitudeLookOffset: 0.01
+    property real longitudeLookOffset: 0
     property real latitudeLookOffset: 40
     property real lookRotation: 0
     property int mouseXStart
@@ -51,7 +51,7 @@ Canvas
 
     // rendering
     property var painters: []
-    property var trackedPainter
+    property var trackedPainter: null
     property var images: []
 
     // -----------------------------------------------------------------------
