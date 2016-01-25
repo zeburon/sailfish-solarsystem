@@ -174,7 +174,7 @@ QtObject
                 meanAnomalyStart: 115.3654; meanAnomalyPerCentury: 477198.8675316225
                 argumentOfPeriapsisStart: 318.0634; argumentOfPeriapsisPerCentury: 6003.1511970075
                 longitudeOfAscendingNodeStart: 125.1228; longitudeOfAscendingNodePerCentury: -1934.1378481575
-                periodOverride: 0.07485
+                periodOverride: 0.07481
             }
 
             axialTilt: 6.687 // to orbit plane

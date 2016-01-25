@@ -264,8 +264,20 @@ Page
             {
                 width: parent.width * 0.3
                 title: qsTr("Orb. Period")
-                value: solarBody.orbitalElements.period.toFixed(2)
-                unit: "a"
+                value:
+                {
+                    if (solarBody.orbitalElements.period < 0.1)
+                        return (solarBody.orbitalElements.period * 365.25).toFixed(2);
+
+                    return solarBody.orbitalElements.period.toFixed(2);
+                }
+                unit:
+                {
+                    if (solarBody.orbitalElements.period < 0.1)
+                        return "d";
+
+                    return "a";
+                }
             }
             DetailsElement
             {
