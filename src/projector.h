@@ -45,7 +45,7 @@ public:
     Q_INVOKABLE QVector2D eclipticToAzimuthalCoordinates(float longitude, float latitude) const;
 
     Q_INVOKABLE float getImageRotation(float longitude, float latitude) const;
-    Q_INVOKABLE QVector3D getRiseTransitSetTimes(float longitude, float latitude, float longitude_change_per_hour = 0.0f) const;
+    Q_INVOKABLE QVector3D getRiseTransitSetTimes(float longitude, float latitude, float longitude_change_per_hour, float sidereal_time_offset = 0.0f) const;
 
 signals:
     void signalDateTimeChanged();

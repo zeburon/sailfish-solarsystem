@@ -6,7 +6,8 @@
 DateTime::DateTime(QObject *parent) :
     QObject(parent), m_year(0), m_month(0), m_day(0), m_hours(0), m_minutes(0),
     m_daylight_savings_time(false), m_julian_day(0), m_days_since_j2000(0.0f),
-    m_centuries_since_j2000(0.0f), m_sidereal_time(0.0f), m_obliquity_of_ecliptic(0.0f)
+    m_centuries_since_j2000(0.0f), m_sidereal_time(0.0f), m_sidereal_time_24(0.0f),
+    m_obliquity_of_ecliptic(0.0f)
 {
 }
 
@@ -56,6 +57,13 @@ void DateTime::setCurrentTime()
 void DateTime::setNow()
 {
     setDateTimeAndUpdate(QDateTime::currentDateTime());
+}
+
+// -----------------------------------------------------------------------
+
+void DateTime::setNoon()
+{
+    setDateTimeAndUpdate(QDateTime(m_date_time.date(), QTime(12, 0)));
 }
 
 // -----------------------------------------------------------------------
@@ -156,11 +164,13 @@ void DateTime::setDateTimeAndUpdate(const QDateTime &date_time)
     {
         current_hours -= 1.0f;
     }
+
+    float t0 = 6.697374558f + centuries_since_j2000 * (2400.051336f + centuries_since_j2000 * 0.000025862f);
+    m_sidereal_time_24 = fmod(t0 + current_hours, 24.0f);
+
+    current_hours *= 1.002737909f;
     m_days_since_j2000 = days_since_j2000 + current_hours / 24.0f;
     m_centuries_since_j2000 = m_days_since_j2000 / 36525.0f;
-
-    // calculate sidereal time
-    float t0 = 6.697374558f + centuries_since_j2000 * (2400.051336f + centuries_since_j2000 * 0.000025862f);
     m_sidereal_time = fmod(t0 + current_hours, 24.0f);
 
     // calculate obliquity of ecliptic
@@ -173,6 +183,7 @@ void DateTime::setDateTimeAndUpdate(const QDateTime &date_time)
     emit signalCenturiesSinceJ2000Changed();
     emit signalJulianDayChanged();
     emit signalSiderealTimeChanged();
+    emit signalSiderealTime24Changed();
     emit signalObliquityOfEclipticChanged();
     emit signalValueChanged();
     emit signalStringChanged();

@@ -410,6 +410,11 @@ QtObject
         return solarBodyArray.indexOf(solarBody);
     }
 
+    function getByIndex(index)
+    {
+        return solarBodyArray[index];
+    }
+
     function updateVisibleCounts()
     {
         var newVisibleBodyCount = 0, newVisiblePlanetCount = 0;

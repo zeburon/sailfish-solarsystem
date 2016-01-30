@@ -5,12 +5,38 @@ Label
 {
     property real time
 
-    text: {
-        if (Math.abs(time) > 24)
-            return "--:--";
+    // -----------------------------------------------------------------------
+
+    color: Theme.highlightColor
+    font { family: Theme.fontFamily; pixelSize: Theme.fontSizeSmall }
+    onTimeChanged:
+    {
+        if (Math.abs(time) > 100)
+        {
+            text = "--:--";
+            dateLabel.text = "";
+            return;
+        }
 
         var hours = Math.floor(time);
         var minutes = Math.floor((time - hours) * 60);
+
+        // next day
+        if (hours >= 24)
+        {
+            hours %= 24;
+            dateLabel.text = "+1d";
+        }
+        // previous day
+        else if (hours < 0)
+        {
+            hours = 24 + (hours % 24);
+            dateLabel.text = "-1d";
+        }
+        else
+        {
+            dateLabel.text = "";
+        }
 
         var hoursString = hours.toString();
         if (hours < 10)
@@ -20,9 +46,19 @@ Label
         if (minutes < 10)
             minutesString = "0" + minutesString;
 
-        return hoursString + ":" + minutesString;
+        text = hoursString + ":" + minutesString;
     }
 
-    color: Theme.highlightColor
-    font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
+    // -----------------------------------------------------------------------
+
+    Label
+    {
+        id: dateLabel
+
+        color: Theme.secondaryHighlightColor
+        font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
+        anchors { bottom: parent.top; horizontalCenter: parent.horizontalCenter }
+        horizontalAlignment: Text.Center
+        verticalAlignment: Text.Bottom
+    }
 }
