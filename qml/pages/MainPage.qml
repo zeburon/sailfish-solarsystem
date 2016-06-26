@@ -23,7 +23,7 @@ Page
 
     function init()
     {
-        if (settings.trackNow)
+        if (settings.trackNow || settings.dateTime === "")
             dateTime.setNow();
         else
             dateTime.string = settings.dateTime;
