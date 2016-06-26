@@ -36,7 +36,7 @@
     <name>MainCover</name>
     <message>
         <source>Distance to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Abstand zu %1</translation>
     </message>
 </context>
 <context>
@@ -63,23 +63,23 @@
     </message>
     <message>
         <source>Switch to Top View</source>
-        <translation type="unfinished"></translation>
+        <translation>Umschalten zu Draufsicht</translation>
     </message>
     <message>
         <source>Switch to Sky View</source>
-        <translation type="unfinished"></translation>
+        <translation>Umschalten zu Himmelansicht</translation>
     </message>
     <message>
         <source>Now</source>
-        <translation type="unfinished"></translation>
+        <translation>Jetzt</translation>
     </message>
     <message>
         <source>Stop tracking orientation</source>
-        <translation type="unfinished"></translation>
+        <translation>Autom. Ausrichtung deaktivieren</translation>
     </message>
     <message>
         <source>Start tracking orientation</source>
-        <translation type="unfinished"></translation>
+        <translation>Autom. Ausrichtung aktivieren</translation>
     </message>
 </context>
 <context>
@@ -174,15 +174,15 @@
     </message>
     <message>
         <source>AU</source>
-        <translation type="unfinished"></translation>
+        <translation>AE</translation>
     </message>
     <message>
         <source>Distance to </source>
-        <translation type="unfinished"></translation>
+        <translation>Abstand zu </translation>
     </message>
     <message>
         <source>Sun</source>
-        <translation type="unfinished"></translation>
+        <translation>Sonne</translation>
     </message>
 </context>
 <context>
@@ -241,119 +241,127 @@
     </message>
     <message>
         <source>Top View</source>
-        <translation type="unfinished"></translation>
+        <translation>Draufsicht</translation>
     </message>
     <message>
         <source>Sky View</source>
-        <translation type="unfinished"></translation>
+        <translation>Himmelansicht</translation>
     </message>
     <message>
         <source>Show Azimuth</source>
-        <translation type="unfinished"></translation>
+        <translation>Azimut anzeigen</translation>
     </message>
     <message>
         <source>Show Ecliptic</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekliptik anzeigen</translation>
     </message>
     <message>
         <source>Show Equator</source>
-        <translation type="unfinished"></translation>
+        <translation>Äquator anzeigen</translation>
     </message>
     <message>
         <source>General Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemeine Optionen</translation>
     </message>
     <message>
         <source>Show Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrund anzeigen</translation>
+    </message>
+    <message>
+        <source>Latitude in degrees</source>
+        <translation>Breitengrad in Grad</translation>
+    </message>
+    <message>
+        <source>Longitude in degrees</source>
+        <translation>Längengrad in Grad</translation>
     </message>
 </context>
 <context>
     <name>SideSolarBodyImage</name>
     <message>
         <source>N</source>
-        <translation type="unfinished">N</translation>
+        <translation>N</translation>
     </message>
     <message>
         <source>S</source>
-        <translation type="unfinished">S</translation>
+        <translation>S</translation>
     </message>
 </context>
 <context>
     <name>SkyView</name>
     <message>
         <source>E</source>
-        <translation type="unfinished"></translation>
+        <translation>O</translation>
     </message>
     <message>
         <source>N</source>
-        <translation type="unfinished">N</translation>
+        <translation>N</translation>
     </message>
     <message>
         <source>W</source>
-        <translation type="unfinished"></translation>
+        <translation>W</translation>
     </message>
     <message>
         <source>S</source>
-        <translation type="unfinished">S</translation>
+        <translation>S</translation>
     </message>
 </context>
 <context>
     <name>SolarSystem</name>
     <message>
         <source>Mercury</source>
-        <translation type="unfinished"></translation>
+        <translation>Merkur</translation>
     </message>
     <message>
         <source>Venus</source>
-        <translation type="unfinished"></translation>
+        <translation>Venus</translation>
     </message>
     <message>
         <source>Earth</source>
-        <translation type="unfinished"></translation>
+        <translation>Erde</translation>
     </message>
     <message>
         <source>Moon</source>
-        <translation type="unfinished"></translation>
+        <translation>Mond</translation>
     </message>
     <message>
         <source>Mars</source>
-        <translation type="unfinished"></translation>
+        <translation>Mars</translation>
     </message>
     <message>
         <source>Jupiter</source>
-        <translation type="unfinished"></translation>
+        <translation>Jupiter</translation>
     </message>
     <message>
         <source>Saturn</source>
-        <translation type="unfinished"></translation>
+        <translation>Saturn</translation>
     </message>
     <message>
         <source>Uranus</source>
-        <translation type="unfinished"></translation>
+        <translation>Uranus</translation>
     </message>
     <message>
         <source>Neptune</source>
-        <translation type="unfinished"></translation>
+        <translation>Neptun</translation>
     </message>
     <message>
         <source>Pluto</source>
-        <translation type="unfinished"></translation>
+        <translation>Pluto</translation>
     </message>
     <message>
         <source>Sun</source>
-        <translation type="unfinished"></translation>
+        <translation>Sonne</translation>
     </message>
 </context>
 <context>
     <name>TopView</name>
     <message>
         <source>Click on planets for details</source>
-        <translation type="unfinished">Klicke auf Planeten für Details</translation>
+        <translation>Klicke auf Planeten für Details</translation>
     </message>
     <message>
         <source>Click to toggle zoom</source>
-        <translation type="unfinished">Klicke um zu zoomen</translation>
+        <translation>Klicke um zu zoomen</translation>
     </message>
 </context>
 </TS>

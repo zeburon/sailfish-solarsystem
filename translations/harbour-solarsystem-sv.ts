@@ -267,6 +267,14 @@
         <source>Show Background</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Latitude in degrees</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Longitude in degrees</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SideSolarBodyImage</name>
