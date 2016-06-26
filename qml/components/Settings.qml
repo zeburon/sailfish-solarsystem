@@ -28,6 +28,8 @@ QtObject
     property bool trackNow: false;                                 property string trackNowKey: "trackNow"
     property bool trackOrientation: false;                         property string trackOrientationKey: "trackOrientation"
     property int distancePlanetIdx: 0;                             property string distancePlanetIdxKey: "distancePlanetIdx"
+    property real latitude: 47.066;                                property string latitudeKey: "latitude"
+    property real longitude: 15.433;                               property string longitudeKey: "longitude"
 
     // -----------------------------------------------------------------------
 
@@ -129,6 +131,16 @@ QtObject
         var storedDistancePlanetIdx = Storage.getValue(distancePlanetIdxKey);
         if (storedDistancePlanetIdx)
             distancePlanetIdx = storedDistancePlanetIdx;
+
+        // load latitude
+        var storedLatitude = Storage.getValue(latitudeKey);
+        if (storedLatitude)
+            latitude = storedLatitude;
+
+        // load longitude
+        var storedLongitude = Storage.getValue(longitudeKey);
+        if (storedLongitude)
+            longitude = storedLongitude;
     }
 
     // -----------------------------------------------------------------------
@@ -227,5 +239,13 @@ QtObject
     onDistancePlanetIdxChanged:
     {
         Storage.setValue(distancePlanetIdxKey, distancePlanetIdx);
+    }
+    onLatitudeChanged:
+    {
+        Storage.setValue(latitudeKey, latitude);
+    }
+    onLongitudeChanged:
+    {
+        Storage.setValue(longitudeKey, longitude);
     }
 }

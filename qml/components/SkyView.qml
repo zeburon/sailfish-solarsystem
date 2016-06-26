@@ -23,8 +23,8 @@ Canvas
     property bool animateZoom: false
 
     // view-related properties
-    property real latitude: 47.066
-    property real longitude: 15.433
+    property real latitude: settings.latitude
+    property real longitude: settings.longitude
     property real fieldOfView: zoomedOut ? 90 : 120
     property real currentZoom: zoomedOut ? 0.5 : 1.0
     property real visibleRadius: 1.175 * Math.sqrt(2.0 * Math.pow(Math.max(width, height), 2.0)) * currentZoom / 2.0

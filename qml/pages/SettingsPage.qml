@@ -241,6 +241,33 @@ Page
                     settings.showBackground = checked;
                 }
             }
+
+            TextField
+            {
+                width: parent.width
+                inputMethodHints: Qt.ImhFormattedNumbersOnly
+                label: qsTr("Latitude in degrees")
+                labelVisible: true
+                placeholderText: "Type latitude here"
+                text: settings.latitude
+                onTextChanged:
+                {
+                    settings.latitude = (text != "" ? text : 0.0);
+                }
+            }
+            TextField
+            {
+                width: parent.width
+                inputMethodHints: Qt.ImhFormattedNumbersOnly
+                label: qsTr("Longitude in degrees")
+                labelVisible: true
+                placeholderText: "Type longitude here"
+                text: settings.longitude
+                onTextChanged:
+                {
+                    settings.longitude = (text != "" ? text : 0.0);
+                }
+            }
         }
     }
 }
