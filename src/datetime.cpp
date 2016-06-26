@@ -5,9 +5,9 @@
 
 DateTime::DateTime(QObject *parent) :
     QObject(parent), m_year(0), m_month(0), m_day(0), m_hours(0), m_minutes(0),
-    m_daylight_savings_time(false), m_julian_day(0), m_days_since_j2000(0.0f),
-    m_centuries_since_j2000(0.0f), m_sidereal_time(0.0f), m_sidereal_time_24(0.0f),
-    m_obliquity_of_ecliptic(0.0f)
+    m_daylight_savings_time(false), m_daylight_savings_time_ignored(false), m_julian_day(0),
+    m_days_since_j2000(0.0f), m_centuries_since_j2000(0.0f), m_sidereal_time(0.0f),
+    m_sidereal_time_24(0.0f), m_obliquity_of_ecliptic(0.0f)
 {
 }
 
@@ -78,6 +78,22 @@ void DateTime::addDays(int days)
 void DateTime::addMinutes(int minutes)
 {
     setDateTimeAndUpdate(m_date_time.addSecs(minutes * 60));
+}
+
+// -----------------------------------------------------------------------
+
+void DateTime::setDaylightSavingsTimeIgnored(bool ignored)
+{
+    if (ignored != m_daylight_savings_time_ignored)
+    {
+        m_daylight_savings_time_ignored = ignored;
+        emit signalDaylightSavingsTimeIgnoredChanged();
+
+        // force update
+        QDateTime current_date_time = m_date_time;
+        m_date_time = QDateTime();
+        setDateTimeAndUpdate(current_date_time);
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -155,12 +171,13 @@ void DateTime::setDateTimeAndUpdate(const QDateTime &date_time)
         emit signalDaylightSavingsTimeChanged();
     }
 
-    // calculate curret julian date
+    // calculate current julian date
     m_julian_day = m_date_time.date().toJulianDay();
     float days_since_j2000 = m_julian_day - 2451544.0f;
     float centuries_since_j2000 = days_since_j2000 / 36525.0f;
     float current_hours = m_hours + m_minutes / 60.0f;
-    if (m_daylight_savings_time)
+
+    if (m_daylight_savings_time && m_daylight_savings_time_ignored)
     {
         current_hours -= 1.0f;
     }

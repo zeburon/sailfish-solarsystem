@@ -24,6 +24,7 @@ class DateTime : public QObject
     Q_PROPERTY(float obliquityOfEcliptic READ getObliquityOfEcliptic NOTIFY signalObliquityOfEclipticChanged)
 
     Q_PROPERTY(bool daylightSavingsTime READ isDaylightSavingsTime NOTIFY signalDaylightSavingsTimeChanged)
+    Q_PROPERTY(bool ignoreDaylightSavingsTime READ isDaylightSavingsTimeIgnored WRITE setDaylightSavingsTimeIgnored NOTIFY signalDaylightSavingsTimeIgnoredChanged)
     Q_PROPERTY(QString timezone READ getTimezone NOTIFY signalTimezoneChanged)
 
     Q_PROPERTY(QString string READ getString WRITE setString NOTIFY signalStringChanged)
@@ -51,6 +52,8 @@ public:
     int getHours() const { return m_hours; }
     int getMinutes() const { return m_minutes; }
     bool isDaylightSavingsTime() const { return m_daylight_savings_time; }
+    void setDaylightSavingsTimeIgnored(bool ignored);
+    bool isDaylightSavingsTimeIgnored() const { return m_daylight_savings_time_ignored; }
     const QString &getTimezone() const { return m_timezone; }
     int getJulianDay() const { return m_julian_day; }
     float getDaysSinceJ2000() const { return m_days_since_j2000; }
@@ -70,6 +73,7 @@ signals:
     void signalHoursChanged();
     void signalMinutesChanged();
     void signalDaylightSavingsTimeChanged();
+    void signalDaylightSavingsTimeIgnoredChanged();
     void signalTimezoneChanged();
     void signalDaysSinceJ2000Changed();
     void signalCenturiesSinceJ2000Changed();
@@ -92,6 +96,7 @@ private:
     int m_hours;
     int m_minutes;
     bool m_daylight_savings_time;
+    bool m_daylight_savings_time_ignored;
     QString m_timezone;
 
     int m_julian_day;
