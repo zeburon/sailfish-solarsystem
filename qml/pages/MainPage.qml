@@ -145,15 +145,6 @@ Page
             }
             MenuItem
             {
-                text: settings.trackOrientation ? qsTr("Stop tracking orientation") : qsTr("Start tracking orientation")
-                visible: settings.showSkyView
-                onClicked:
-                {
-                    settings.trackOrientation = !settings.trackOrientation;
-                }
-            }
-            MenuItem
-            {
                 text: settings.showSkyView ? qsTr("Switch to Top View") : qsTr("Switch to Sky View")
                 onClicked:
                 {
@@ -346,6 +337,72 @@ Page
                 onValueChanged:
                 {
                     saveAnimationIncrement();
+                }
+            }
+        }
+
+        PushUpMenu
+        {
+            // top view settings
+            MenuItem
+            {
+                text: settings.simplifiedOrbits ? qsTr("Switch to realistic mode") : qsTr("Switch to simplified mode")
+                visible: !settings.showSkyView
+                onClicked:
+                {
+                    settings.simplifiedOrbits = !settings.simplifiedOrbits;
+                    page.update();
+                }
+            }
+            MenuItem
+            {
+                text: settings.showOrbits ? qsTr("Hide planet orbits") : qsTr("Show planet orbits")
+                visible: !settings.showSkyView
+                onClicked:
+                {
+                    settings.showOrbits = !settings.showOrbits;
+                    page.update();
+                }
+            }
+
+            // sky view settings
+            MenuItem
+            {
+                text: settings.trackOrientation ? qsTr("Stop tracking orientation") : qsTr("Start tracking orientation")
+                visible: settings.showSkyView
+                onClicked:
+                {
+                    settings.trackOrientation = !settings.trackOrientation;
+                }
+            }
+            MenuItem
+            {
+                text: settings.showAzimuth ? qsTr("Hide Azimuth") : qsTr("Show Azimuth")
+                visible: settings.showSkyView
+                onClicked:
+                {
+                    settings.showAzimuth = !settings.showAzimuth;
+                    page.update();
+                }
+            }
+            MenuItem
+            {
+                text: settings.showEcliptic ? qsTr("Hide Ecliptic") : qsTr("Show Ecliptic")
+                visible: settings.showSkyView
+                onClicked:
+                {
+                    settings.showEcliptic = !settings.showEcliptic;
+                    page.update();
+                }
+            }
+            MenuItem
+            {
+                text: settings.showEquator ? qsTr("Hide Equator") : qsTr("Show Equator")
+                visible: settings.showSkyView
+                onClicked:
+                {
+                    settings.showEquator = !settings.showEquator;
+                    page.update();
                 }
             }
         }

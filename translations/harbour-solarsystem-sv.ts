@@ -81,6 +81,46 @@
         <source>Start tracking orientation</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Hide Azimuth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide Ecliptic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Ecliptic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide Equator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Equator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Azimuth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide planet orbits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show planet orbits</source>
+        <translation type="unfinished">Visa planetomloppsbanor</translation>
+    </message>
+    <message>
+        <source>Switch to realistic mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch to simplified mode</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlanetDetailsPage</name>
@@ -196,32 +236,8 @@
         <translation>Visa Pluto</translation>
     </message>
     <message>
-        <source>simplified</source>
-        <translation>förenklad</translation>
-    </message>
-    <message>
-        <source>realistic</source>
-        <translation>realistisk</translation>
-    </message>
-    <message>
         <source>Show planet names</source>
         <translation>Visa planetnamn</translation>
-    </message>
-    <message>
-        <source>Show planet orbits</source>
-        <translation>Visa planetomloppsbanor</translation>
-    </message>
-    <message>
-        <source>Orbits are drawn to scale.</source>
-        <translation>Omloppsbanor är skalenliga.</translation>
-    </message>
-    <message>
-        <source>Style</source>
-        <translation>Stil</translation>
-    </message>
-    <message>
-        <source>Orbits are depicted as regular circles.</source>
-        <translation>Omloppsbanor avbildas som vanliga cirklar.</translation>
     </message>
     <message>
         <source>Date format</source>
@@ -240,31 +256,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Top View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Sky View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show Azimuth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Ecliptic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Equator</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>General Options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -81,6 +81,46 @@
         <source>Start tracking orientation</source>
         <translation></translation>
     </message>
+    <message>
+        <source>Hide Azimuth</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Hide Ecliptic</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Show Ecliptic</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Hide Equator</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Show Equator</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Show Azimuth</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Hide planet orbits</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Show planet orbits</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Switch to realistic mode</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Switch to simplified mode</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>PlanetDetailsPage</name>
@@ -196,31 +236,7 @@
         <translation></translation>
     </message>
     <message>
-        <source>simplified</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>realistic</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Show planet names</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Show planet orbits</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Orbits are drawn to scale.</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Style</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Orbits are depicted as regular circles.</source>
         <translation></translation>
     </message>
     <message>
@@ -240,31 +256,11 @@
         <translation></translation>
     </message>
     <message>
-        <source>Top View</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Sky View</source>
         <translation></translation>
     </message>
     <message>
-        <source>Show Azimuth</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Show Ecliptic</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Show Equator</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>General Options</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Show Background</source>
         <translation></translation>
     </message>
     <message>

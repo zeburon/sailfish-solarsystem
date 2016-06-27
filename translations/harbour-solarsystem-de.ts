@@ -81,6 +81,46 @@
         <source>Start tracking orientation</source>
         <translation>Autom. Ausrichtung aktivieren</translation>
     </message>
+    <message>
+        <source>Hide Azimuth</source>
+        <translation>Azimut ausblenden</translation>
+    </message>
+    <message>
+        <source>Hide Ecliptic</source>
+        <translation>Ekliptik ausblenden</translation>
+    </message>
+    <message>
+        <source>Show Ecliptic</source>
+        <translation>Ekliptik einblenden</translation>
+    </message>
+    <message>
+        <source>Hide Equator</source>
+        <translation>Äquator ausblenden</translation>
+    </message>
+    <message>
+        <source>Show Equator</source>
+        <translation>Äquator einblenden</translation>
+    </message>
+    <message>
+        <source>Show Azimuth</source>
+        <translation>Azimut einblenden</translation>
+    </message>
+    <message>
+        <source>Hide planet orbits</source>
+        <translation>Umlaufbahnen ausblenden</translation>
+    </message>
+    <message>
+        <source>Show planet orbits</source>
+        <translation>Umlaufbahnen einblenden</translation>
+    </message>
+    <message>
+        <source>Switch to realistic mode</source>
+        <translation>Realistischen Modus aktivieren</translation>
+    </message>
+    <message>
+        <source>Switch to simplified mode</source>
+        <translation>Vereinfachten Modus aktivieren</translation>
+    </message>
 </context>
 <context>
     <name>PlanetDetailsPage</name>
@@ -196,32 +236,8 @@
         <translation>Pluto einblenden</translation>
     </message>
     <message>
-        <source>simplified</source>
-        <translation>vereinfacht</translation>
-    </message>
-    <message>
-        <source>realistic</source>
-        <translation>realistisch</translation>
-    </message>
-    <message>
         <source>Show planet names</source>
         <translation>Beschriftungen einblenden</translation>
-    </message>
-    <message>
-        <source>Show planet orbits</source>
-        <translation>Umlaufbahnen einblenden</translation>
-    </message>
-    <message>
-        <source>Orbits are drawn to scale.</source>
-        <translation>Umlaufbahnen werden maßstabsgetreu dargestellt.</translation>
-    </message>
-    <message>
-        <source>Style</source>
-        <translation>Stil</translation>
-    </message>
-    <message>
-        <source>Orbits are depicted as regular circles.</source>
-        <translation>Umlaufbahnen werden als reguläre Kreise angezeigt.</translation>
     </message>
     <message>
         <source>Date format</source>
@@ -240,32 +256,12 @@
         <translation>Formate und Einheiten</translation>
     </message>
     <message>
-        <source>Top View</source>
-        <translation>Draufsicht</translation>
-    </message>
-    <message>
         <source>Sky View</source>
         <translation>Himmelansicht</translation>
     </message>
     <message>
-        <source>Show Azimuth</source>
-        <translation>Azimut anzeigen</translation>
-    </message>
-    <message>
-        <source>Show Ecliptic</source>
-        <translation>Ekliptik anzeigen</translation>
-    </message>
-    <message>
-        <source>Show Equator</source>
-        <translation>Äquator anzeigen</translation>
-    </message>
-    <message>
         <source>General Options</source>
         <translation>Allgemeine Optionen</translation>
-    </message>
-    <message>
-        <source>Show Background</source>
-        <translation>Hintergrund anzeigen</translation>
     </message>
     <message>
         <source>Latitude in degrees</source>
