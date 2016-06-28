@@ -42,10 +42,6 @@
 <context>
     <name>MainPage</name>
     <message>
-        <source>Solar System</source>
-        <translation>Sonnensystem</translation>
-    </message>
-    <message>
         <source>Today</source>
         <translation>Heute</translation>
     </message>
@@ -82,10 +78,6 @@
         <translation>Autom. Ausrichtung aktivieren</translation>
     </message>
     <message>
-        <source>Hide Azimuth</source>
-        <translation>Azimut ausblenden</translation>
-    </message>
-    <message>
         <source>Hide Ecliptic</source>
         <translation>Ekliptik ausblenden</translation>
     </message>
@@ -102,10 +94,6 @@
         <translation>Äquator einblenden</translation>
     </message>
     <message>
-        <source>Show Azimuth</source>
-        <translation>Azimut einblenden</translation>
-    </message>
-    <message>
         <source>Hide planet orbits</source>
         <translation>Umlaufbahnen ausblenden</translation>
     </message>
@@ -120,6 +108,10 @@
     <message>
         <source>Switch to simplified mode</source>
         <translation>Vereinfachten Modus aktivieren</translation>
+    </message>
+    <message>
+        <source>Solar System</source>
+        <translation type="unfinished">Sonnensystem</translation>
     </message>
 </context>
 <context>

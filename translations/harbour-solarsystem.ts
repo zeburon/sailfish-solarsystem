@@ -46,10 +46,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>Solar System</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Today</source>
         <translation></translation>
     </message>
@@ -82,10 +78,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>Hide Azimuth</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Hide Ecliptic</source>
         <translation></translation>
     </message>
@@ -99,10 +91,6 @@
     </message>
     <message>
         <source>Show Equator</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Show Azimuth</source>
         <translation></translation>
     </message>
     <message>
@@ -120,6 +108,10 @@
     <message>
         <source>Switch to simplified mode</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>Solar System</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

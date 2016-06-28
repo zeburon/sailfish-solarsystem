@@ -143,14 +143,6 @@ Page
                     pageStack.push(settingsPage);
                 }
             }
-            MenuItem
-            {
-                text: settings.showSkyView ? qsTr("Switch to Top View") : qsTr("Switch to Sky View")
-                onClicked:
-                {
-                    settings.showSkyView = !settings.showSkyView;
-                }
-            }
         }
         Column
         {
@@ -343,6 +335,15 @@ Page
 
         PushUpMenu
         {
+            MenuItem
+            {
+                text: settings.showSkyView ? qsTr("Switch to Top View") : qsTr("Switch to Sky View")
+                onClicked:
+                {
+                    settings.showSkyView = !settings.showSkyView;
+                }
+            }
+
             // top view settings
             MenuItem
             {
@@ -375,6 +376,7 @@ Page
                     settings.trackOrientation = !settings.trackOrientation;
                 }
             }
+            /*
             MenuItem
             {
                 text: settings.showAzimuth ? qsTr("Hide Azimuth") : qsTr("Show Azimuth")
@@ -385,6 +387,7 @@ Page
                     page.update();
                 }
             }
+            */
             MenuItem
             {
                 text: settings.showEcliptic ? qsTr("Hide Ecliptic") : qsTr("Show Ecliptic")
