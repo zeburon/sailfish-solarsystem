@@ -50,10 +50,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>Animation Speed</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Settings</source>
         <translation></translation>
     </message>
@@ -111,6 +107,10 @@
     </message>
     <message>
         <source>Solar System</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Animation Speed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

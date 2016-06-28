@@ -19,6 +19,40 @@ Page
     property alias solarSystem: topView.solarSystem
     property alias dateTime: dateTime
 
+    property real currentAnimationIncrementInMinutes:
+    {
+        if (settings.showSkyView)
+            return 60 * 24 * (settings.animationIncrement / Globals.MAX_ANIMATION_INCREMENT);
+        else
+            return 60 * 24 * settings.animationIncrement;
+    }
+    property string currentAnimationIncrementInMinutesString:
+    {
+        var days    = Math.floor(currentAnimationIncrementInMinutes / (60 * 24));
+        var hours   = Math.floor((currentAnimationIncrementInMinutes - days * 60 * 24) / 60);
+        var minutes = Math.floor(currentAnimationIncrementInMinutes - days * 60 * 24 - hours * 60);
+
+        var result = "";
+        if (days > 0)
+            result += days + "d";
+        if (hours > 0)
+        {
+            if (result.length > 0 && hours <= 9)
+                result += "0";
+
+            result += hours + "h";
+        }
+        if (minutes > 0)
+        {
+            if (result.length > 0 && minutes <= 9)
+                result += "0";
+
+            result += minutes + "m";
+        }
+
+        return result;
+    }
+
     // -----------------------------------------------------------------------
 
     function init()
@@ -281,6 +315,7 @@ Page
                 spacing: Theme.paddingLarge * 2
                 anchors { horizontalCenter: parent.horizontalCenter }
 
+                // animate backward
                 PlayButton
                 {
                     id: toggleAnimateBackward
@@ -288,12 +323,17 @@ Page
                     direction: -1
                     active: animatingBackward
                 }
-                Column
+                // jump to current date
+                Item
                 {
-                    spacing: 0
+                    width: nowButton.width
+                    height: parent.height
 
                     NowButton
                     {
+                        id: nowButton
+
+                        anchors { horizontalCenter: parent.horizontalCenter; top: parent.top }
                         onSignalActivated:
                         {
                             dateTime.setNow();
@@ -301,12 +341,13 @@ Page
                     }
                     Label
                     {
+                        anchors { horizontalCenter: parent.horizontalCenter; top: nowButton.bottom; topMargin: -Theme.fontSizeTiny }
                         text: topView.visible ? qsTr("Today") : qsTr("Now")
                         color: Theme.secondaryHighlightColor
                         font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
-                        anchors { horizontalCenter: parent.horizontalCenter }
                     }
                 }
+                // animate forward
                 PlayButton
                 {
                     id: toggleAnimateForward
@@ -315,20 +356,28 @@ Page
                     active: animatingForward
                 }
             }
-            // set animation speed
-            Slider
-            {
-                id: animationIncrementSlider
 
+            // set animation speed
+            Item
+            {
                 width: parent.width
-                anchors { horizontalCenter: parent.horizontalCenter }
-                minimumValue: 0
-                maximumValue: 1
-                handleVisible: true
-                label: qsTr("Animation Speed")
-                onValueChanged:
+                height: 1
+
+                Slider
                 {
-                    saveAnimationIncrement();
+                    id: animationIncrementSlider
+
+                    width: parent.width
+                    anchors { horizontalCenter: parent.horizontalCenter; top: parent.top; topMargin: -Theme.fontSizeTiny }
+                    minimumValue: 0
+                    maximumValue: 1
+                    handleVisible: true
+                    label: qsTr("Animation Speed")
+                    valueText: currentAnimationIncrementInMinutesString
+                    onValueChanged:
+                    {
+                        saveAnimationIncrement();
+                    }
                 }
             }
         }
@@ -431,15 +480,7 @@ Page
         repeat: true
         onTriggered:
         {
-            if (settings.showSkyView)
-            {
-                var increment = 60 * 24.0 * (settings.animationIncrement / Globals.MAX_ANIMATION_INCREMENT);
-                dateTime.addMinutes(increment * settings.animationDirection);
-            }
-            else
-            {
-                dateTime.addDays(settings.animationIncrement * settings.animationDirection);
-            }
+            dateTime.addMinutes(currentAnimationIncrementInMinutes * settings.animationDirection);
         }
     }
     Timer

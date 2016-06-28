@@ -50,10 +50,6 @@
         <translation>Über Sonnensystem</translation>
     </message>
     <message>
-        <source>Animation Speed</source>
-        <translation>Geschwindigkeit</translation>
-    </message>
-    <message>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -112,6 +108,10 @@
     <message>
         <source>Solar System</source>
         <translation type="unfinished">Sonnensystem</translation>
+    </message>
+    <message>
+        <source>Animation Speed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

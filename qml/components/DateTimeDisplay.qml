@@ -86,19 +86,19 @@ Item
             {
                 case "dd":
                 {
-                    newLabelWidths[idx] = dayLabelWidth;
+                    newLabelWidths[idx]  = dayLabelWidth;
                     newLabelFormats[idx] = dayLabelFormat;
                     break;
                 }
                 case "mmm":
                 {
-                    newLabelWidths[idx] = monthLabelWidth;
+                    newLabelWidths[idx]  = monthLabelWidth;
                     newLabelFormats[idx] = monthLabelFormat;
                     break;
                 }
                 case "yyyy":
                 {
-                    newLabelWidths[idx] = yearLabelWidth;
+                    newLabelWidths[idx]  = yearLabelWidth;
                     newLabelFormats[idx] = yearLabelFormat;
                     break;
                 }

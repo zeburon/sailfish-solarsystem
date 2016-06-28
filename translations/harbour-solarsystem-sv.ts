@@ -50,10 +50,6 @@
         <translation>I dag</translation>
     </message>
     <message>
-        <source>Animation Speed</source>
-        <translation>Animeringshastighet</translation>
-    </message>
-    <message>
         <source>Settings</source>
         <translation>Inställningar</translation>
     </message>
@@ -112,6 +108,10 @@
     <message>
         <source>Solar System</source>
         <translation type="unfinished">Solar System</translation>
+    </message>
+    <message>
+        <source>Animation Speed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
