@@ -33,7 +33,7 @@
     </message>
 </context>
 <context>
-    <name>MainCover</name>
+    <name>DistanceCover</name>
     <message>
         <source>Distance to %1</source>
         <translation></translation>

@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-import "cover"
+import "covers"
 import "pages"
 import "components"
 
@@ -16,7 +16,7 @@ ApplicationWindow
 
     // -----------------------------------------------------------------------
 
-    cover: mainCover
+    cover: distanceCover
     initialPage: mainPage
 
     // -----------------------------------------------------------------------
@@ -26,7 +26,7 @@ ApplicationWindow
         // load and apply settings
         settings.loadValues();
         mainPage.init();
-        mainCover.init();
+        distanceCover.init();
         settingsPage.init();
         settings.startStoringValueChanges();
         initialized = true;
@@ -47,9 +47,9 @@ ApplicationWindow
         id: settings
     }
 
-    MainCover
+    DistanceCover
     {
-        id: mainCover
+        id: distanceCover
     }
 
     MainPage

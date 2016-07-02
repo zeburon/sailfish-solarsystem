@@ -33,7 +33,7 @@
     </message>
 </context>
 <context>
-    <name>MainCover</name>
+    <name>DistanceCover</name>
     <message>
         <source>Distance to %1</source>
         <translation>Abstand zu %1</translation>
@@ -107,11 +107,11 @@
     </message>
     <message>
         <source>Solar System</source>
-        <translation type="unfinished">Sonnensystem</translation>
+        <translation>Sonnensystem</translation>
     </message>
     <message>
         <source>Animation Speed</source>
-        <translation type="unfinished"></translation>
+        <translation>Animationsgeschwindigkeit</translation>
     </message>
 </context>
 <context>
@@ -257,19 +257,19 @@
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Standort</translation>
     </message>
     <message>
         <source>Coordinates updated</source>
-        <translation type="unfinished"></translation>
+        <translation>Position aktualisiert</translation>
     </message>
     <message>
         <source>Failed to update coordinates</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualisierung fehlgeschlagen</translation>
     </message>
     <message>
         <source>Use current location</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwende akt. Position</translation>
     </message>
 </context>
 <context>
