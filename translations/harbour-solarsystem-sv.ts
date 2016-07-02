@@ -248,19 +248,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sky View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>General Options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Latitude in degrees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Longitude in degrees</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Coordinates updated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to update coordinates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use current location</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

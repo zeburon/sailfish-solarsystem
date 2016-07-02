@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtPositioning 5.2
 import Sailfish.Silica 1.0
 
 import "../components"
@@ -40,6 +41,25 @@ Page
             PageHeader
             {
                 title: qsTr("Settings")
+            }
+
+            TextSwitch
+            {
+                text: qsTr("Show planet names")
+                checked: settings.showLabels
+                onCheckedChanged:
+                {
+                    settings.showLabels = checked;
+                }
+            }
+            TextSwitch
+            {
+                text: qsTr("Show Pluto")
+                checked: settings.showDwarfPlanets
+                onCheckedChanged:
+                {
+                    settings.showDwarfPlanets = checked;
+                }
             }
 
             SectionHeader
@@ -123,38 +143,93 @@ Page
 
             SectionHeader
             {
-                text: qsTr("General Options")
-            }
+                text: qsTr("Position")
 
-            TextSwitch
-            {
-                text: qsTr("Show planet names")
-                checked: settings.showLabels
-                onCheckedChanged:
+                BusyIndicator
                 {
-                    settings.showLabels = checked;
+                    anchors { centerIn: parent }
+                    size: BusyIndicatorSize.Small
+                    running: fetchPositionTimer.running
+                }
+                Text
+                {
+                    id: fetchPositionResultText
+
+                    anchors { centerIn: parent }
+                    color: Theme.secondaryHighlightColor
+                    font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
+                    opacity: fetchPositionResultTimer.running ? 1 : 0
+
+                    Behavior on opacity
+                    {
+                        NumberAnimation { easing.type: Easing.InOutQuart; duration: 500 }
+                    }
+                }
+                Timer
+                {
+                    id: fetchPositionResultTimer
+
+                    repeat: false
+                    interval: 2000
                 }
             }
-            TextSwitch
+
+            Button
             {
-                text: qsTr("Show Pluto")
-                checked: settings.showDwarfPlanets
-                onCheckedChanged:
+                anchors { horizontalCenter: parent.horizontalCenter }
+                text: qsTr("Use current location")
+                width: parent.width * 0.8
+                enabled: !fetchPositionTimer.running
+                onClicked:
                 {
-                    settings.showDwarfPlanets = checked;
+                    fetchPositionTimer.start();
                 }
             }
 
-            // -----------------------------------------------------------------------
-
-            SectionHeader
+            PositionSource
             {
-                text: qsTr("Sky View")
+                id: positionSource
+
+                updateInterval: 1000
+                active: fetchPositionTimer.running
+                preferredPositioningMethods: PositionSource.SatellitePositioningMethods
+                onPositionChanged:
+                {
+                    if (position.latitudeValid && position.longitudeValid)
+                    {
+                        var currentTime = new Date(Date.now());
+                        // do not reuse old coordinates (first value always contains ancient coordinates)
+                        if (currentTime - position.timestamp < Globals.POSITION_VALID_INTERVAL_MS)
+                        {
+                            textFieldLatitude.text  = position.coordinate.latitude;
+                            textFieldLongitude.text = position.coordinate.longitude;
+                            fetchPositionTimer.stop();
+                            fetchPositionResultText.text = qsTr("Coordinates updated");
+                            fetchPositionResultTimer.start();
+                        }
+                    }
+                }
+            }
+            Timer
+            {
+                id: fetchPositionTimer
+
+                repeat: false
+                interval: Globals.FETCH_POSITION_INTERVAL_MS
+                onTriggered:
+                {
+                    fetchPositionResultText.text = qsTr("Failed to update coordinates");
+                    fetchPositionResultTimer.start();
+                }
             }
 
             TextField
             {
+                id: textFieldLatitude
+
                 width: parent.width
+                enabled: !fetchPositionTimer.running
+                opacity: enabled ? 1.0 : 0.5
                 inputMethodHints: Qt.ImhFormattedNumbersOnly
                 label: qsTr("Latitude in degrees")
                 labelVisible: true
@@ -167,7 +242,11 @@ Page
             }
             TextField
             {
+                id: textFieldLongitude
+
                 width: parent.width
+                enabled: !fetchPositionTimer.running
+                opacity: enabled ? 1.0 : 0.5
                 inputMethodHints: Qt.ImhFormattedNumbersOnly
                 label: qsTr("Longitude in degrees")
                 labelVisible: true

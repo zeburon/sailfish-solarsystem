@@ -107,11 +107,11 @@
     </message>
     <message>
         <source>Solar System</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Animation Speed</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -248,20 +248,28 @@
         <translation></translation>
     </message>
     <message>
-        <source>Sky View</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>General Options</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Latitude in degrees</source>
         <translation></translation>
     </message>
     <message>
         <source>Longitude in degrees</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>Standort</translation>
+    </message>
+    <message>
+        <source>Coordinates updated</source>
+        <translation>Koordinaten aktualisiert</translation>
+    </message>
+    <message>
+        <source>Failed to update coordinates</source>
+        <translation>Aktualisierung fehlgeschlagen</translation>
+    </message>
+    <message>
+        <source>Use current location</source>
+        <translation>Aktuelle Position setzen</translation>
     </message>
 </context>
 <context>

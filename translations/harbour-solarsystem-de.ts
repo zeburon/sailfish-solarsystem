@@ -248,20 +248,28 @@
         <translation>Formate und Einheiten</translation>
     </message>
     <message>
-        <source>Sky View</source>
-        <translation>Himmelansicht</translation>
-    </message>
-    <message>
-        <source>General Options</source>
-        <translation>Allgemeine Optionen</translation>
-    </message>
-    <message>
         <source>Latitude in degrees</source>
         <translation>Breitengrad in Grad</translation>
     </message>
     <message>
         <source>Longitude in degrees</source>
         <translation>Längengrad in Grad</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Coordinates updated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to update coordinates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use current location</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
