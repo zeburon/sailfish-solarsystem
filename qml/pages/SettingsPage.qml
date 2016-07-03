@@ -13,6 +13,9 @@ Page
 
     function init()
     {
+        if (settings.coverName === "riseSet")
+        coverContentComboBox.currentIndex = 1;
+
         var dateFormatIdx = Globals.DATE_FORMATS.indexOf(settings.dateFormat);
         dateFormatComboBox.currentIndex = dateFormatIdx;
 
@@ -61,11 +64,39 @@ Page
                     settings.showDwarfPlanets = checked;
                 }
             }
+            // cover content
+            ComboBox
+            {
+                id: coverContentComboBox
 
+                label: qsTr("Cover content")
+                menu: ContextMenu
+                {
+                    MenuItem
+                    {
+                        text: qsTr("planet distances")
+                        onClicked:
+                        {
+                            settings.coverName = "distances";
+                        }
+                    }
+                    MenuItem
+                    {
+                        text: qsTr("rise & set times")
+                        onClicked:
+                        {
+                            settings.coverName = "riseSet";
+                        }
+                    }
+                }
+            }
+
+            /*
             SectionHeader
             {
                 text: qsTr("Formats and Units")
             }
+            */
 
             // date format
             ComboBox

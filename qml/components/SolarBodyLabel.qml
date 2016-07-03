@@ -18,7 +18,7 @@ Item
     {
         id: label
 
-        text: solarBody.name
+        text: solarBody ? solarBody.name : "?"
         color: highlight ? Theme.highlightColor : Theme.secondaryHighlightColor
         font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
         anchors { horizontalCenter: parent.horizontalCenter; top: parent.verticalCenter; topMargin: yOffset * yOffsetScale }

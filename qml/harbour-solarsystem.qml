@@ -16,7 +16,7 @@ ApplicationWindow
 
     // -----------------------------------------------------------------------
 
-    cover: distanceCover
+    cover: mainCover
     initialPage: mainPage
 
     // -----------------------------------------------------------------------
@@ -26,7 +26,7 @@ ApplicationWindow
         // load and apply settings
         settings.loadValues();
         mainPage.init();
-        distanceCover.init();
+        mainCover.init();
         settingsPage.init();
         settings.startStoringValueChanges();
         initialized = true;
@@ -47,9 +47,9 @@ ApplicationWindow
         id: settings
     }
 
-    DistanceCover
+    MainCover
     {
-        id: distanceCover
+        id: mainCover
     }
 
     MainPage

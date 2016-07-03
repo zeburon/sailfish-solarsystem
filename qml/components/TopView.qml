@@ -53,7 +53,7 @@ Canvas
         for (var bodyIdx = 0; bodyIdx < solarSystem.solarBodies.length; ++bodyIdx)
         {
             var solarBody = solarSystem.solarBodies[bodyIdx];
-            var painter = solarBodyPainter.createObject(null, {"solarBody": solarBody});
+            var painter = solarBodyPainterComponent.createObject(null, {"solarBody": solarBody});
             painters.push(painter);
 
             var bodyZ = solarSystem.solarBodies.length - bodyIdx;
@@ -72,7 +72,7 @@ Canvas
         }
 
         // create sun
-        painter = solarBodyPainter.createObject(null, {"solarBody": solarSystem.sun});
+        painter = solarBodyPainterComponent.createObject(null, {"solarBody": solarSystem.sun});
         painters.push(painter);
         sunImageComponent.createObject(images, {"solarBody": solarSystem.sun, "painter": painter});
 
@@ -244,61 +244,21 @@ Canvas
 
     Component
     {
-        id: solarBodyPainter
+        id: solarBodyPainterComponent
 
-        Item
+        TopViewSolarBodyPainter
         {
-            property SolarBody solarBody
-            property var parentPainter: null
-
-            property real orbitProjectionFactor: Math.cos(solarBody.orbitalElements.inclination) // adjust orbit dimensions according to inclination
-            property real orbitOffset: simplifiedOrbits ? 0.0 : ((solarBody.orbitalElements.maximumDistance - solarBody.orbitalElements.minimumDistance) / 2.0) * root.auSize * orbitProjectionFactor
-            property real orbitA: simplifiedOrbits ? orbitSimplifiedRadius : solarBody.orbitalElements.semiMajorAxis * root.auSize * orbitProjectionFactor
-            property real orbitB: simplifiedOrbits ? orbitSimplifiedRadius : solarBody.orbitalElements.semiMajorAxis * root.auSize * Math.sqrt(1.0 - Math.pow(solarBody.orbitalElements.eccentricity, 2))
-            property real orbitRotation: solarBody.orbitalElements.argumentOfPeriapsis + solarBody.orbitalElements.longitudeOfAscendingNode
-            property real orbitSimplifiedRadius
-
-            property real displayedX
-            property real displayedY
-            property real displayedOpacity: simplifiedOrbits ? 1.0 : (1.0 - ((1.0 - root.currentZoom) * (1.0 - solarBody.smallImageScaleZoomedOut) + root.currentZoom * (1.0 - solarBody.smallImageScaleZoomedIn)))
-            property real displayedScale: root.imageScale * displayedOpacity
-            property real displayedShadowRotation: Math.atan2(displayedY, displayedX) * 180 / Math.PI;
-
-            function updateCoordinates()
-            {
-                var newX = 0, newY = 0;
-                if (simplifiedOrbits)
-                {
-                    var angle = Math.atan2(solarBody.orbitalElements.y, solarBody.orbitalElements.x);
-                    newX = orbitSimplifiedRadius * Math.cos(angle);
-                    newY = orbitSimplifiedRadius * Math.sin(angle);
-                }
-                else
-                {
-                    newX = solarBody.orbitalElements.x * root.auSize * solarBody.orbitCorrectionFactorX;
-                    newY = solarBody.orbitalElements.y * root.auSize * solarBody.orbitCorrectionFactorY;
-                    if (parentPainter)
-                    {
-                        newX *= 75;
-                        newY *= 75;
-                    }
-                }
-
-                if (parentPainter)
-                {
-                    newX += parentPainter.displayedX;
-                    newY += parentPainter.displayedY;
-                }
-                displayedX = newX;
-                displayedY = newY;
-            }
+            auSize: root.auSize
+            currentZoom: root.currentZoom
+            imageScale: root.imageScale
+            simplifiedOrbits: root.simplifiedOrbits
         }
     }
     Component
     {
         id: solarBodyImageComponent
 
-        TopSolarBodyImage
+        TopViewSolarBodyImage
         {
             property var painter
 

@@ -262,7 +262,7 @@ QtObject
             smallImageSourceTop: "../gfx/s_saturn_rings.png"
             smallImageScaleZoomedIn: 0.0
             largeImageSourceBottom: "../gfx/l_saturn.png"
-            largeImageSourceTop: "../gfx/m_saturn_rings.png"
+            largeImageSourceTop: "../gfx/l_saturn_rings.png"
             orbitColor: "#55e3c9a3"
             orbitalElements: OrbitalElementsPlanet
             {
@@ -402,7 +402,17 @@ QtObject
 
     function getDistanceToEarth(solarBody)
     {
-        return getDistanceBetweenBodies(solarBody, earth);
+        if (solarBody === moon)
+        {
+            var dx = solarBody.orbitalElements.x;
+            var dy = solarBody.orbitalElements.y;
+            var dz = solarBody.orbitalElements.z;
+            return Math.sqrt(dx * dx + dy * dy + dz * dz);
+        }
+        else
+        {
+            return getDistanceBetweenBodies(solarBody, earth);
+        }
     }
 
     function getIndex(solarBody)

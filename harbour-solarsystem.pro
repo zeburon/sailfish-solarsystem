@@ -55,7 +55,9 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/gfx/zoom_in.png \
     qml/gfx/zoom_out.png \
     qml/components/TopView.qml \
-    qml/components/SkyView.qml
+    qml/components/TopViewSolarBodyPainter.qml \
+    qml/components/SkyView.qml \
+    qml/components/SkyViewSolarBodyPainter.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line
@@ -77,13 +79,11 @@ DISTFILES += \
     qml/gfx/s_moon.png \
     qml/components/SolarSystem.qml \
     qml/components/SolarBodyImage.qml \
-    qml/components/TopSolarBodyImage.qml \
     qml/components/SolarBodyLabel.qml \
     qml/components/SideSolarBodyImage.qml \
-    qml/components/SkySolarBodyImage.qml \
     qml/components/Galaxy.qml \
     qml/components/Star.qml \
-    qml/covers/DistanceCover.qml \
+    qml/covers/MainCover.qml \
     qml/components/DateTimeDisplay.qml \
     qml/gfx/now.png \
     qml/components/NowButton.qml \
@@ -100,5 +100,9 @@ DISTFILES += \
     qml/gfx/l_moon.png \
     qml/components/SunImage.qml \
     qml/gfx/background.png \
-    qml/components/RiseAndSetLabel.qml
+    qml/components/RiseAndSetLabel.qml \
+    qml/components/TopViewSolarBodyImage.qml \
+    qml/components/SkyViewSolarBodyImage.qml \
+    qml/covers/RiseSetCoverContent.qml \
+    qml/covers/DistanceCoverContent.qml
 

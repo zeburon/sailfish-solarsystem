@@ -27,7 +27,8 @@ QtObject
     property bool zoomedOutSkyView: false;                         property string zoomedOutSkyViewKey: "zoomedOutSkyView"
     property bool trackNow: false;                                 property string trackNowKey: "trackNow"
     property bool trackOrientation: false;                         property string trackOrientationKey: "trackOrientation"
-    property int distancePlanetIdx: 0;                             property string distancePlanetIdxKey: "distancePlanetIdx"
+    property string coverName: "";                                 property string coverNameKey: "coverName"
+    property int coverPlanetIdx: 0;                                property string coverPlanetIdxKey: "coverPlanetIdx"
     property real latitude: 47.066;                                property string latitudeKey: "latitude"
     property real longitude: 15.433;                               property string longitudeKey: "longitude"
 
@@ -127,10 +128,15 @@ QtObject
         if (storedTrackOrientation)
             trackOrientation = storedTrackOrientation === "true";
 
-        // load distancePlanetIdx
-        var storedDistancePlanetIdx = Storage.getValue(distancePlanetIdxKey);
-        if (storedDistancePlanetIdx)
-            distancePlanetIdx = storedDistancePlanetIdx;
+        // load coverName
+        var storedCoverName = Storage.getValue(coverNameKey);
+        if (storedCoverName)
+            coverName = storedCoverName;
+
+        // load coverPlanetIdx
+        var storedCoverPlanetIdx = Storage.getValue(coverPlanetIdxKey);
+        if (storedCoverPlanetIdx)
+            coverPlanetIdx = storedCoverPlanetIdx;
 
         // load latitude
         var storedLatitude = Storage.getValue(latitudeKey);
@@ -236,9 +242,13 @@ QtObject
     {
         Storage.setValue(trackOrientationKey, trackOrientation);
     }
-    onDistancePlanetIdxChanged:
+    onCoverNameChanged:
     {
-        Storage.setValue(distancePlanetIdxKey, distancePlanetIdx);
+        Storage.setValue(coverNameKey, coverName);
+    }
+    onCoverPlanetIdxChanged:
+    {
+        Storage.setValue(coverPlanetIdxKey, coverPlanetIdx);
     }
     onLatitudeChanged:
     {

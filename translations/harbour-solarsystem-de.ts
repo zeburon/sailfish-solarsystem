@@ -33,7 +33,7 @@
     </message>
 </context>
 <context>
-    <name>DistanceCover</name>
+    <name>DistanceCoverContent</name>
     <message>
         <source>Distance to %1</source>
         <translation>Abstand zu %1</translation>
@@ -218,6 +218,21 @@
     </message>
 </context>
 <context>
+    <name>RiseSetCoverContent</name>
+    <message>
+        <source>Rise</source>
+        <translation>Aufgang</translation>
+    </message>
+    <message>
+        <source>Transit</source>
+        <translation>Meridian</translation>
+    </message>
+    <message>
+        <source>Set</source>
+        <translation>Untergang</translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
@@ -244,10 +259,6 @@
         <translation>Temperatureinheit</translation>
     </message>
     <message>
-        <source>Formats and Units</source>
-        <translation>Formate und Einheiten</translation>
-    </message>
-    <message>
         <source>Latitude in degrees</source>
         <translation>Breitengrad in Grad</translation>
     </message>
@@ -270,6 +281,18 @@
     <message>
         <source>Use current location</source>
         <translation>Verwende akt. Position</translation>
+    </message>
+    <message>
+        <source>Cover content</source>
+        <translation>Cover Inhalt</translation>
+    </message>
+    <message>
+        <source>planet distances</source>
+        <translation>Plantenentfernungen</translation>
+    </message>
+    <message>
+        <source>rise &amp; set times</source>
+        <translation>Auf- und Untergang</translation>
     </message>
 </context>
 <context>

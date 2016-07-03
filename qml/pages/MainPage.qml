@@ -85,13 +85,10 @@ Page
 
     function reactivate()
     {
-        if (!settings.trackNow)
-        {
-            if (topView.visible)
-                topView.requestPaint();
-            else
-                skyView.repaintCanvasAndImages();
-        }
+        if (topView.visible)
+            topView.requestPaint();
+        else
+            skyView.repaintCanvasAndImages();
     }
 
     // -----------------------------------------------------------------------
@@ -362,6 +359,7 @@ Page
             {
                 width: parent.width
                 height: 1
+                z: -1
 
                 Slider
                 {

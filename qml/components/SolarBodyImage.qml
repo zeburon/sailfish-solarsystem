@@ -18,7 +18,7 @@ Item
 
     // -----------------------------------------------------------------------
 
-    visible: solarBody.visible
+    visible: solarBody ? solarBody.visible : false
 
     // -----------------------------------------------------------------------
     // actual image
@@ -27,6 +27,8 @@ Item
         id: image
 
         source: {
+            if (!solarBody)
+                return "";
             if (useSmallImage)
                 return solarBody.smallImageSourceBottom;
             if (useLargeImage)
@@ -39,24 +41,6 @@ Item
     }
 
     // -----------------------------------------------------------------------
-    // optional image rendered on top of everything (e.g. rings)
-    Image
-    {
-        id: imageOnTop
-
-        source: {
-            if (useSmallImage)
-                return solarBody.smallImageSourceTop;
-            if (useLargeImage)
-                return solarBody.largeImageSourceTop;
-            return solarBody.mediumImageSourceTop;
-        }
-        anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
-        antialiasing: true
-        z: 10
-    }
-
-    // -----------------------------------------------------------------------
     // optional highlight rendering
     Rectangle
     {
@@ -66,7 +50,27 @@ Item
         radius: width / 2
         color: "transparent"
         border { color: Theme.highlightColor; width: 2 }
-        z: 20
+        z: 10
         visible: root.highlighted
+    }
+
+    // -----------------------------------------------------------------------
+    // optional image rendered on top of everything (e.g. rings)
+    Image
+    {
+        id: imageOnTop
+
+        source: {
+            if (!solarBody)
+                return "";
+            if (useSmallImage)
+                return solarBody.smallImageSourceTop;
+            if (useLargeImage)
+                return solarBody.largeImageSourceTop;
+            return solarBody.mediumImageSourceTop;
+        }
+        anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
+        antialiasing: true
+        z: 20
     }
 }
