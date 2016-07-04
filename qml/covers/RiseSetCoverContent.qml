@@ -92,6 +92,7 @@ Item
             height: imageHeight
             visible: true
             shadowPhase: solarBodyPainter.displayedPhase
+            shadowOpacity: 0.4
             useSmallImage: false
             useLargeImage: true
             highlighted: true
@@ -109,7 +110,7 @@ Item
         Item
         {
             width: parent.width
-            height: Theme.paddingSmall
+            height: Theme.paddingMedium
         }
         Label
         {
@@ -117,7 +118,7 @@ Item
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
             color: Theme.secondaryColor
-            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeSmall }
+            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
         }
         RiseAndSetLabel
         {
@@ -134,7 +135,7 @@ Item
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
             color: Theme.secondaryColor
-            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeSmall }
+            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
         }
         RiseAndSetLabel
         {
@@ -151,7 +152,7 @@ Item
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
             color: Theme.secondaryColor
-            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeSmall }
+            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
         }
         RiseAndSetLabel
         {
