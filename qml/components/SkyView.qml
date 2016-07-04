@@ -444,7 +444,7 @@ Canvas
         for (var starIdx = 0; starIdx < galaxy.stars.length; ++starIdx)
         {
             var star = galaxy.stars[starIdx];
-            var projectedStarCoordinates = projector.sphericalEclipticToScreenCoordinates(star.rightAscensionDegrees, star.declination);
+            var projectedStarCoordinates = projector.sphericalEquatorialToScreenCoordinates(star.rightAscensionDegrees, star.declination);
             drawCircle(context, projectedStarCoordinates, "yellow", star.displayedSize * root.currentZoom);
         }
 
