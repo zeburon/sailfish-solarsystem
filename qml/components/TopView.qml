@@ -22,16 +22,17 @@ Canvas
     property bool animateSun: true
     property bool animateZoom: false
     property bool initialized: false
+    property bool additionalBorder: false
 
     // radius-related properties
     property real auSize: 100
-    property real radiusRange: width / 2 - radiusBorderOffset - radiusSunOffset
+    property real radiusRange: Math.min(width, height) / 2 - radiusBorderOffset - radiusSunOffset
     property real radiusSunOffset: Math.max(30, Math.min(width, height) / 20) * imageScale
     property real radiusBorderOffset: 15
 
     // zoom-related properties
     property real currentZoom: simplifiedOrbits ? 1.0 : currentZoomRealistic
-    property real currentZoomRealistic: zoomedOut ? (showDwarfPlanets ? 0.063 : 0.08) : 1.0
+    property real currentZoomRealistic: zoomedOut ? (showDwarfPlanets ? (additionalBorder ? 0.063 : 0.075) : (additionalBorder ? 0.08 : 0.09)) : (additionalBorder ? 1.4 : 1.5)
     property real currentOffsetX: simplifiedOrbits ? 0.0 : (zoomedOut && showDwarfPlanets ? -width / 14.0 : 0.0)
     property real currentOffsetY: simplifiedOrbits ? 0.0 : (zoomedOut && showDwarfPlanets ? height / 16.0 : 0.0)
 

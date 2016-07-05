@@ -143,6 +143,7 @@ Page
 
     // -----------------------------------------------------------------------
 
+    allowedOrientations: Orientation.All
     onActiveChanged:
     {
         settings.animationEnabled = false;
@@ -155,9 +156,12 @@ Page
         anchors { fill: parent }
         contentHeight: column.height
         visible: app.initialized
+        interactive: page.isPortrait
 
         PullDownMenu
         {
+            visible: page.isPortrait
+
             MenuItem
             {
                 text: qsTr("About Solar System")
@@ -237,9 +241,10 @@ Page
                 {
                     id: topView
 
-                    anchors { centerIn: parent; horizontalCenterOffset: currentOffsetX; verticalCenterOffset: currentOffsetY }
-                    width: parent.width
-                    height: parent.height
+                    x: page.isPortrait ? currentOffsetX : -parent.x + currentOffsetX
+                    y: page.isPortrait ? currentOffsetY : -parent.y + currentOffsetY
+                    width: page.isPortrait ? parent.width : page.width
+                    height: page.isPortrait ? parent.height : page.height
                     showLabels: settings.showLabels
                     showOrbits: settings.showOrbits
                     showDwarfPlanets: settings.showDwarfPlanets
@@ -247,6 +252,7 @@ Page
                     animateSun: app.active && visible
                     animateZoom: app.initialized && visible
                     simplifiedOrbits: settings.simplifiedOrbits
+                    additionalBorder: page.isPortrait
                     visible: !settings.showSkyView
                     Component.onCompleted:
                     {
@@ -266,8 +272,10 @@ Page
                 {
                     id: skyView
 
-                    width: parent.width
-                    height: parent.width
+                    x: page.isPortrait ? 0 : -parent.x
+                    y: page.isPortrait ? 0 : -parent.y
+                    width: page.isPortrait ? parent.width : page.width
+                    height: page.isPortrait ? parent.width : page.height
                     clip: true
                     visible: settings.showSkyView
                     showLabels: settings.showLabels
@@ -297,6 +305,7 @@ Page
             // labels displaying the selected date + time
             DateTimeDisplay
             {
+                visible: page.isPortrait
                 dateTime: page.dateTime
                 showTime: settings.showSkyView
                 width: column.width
@@ -309,6 +318,7 @@ Page
             // animation controls: start/stop animation and jump to current date
             Row
             {
+                visible: page.isPortrait
                 spacing: Theme.paddingLarge * 2
                 anchors { horizontalCenter: parent.horizontalCenter }
 
@@ -357,6 +367,7 @@ Page
             // set animation speed
             Item
             {
+                visible: page.isPortrait
                 width: parent.width
                 height: 1
                 z: -1
@@ -382,6 +393,8 @@ Page
 
         PushUpMenu
         {
+            visible: page.isPortrait
+
             MenuItem
             {
                 text: settings.showSkyView ? qsTr("Switch to Top View") : qsTr("Switch to Sky View")
