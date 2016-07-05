@@ -282,7 +282,7 @@ Page
                     showAzimuth: settings.showAzimuth
                     showEcliptic: settings.showEcliptic
                     showEquator: settings.showEquator
-                    showBackground: settings.showBackground
+                    showBackground: false//settings.showBackground
                     zoomedOut: settings.zoomedOutSkyView
                     animateSun: app.active && visible
                     animateZoom: app.initialized && visible

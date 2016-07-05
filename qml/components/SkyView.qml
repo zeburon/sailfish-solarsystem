@@ -563,7 +563,7 @@ Canvas
 
         anchors { centerIn: parent }
         z: -10000
-        opacity: 0.75
+        opacity: 0.65
         source: "../gfx/background.png"
         width: visibleRadius * 2
         height: visibleRadius * 2
