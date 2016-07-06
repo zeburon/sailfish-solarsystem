@@ -39,6 +39,8 @@ Canvas
     property real longitudeLookOffset: 0
     property real latitudeLookOffset: 40
     property real lookRotation: 0
+    property real displayedLongitudeLookOffset: longitudeLookOffset
+    property real displayedLatitudeLookOffset: latitudeLookOffset
     property int mouseXStart
     property int mouseLongitudeOffsetStart
     property int mouseYStart
@@ -218,7 +220,7 @@ Canvas
 
         // upper hemisphere
         context.strokeStyle = "#9999ff";
-        context.globalAlpha = 0.3 * (1.0 - Math.max(0.0, Math.min(1.0, (latitudeLookOffset / -50.0))));
+        context.globalAlpha = 0.3 * (1.0 - Math.max(0.0, Math.min(1.0, (displayedLatitudeLookOffset / -50.0))));
         if (context.globalAlpha > 0.0)
         {
             for (skyLongitude = 0; skyLongitude < 180; skyLongitude += 90)
@@ -236,7 +238,7 @@ Canvas
 
         // lower hemisphere
         context.strokeStyle = "#88cc00";
-        context.globalAlpha = 0.3 * (1.0 - Math.max(0.0, Math.min(1.0, (latitudeLookOffset / 50.0))));
+        context.globalAlpha = 0.3 * (1.0 - Math.max(0.0, Math.min(1.0, (displayedLatitudeLookOffset / 50.0))));
         if (context.globalAlpha > 0.0)
         {
             for (skyLongitude = 0; skyLongitude < 180; skyLongitude += 90)
@@ -253,12 +255,12 @@ Canvas
         }
 
         // horizon
-        context.globalAlpha = 0.4 * (1.0 - Math.max(0.0, Math.min(1.0, (Math.abs(latitudeLookOffset) / 80.0))));
+        context.globalAlpha = 0.4 * (1.0 - Math.max(0.0, Math.min(1.0, (Math.abs(displayedLatitudeLookOffset) / 80.0))));
         context.lineWidth = 4;
         context.strokeStyle = "white";
         var equatorCoordinates = [];
-        var longitudeOffset = longitudeLookOffset - 90;
-        var longitudeRange = Math.min(180, (fieldOfView / 1) / currentZoom);
+        var longitudeOffset = displayedLongitudeLookOffset - 90;
+        var longitudeRange = Math.min(180, (currentFieldOfView / 1) / currentZoom);
         for (skyLongitude = -longitudeRange; skyLongitude <= longitudeRange; skyLongitude += 10)
         {
             equatorCoordinates.push(projector.sphericalAzimuthalToScreenCoordinates(skyLongitude + longitudeOffset, 0));
@@ -290,7 +292,7 @@ Canvas
     function drawEquator(context)
     {
         var coordinates = [];
-        var longitudeOffset = -longitudeLookOffset - (dateTime.siderealTime / 24) * 360;
+        var longitudeOffset = -displayedLongitudeLookOffset - (dateTime.siderealTime / 24) * 360;
         for (var skyLongitude = -180; skyLongitude <= 200; skyLongitude += 20)
         {
             coordinates.push(projector.sphericalEquatorialToScreenCoordinates(skyLongitude + longitudeOffset, 0));
@@ -308,7 +310,7 @@ Canvas
     function drawEcliptic(context)
     {
         var coordinates = [];
-        var longitudeOffset = -longitudeLookOffset - (dateTime.siderealTime / 24) * 360;
+        var longitudeOffset = -displayedLongitudeLookOffset - (dateTime.siderealTime / 24) * 360;
         for (var skyLongitude = -180; skyLongitude <= 200; skyLongitude += 20)
         {
             coordinates.push(projector.sphericalEclipticToScreenCoordinates(skyLongitude + longitudeOffset, 0));
@@ -575,8 +577,8 @@ Canvas
         dateTime: solarSystem.dateTime
         longitude: root.longitude
         latitude: root.latitude
-        longitudeLookOffset: root.longitudeLookOffset
-        latitudeLookOffset: root.latitudeLookOffset
+        longitudeLookOffset: root.displayedLongitudeLookOffset
+        latitudeLookOffset: root.displayedLatitudeLookOffset
         width: root.width
         height: root.height
         zoom: root.currentZoom
@@ -665,7 +667,8 @@ Canvas
                 }
             }
 
-            requestPaint();
+            if (!repaintTimer.running)
+                repaintTimer.start();
         }
         onPressAndHold:
         {
@@ -754,19 +757,14 @@ Canvas
             if (!repaintTimer.running)
                 repaintTimer.start();
         }
-
     }
-    Behavior on longitudeLookOffset
+    Behavior on displayedLongitudeLookOffset
     {
-        enabled: rotationSensor.active
-
-        RotationAnimation { id: longitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: 400 }
+        RotationAnimation { id: longitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: 100 }
     }
-    Behavior on latitudeLookOffset
+    Behavior on displayedLatitudeLookOffset
     {
-        enabled: rotationSensor.active
-
-        RotationAnimation { id: latitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: 400 }
+        RotationAnimation { id: latitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: 100 }
     }
     Behavior on lookRotation
     {
@@ -778,7 +776,7 @@ Canvas
     {
         id: repaintTimer
 
-        interval: 40
+        interval: 10
         repeat: false
         onTriggered:
         {
