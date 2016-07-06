@@ -105,6 +105,13 @@ Canvas
 
     // -----------------------------------------------------------------------
 
+    function reactivate()
+    {
+        repaintCanvasAndImages();
+    }
+
+    // -----------------------------------------------------------------------
+
     function repaintCanvasAndImages()
     {
         requestPaint();

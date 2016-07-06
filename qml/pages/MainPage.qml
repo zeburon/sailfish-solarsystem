@@ -86,9 +86,9 @@ Page
     function reactivate()
     {
         if (topView.visible)
-            topView.requestPaint();
+            topView.reactivate();
         else
-            skyView.repaintCanvasAndImages();
+            skyView.reactivate();
     }
 
     // -----------------------------------------------------------------------
@@ -147,6 +147,10 @@ Page
     onActiveChanged:
     {
         settings.animationEnabled = false;
+    }
+    onOrientationChanged:
+    {
+        reactivate();
     }
 
     // -----------------------------------------------------------------------

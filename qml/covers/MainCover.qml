@@ -102,14 +102,14 @@ CoverBackground
         id: distanceCoverContent
 
         anchors { fill: parent }
-        visible: !riseSetCoverContent.visible
+        visible: cover.active && !riseSetCoverContent.visible
     }
     RiseSetCoverContent
     {
         id: riseSetCoverContent
 
         anchors { fill: parent }
-        visible: settings.coverName === "riseSet"
+        visible: cover.active && settings.coverName === "riseSet"
     }
 
     // -----------------------------------------------------------------------

@@ -83,6 +83,13 @@ Canvas
 
     // -----------------------------------------------------------------------
 
+    function reactivate()
+    {
+        requestPaint();
+    }
+
+    // -----------------------------------------------------------------------
+
     function update(dateTime)
     {
         solarSystem.dateTime.string = dateTime.string;
