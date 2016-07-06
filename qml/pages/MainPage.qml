@@ -280,14 +280,18 @@ Page
                     y: page.isPortrait ? 0 : -parent.y
                     width: page.isPortrait ? parent.width : page.width
                     height: page.isPortrait ? parent.width : page.height
-                    clip: true
                     visible: settings.showSkyView
+                    clip: true
                     showLabels: settings.showLabels
                     showAzimuth: settings.showAzimuth
                     showEcliptic: settings.showEcliptic
                     showEquator: settings.showEquator
                     showBackground: false//settings.showBackground
                     zoomedOut: settings.zoomedOutSkyView
+                    fieldOfViewZoomedIn: page.isPortrait ? 90 : 70
+                    fieldOfViewZoomedOut: 120
+                    zoomZoomedIn: page.isPortrait ? 1.0 : 0.9
+                    zoomZoomedOut: Math.min(width / height, height / width) * 0.5
                     animateSun: app.active && visible
                     animateZoom: app.initialized && visible
                     Component.onCompleted:

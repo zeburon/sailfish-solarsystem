@@ -25,8 +25,12 @@ Canvas
     // view-related properties
     property real latitude: settings.latitude
     property real longitude: settings.longitude
-    property real fieldOfView: zoomedOut ? 90 : 120
-    property real currentZoom: zoomedOut ? 0.5 : 1.0
+    property real fieldOfViewZoomedIn: 90
+    property real fieldOfViewZoomedOut: 120
+    property real currentFieldOfView: zoomedOut ? fieldOfViewZoomedIn : fieldOfViewZoomedOut
+    property real zoomZoomedIn: 1.0
+    property real zoomZoomedOut: 0.5
+    property real currentZoom: zoomedOut ? zoomZoomedOut : zoomZoomedIn
     property real visibleRadius: 1.175 * Math.sqrt(2.0 * Math.pow(Math.max(width, height), 2.0)) * currentZoom / 2.0
     property real visibleRadiusSquared: visibleRadius * visibleRadius
     property real visibleRadiusFadeStart: visibleRadius - 40
@@ -397,7 +401,6 @@ Canvas
 
     // -----------------------------------------------------------------------
 
-    clip: true
     onVisibleChanged:
     {
         if (visible)
@@ -408,6 +411,22 @@ Canvas
     onCurrentZoomChanged:
     {
         requestPaint();
+    }
+    onZoomZoomedInChanged:
+    {
+        disableZoomAnimationTimer.start();
+    }
+    onZoomZoomedOutChanged:
+    {
+        disableZoomAnimationTimer.start();
+    }
+    onFieldOfViewZoomedInChanged:
+    {
+        disableZoomAnimationTimer.start();
+    }
+    onFieldOfViewZoomedOutChanged:
+    {
+        disableZoomAnimationTimer.start();
     }
     onPaint:
     {
@@ -561,7 +580,7 @@ Canvas
         width: root.width
         height: root.height
         zoom: root.currentZoom
-        fieldOfView: root.fieldOfView
+        fieldOfView: root.currentFieldOfView
     }
 
     Image
@@ -663,15 +682,23 @@ Canvas
         propagateComposedEvents: false
     }
 
+
+    Timer
+    {
+        id: disableZoomAnimationTimer
+
+        interval: 10
+        repeat: false
+    }
     Behavior on currentZoom
     {
-        enabled: root.animateZoom
+        enabled: root.animateZoom && !disableZoomAnimationTimer.running
 
         NumberAnimation { easing.type: Easing.InOutQuart; duration: Globals.ZOOM_ANIMATION_DURATION_MS }
     }
-    Behavior on fieldOfView
+    Behavior on currentFieldOfView
     {
-        enabled: root.animateZoom
+        enabled: root.animateZoom && !disableZoomAnimationTimer.running
 
         NumberAnimation { easing.type: Easing.InOutQuart; duration: Globals.ZOOM_ANIMATION_DURATION_MS }
     }
