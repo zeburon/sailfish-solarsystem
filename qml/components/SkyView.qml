@@ -731,27 +731,53 @@ Canvas
         alwaysOn: false
         onReadingChanged:
         {
-            if (orientationSensor.reading.orientation !== OrientationReading.TopUp)
-                return;
-
-            var newLongitude = reading.z;
-            var newLatitude = -reading.x - 90;
-            var newRotation = reading.y;
-            newRotation -= 180;
-            newRotation *= -1;
-            newRotation %= 180;
-            if (newRotation > 90)
-                newRotation -= 180;
-
-            if (Math.abs(newRotation) < 30)
+            var newLongitude = reading.z, newLatitude = 0, newRotation = 0;
+            if (orientationSensor.reading.orientation === OrientationReading.TopUp)
             {
-                if (Math.abs(reading.y) < 90)
+                newLatitude = -reading.x - 90;
+                if (Math.abs(reading.y) < 45)
                 {
                     newLatitude *= -1;
                 }
-                latitudeLookOffset = Math.max(-89.0, Math.min(89.0, newLatitude));
+                newRotation = -(reading.y - 180);
+            }
+            if (orientationSensor.reading.orientation === OrientationReading.TopDown)
+            {
+                newLatitude = -(reading.x - 90);
+                if (Math.abs(reading.y) > 45)
+                {
+                    newLatitude *= -1;
+                }
+                newRotation = (reading.y - 180);
+            }
+            else if (orientationSensor.reading.orientation === OrientationReading.LeftUp)
+            {
+                newLatitude = reading.y + 90;
+                newRotation = -reading.x;
+            }
+            else if (orientationSensor.reading.orientation === OrientationReading.RightUp)
+            {
+                newLatitude = -(reading.y - 90);
+                newRotation = reading.x;
+            }
+            else if (orientationSensor.reading.orientation === OrientationReading.FaceUp)
+            {
+                newLatitude = -90;
+            }
+            else if (orientationSensor.reading.orientation === OrientationReading.FaceDown)
+            {
+                newLatitude = 90;
+            }
+
+            newRotation %= 180;
+            if (newRotation > 90)
+                newRotation -= 180;
+            if (Math.abs(newRotation) < 30)
+            {
                 lookRotation = newRotation;
             }
+
+            latitudeLookOffset = Math.max(-89.0, Math.min(89.0, newLatitude));
             longitudeLookOffset = newLongitude;
 
             if (!repaintTimer.running)
@@ -760,11 +786,11 @@ Canvas
     }
     Behavior on displayedLongitudeLookOffset
     {
-        RotationAnimation { id: longitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: 100 }
+        RotationAnimation { id: longitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: rotationSensor.active ? 400 : 100 }
     }
     Behavior on displayedLatitudeLookOffset
     {
-        RotationAnimation { id: latitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: 100 }
+        RotationAnimation { id: latitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: rotationSensor.active ? 400 : 100 }
     }
     Behavior on lookRotation
     {
