@@ -34,6 +34,7 @@ Canvas
     property real visibleRadius: 1.175 * Math.sqrt(2.0 * Math.pow(Math.max(width, height), 2.0)) * currentZoom / 2.0
     property real visibleRadiusSquared: visibleRadius * visibleRadius
     property real visibleRadiusFadeStart: visibleRadius - 40
+    property int longitudeSensorOffset: 0
 
     // mouse-look properties
     property real longitudeLookOffset: 0
@@ -731,7 +732,7 @@ Canvas
         alwaysOn: false
         onReadingChanged:
         {
-            var newLongitude = reading.z, newLatitude = 0, newRotation = 0;
+            var newLongitude = reading.z + longitudeSensorOffset, newLatitude = 0, newRotation = 0;
             if (orientationSensor.reading.orientation === OrientationReading.TopUp)
             {
                 newLatitude = -reading.x - 90;
@@ -786,11 +787,11 @@ Canvas
     }
     Behavior on displayedLongitudeLookOffset
     {
-        RotationAnimation { id: longitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: rotationSensor.active ? 400 : 100 }
+        RotationAnimation { id: longitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: rotationSensor.active ? 800 : 100 }
     }
     Behavior on displayedLatitudeLookOffset
     {
-        RotationAnimation { id: latitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: rotationSensor.active ? 400 : 100 }
+        RotationAnimation { id: latitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: rotationSensor.active ? 800 : 100 }
     }
     Behavior on lookRotation
     {
