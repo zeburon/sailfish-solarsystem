@@ -103,5 +103,6 @@ DISTFILES += \
     qml/components/TopViewSolarBodyImage.qml \
     qml/components/SkyViewSolarBodyImage.qml \
     qml/covers/RiseSetCoverContent.qml \
-    qml/covers/DistanceCoverContent.qml
+    qml/covers/DistanceCoverContent.qml \
+    qml/components/SkyViewRotationSensor.qml
 

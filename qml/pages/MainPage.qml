@@ -293,16 +293,6 @@ Page
                     zoomZoomedOut: Math.min(width / height, height / width) * 0.5
                     animateSun: app.active && visible
                     animateZoom: app.initialized && visible
-                    longitudeSensorOffset: {
-                        if (page.orientation === Orientation.PortraitInverted)
-                            return 180;
-                        if (page.orientation === Orientation.Landscape)
-                            return -90;
-                        if (page.orientation === Orientation.LandscapeInverted)
-                            return 90;
-
-                        return 0;
-                    }
                     Component.onCompleted:
                     {
                         clickedOnEmptySpace.connect(page.toggleZoom);
