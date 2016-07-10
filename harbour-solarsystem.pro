@@ -14,7 +14,23 @@ TARGET = harbour-solarsystem
 
 CONFIG += sailfishapp
 
-SOURCES += src/harbour-solarsystem.cpp \
+# to disable building translations every time, comment out the
+# following CONFIG line
+CONFIG += sailfishapp_i18n
+TRANSLATIONS += \
+    translations/harbour-solarsystem-de.ts \
+    translations/harbour-solarsystem-sv.ts
+
+HEADERS += \
+    src/orbitalelementsplanet.h \
+    src/orbitalelements.h \
+    src/orbitalelementsmoon.h \
+    src/projector.h \
+    src/datetime.h \
+    src/orbitalelementssun.h
+
+SOURCES += \
+    src/harbour-solarsystem.cpp \
     src/orbitalelementsplanet.cpp \
     src/orbitalelements.cpp \
     src/orbitalelementsmoon.cpp \
@@ -22,7 +38,8 @@ SOURCES += src/harbour-solarsystem.cpp \
     src/datetime.cpp \
     src/orbitalelementssun.cpp
 
-OTHER_FILES += qml/harbour-solarsystem.qml \
+OTHER_FILES += \
+    qml/harbour-solarsystem.qml \
     rpm/harbour-solarsystem.changes.in \
     rpm/harbour-solarsystem.spec \
     rpm/harbour-solarsystem.yaml \
@@ -57,23 +74,7 @@ OTHER_FILES += qml/harbour-solarsystem.qml \
     qml/components/TopView.qml \
     qml/components/TopViewSolarBodyPainter.qml \
     qml/components/SkyView.qml \
-    qml/components/SkyViewSolarBodyPainter.qml
-
-# to disable building translations every time, comment out the
-# following CONFIG line
-CONFIG += sailfishapp_i18n
-TRANSLATIONS += translations/harbour-solarsystem-de.ts \
-    translations/harbour-solarsystem-sv.ts
-
-HEADERS += \
-    src/orbitalelementsplanet.h \
-    src/orbitalelements.h \
-    src/orbitalelementsmoon.h \
-    src/projector.h \
-    src/datetime.h \
-    src/orbitalelementssun.h
-
-DISTFILES += \
+    qml/components/SkyViewSolarBodyPainter.qml \
     qml/components/SolarBody.qml \
     qml/gfx/m_moon.png \
     qml/gfx/s_moon.png \
@@ -107,3 +108,4 @@ DISTFILES += \
     qml/components/SkyViewRotationSensor.qml \
     qml/gfx/sensor.png
 
+SAILFISHAPP_ICONS = 86x86 108x108 128x128 256x256
