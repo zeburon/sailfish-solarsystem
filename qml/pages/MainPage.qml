@@ -195,26 +195,47 @@ Page
             {
                 title: qsTr("Solar System")
 
-                Image
+                Row
                 {
-                    id: zoomImage
-
                     anchors { left: parent.left; leftMargin: Theme.paddingLarge; verticalCenter: parent.verticalCenter }
-                    visible: (topView.visible && !settings.simplifiedOrbits) || skyView.visible
-                    source: (topView.visible && settings.zoomedOutTopView) || (skyView.visible && settings.zoomedOutSkyView) ? "../gfx/zoom_in.png" : "../gfx/zoom_out.png"
-                }
-                Text
-                {
-                    id: helpText
+                    spacing: Theme.paddingSmall
 
-                    anchors { left: zoomImage.left; leftMargin: zoomImage.visible ? zoomImage.width : 0; verticalCenter: zoomImage.verticalCenter; margins: Theme.paddingSmall }
-                    color: Theme.secondaryHighlightColor
-                    font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
-                    opacity: helpTextTimer.running ? 1 : 0
-
-                    Behavior on opacity
+                    Image
                     {
-                        NumberAnimation { easing.type: Easing.InOutQuart; duration: 500 }
+                        id: zoomImage
+
+                        visible: (topView.visible && !settings.simplifiedOrbits) || skyView.visible
+                        source: (topView.visible && settings.zoomedOutTopView) || (skyView.visible && settings.zoomedOutSkyView) ? "../gfx/zoom_in.png" : "../gfx/zoom_out.png"
+                    }
+                    Image
+                    {
+                        id: sensorImage
+
+                        visible: skyView.visible && settings.trackOrientation
+                        source: "../gfx/sensor.png"
+
+                        SequentialAnimation
+                        {
+                            running: true
+                            loops: Animation.Infinite
+
+                            NumberAnimation { target: sensorImage; property: "opacity"; from: 0.5; to: 1.0; easing.type: Easing.InOutSine; duration: 600 }
+                            NumberAnimation { target: sensorImage; property: "opacity"; from: 1.0; to: 0.5; easing.type: Easing.InOutSine; duration: 600 }
+                        }
+                    }
+                    Text
+                    {
+                        id: helpText
+
+                        anchors { verticalCenter: parent.verticalCenter }
+                        color: Theme.secondaryHighlightColor
+                        font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
+                        opacity: helpTextTimer.running ? 1 : 0
+
+                        Behavior on opacity
+                        {
+                            NumberAnimation { easing.type: Easing.InOutQuart; duration: 500 }
+                        }
                     }
                 }
                 Timer

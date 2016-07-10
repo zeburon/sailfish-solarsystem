@@ -145,7 +145,7 @@ Canvas
             context.globalAlpha = 0.6 * calculateOpacity(coordinates.x, coordinates.y);
             drawCircle(context, coordinates, color, 5);
             context.fillStyle = color;
-            context.fillText(label,  coordinates.x, coordinates.y - 5);
+            context.fillText(label, coordinates.x, coordinates.y - 10);
         }
     }
 
