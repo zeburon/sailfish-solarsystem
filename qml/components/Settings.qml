@@ -16,7 +16,6 @@ QtObject
     property bool showEcliptic: true;                              property string showEclipticKey: "showEcliptic"
     property bool showEquator: false;                              property string showEquatorKey: "showEquator"
     property bool showAzimuth: false;                              property string showAzimuthKey: "showAzimuth"
-    property bool showBackground: false;                           property string showBackgroundKey: "showBackground"
     property string dateTime: "";                                  property string dateTimeKey: "dateTime"
     property string dateFormat: Globals.DATE_FORMATS[0];           property string dateFormatKey: "dateFormat"
     property string pressureUnit: Globals.PRESSURE_UNITS[0];       property string pressureUnitKey: "pressureUnit"
@@ -72,11 +71,6 @@ QtObject
         var storedShowAzimuth = Storage.getValue(showAzimuthKey);
         if (storedShowAzimuth)
             showAzimuth = storedShowAzimuth === "true";
-
-        // load showBackground
-        var storedShowBackground = Storage.getValue(showBackgroundKey);
-        if (storedShowBackground)
-            showBackground = storedShowBackground === "true";
 
         // load dateTime
         var storedDateTime = Storage.getValue(dateTimeKey);
@@ -193,10 +187,6 @@ QtObject
     onShowAzimuthChanged:
     {
         Storage.setValue(showAzimuthKey, showAzimuth);
-    }
-    onShowBackgroundChanged:
-    {
-        Storage.setValue(showBackgroundKey, showBackground);
     }
     onDateTimeChanged:
     {

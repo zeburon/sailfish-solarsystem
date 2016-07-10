@@ -17,7 +17,6 @@ Canvas
     property bool showAzimuth: true
     property bool showEquator: true
     property bool showEcliptic: true
-    property bool showBackground: true
     property bool zoomedOut: false
     property bool animateSun: true
     property bool animateZoom: false
@@ -586,18 +585,6 @@ Canvas
         fieldOfView: root.currentFieldOfView
     }
 
-    Image
-    {
-        id: background
-
-        anchors { centerIn: parent }
-        z: -10000
-        opacity: 0.65
-        source: "../gfx/background.png"
-        width: visibleRadius * 2
-        height: visibleRadius * 2
-        visible: showBackground
-    }
     Item
     {
         id: items

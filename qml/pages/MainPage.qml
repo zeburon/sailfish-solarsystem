@@ -286,7 +286,6 @@ Page
                     showAzimuth: settings.showAzimuth
                     showEcliptic: settings.showEcliptic
                     showEquator: settings.showEquator
-                    showBackground: false//settings.showBackground
                     zoomedOut: settings.zoomedOutSkyView
                     fieldOfViewZoomedIn: page.isPortrait ? 90 : 70
                     fieldOfViewZoomedOut: 120
