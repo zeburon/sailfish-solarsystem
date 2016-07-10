@@ -447,7 +447,7 @@ Canvas
         {
             trackedPainter.applyRelativeCoordinates();
             longitudeLookOffset = 180.0 - trackedPainter.azimuthalLongitude;
-            latitudeLookOffset = trackedPainter.azimuthalLatitude;
+            latitudeLookOffset  = trackedPainter.azimuthalLatitude;
             projector.update();
 
             var riseTransitSetTimes = projector.getRiseTransitSetTimes(trackedPainter.geocentricLongitude, trackedPainter.geocentricLatitude, trackedPainter.solarBody.orbitalElements.averageLongitudeChangePerDay / 24.0);
@@ -553,7 +553,7 @@ Canvas
             visible: painter.visible && root.showLabels
             opacity: painter.displayedOpacity
             yOffsetScale: root.currentZoom
-            highlight: painter === root.trackedPainter
+            highlighted: painter === root.trackedPainter
         }
     }
 
@@ -719,10 +719,14 @@ Canvas
     }
     Behavior on displayedLongitudeLookOffset
     {
+        enabled: !trackedPainter
+
         RotationAnimation { id: longitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: rotationSensor.active ? 800 : 100 }
     }
     Behavior on displayedLatitudeLookOffset
     {
+        enabled: !trackedPainter
+
         RotationAnimation { id: latitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: rotationSensor.active ? 800 : 100 }
     }
     Behavior on lookRotation
