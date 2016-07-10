@@ -1,10 +1,11 @@
 Solar System for Sailfish OS
 ===========================
 
+<img src="qml/gfx/about.png"/>
+
 Displays the planetary positions of our solar system. Watch how the planets move over time by activating the animation or by jumping to a specific date.
 
 Inspired by the Solar system Plasmoid for the KDE desktop.
-
 
 License
 -------
