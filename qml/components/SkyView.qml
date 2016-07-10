@@ -599,7 +599,15 @@ Canvas
         visible: trackedPainter !== null
         horizontalAlignment: Text.Left
         verticalAlignment: Text.Bottom
-        anchors { left: parent.left; bottom: parent.bottom }
+        anchors { left: parent.left; leftMargin: Theme.paddingLarge; bottom: parent.bottom }
+
+        Label
+        {
+            anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.top }
+            color: parent.highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
+            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeSmall }
+            text: qsTr("Rise")
+        }
     }
     RiseAndSetLabel
     {
@@ -609,6 +617,14 @@ Canvas
         horizontalAlignment: Text.Center
         verticalAlignment: Text.Bottom
         anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom }
+
+        Label
+        {
+            anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.top }
+            color: parent.highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
+            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeSmall }
+            text: qsTr("Transit")
+        }
     }
     RiseAndSetLabel
     {
@@ -617,7 +633,15 @@ Canvas
         visible: trackedPainter !== null
         horizontalAlignment: Text.Right
         verticalAlignment: Text.Bottom
-        anchors { right: parent.right; bottom: parent.bottom }
+        anchors { right: parent.right; rightMargin: Theme.paddingLarge; bottom: parent.bottom }
+
+        Label
+        {
+            anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.top }
+            color: parent.highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
+            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeSmall }
+            text: qsTr("Set")
+        }
     }
 
     MouseArea

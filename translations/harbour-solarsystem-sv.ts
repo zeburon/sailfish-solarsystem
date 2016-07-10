@@ -324,6 +324,18 @@
         <source>S</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Rise</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SolarSystem</name>

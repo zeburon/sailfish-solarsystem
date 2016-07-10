@@ -4,7 +4,6 @@ import Sailfish.Silica 1.0
 Label
 {
     property real time
-    property bool verticalMode: true
     property bool highlighted: true
 
     // -----------------------------------------------------------------------
@@ -24,20 +23,17 @@ Label
         var minutes = Math.floor((time - hours) * 60);
 
         // next day
+        var daysString = "";
         if (hours >= 24)
         {
             hours %= 24;
-            dateLabel.text = "+1d";
+            daysString = " +1d";
         }
         // previous day
         else if (hours < 0)
         {
             hours = 24 + (hours % 24);
-            dateLabel.text = "-1d";
-        }
-        else
-        {
-            dateLabel.text = "";
+            daysString = " -1d";
         }
 
         var hoursString = hours.toString();
@@ -48,19 +44,6 @@ Label
         if (minutes < 10)
             minutesString = "0" + minutesString;
 
-        text = hoursString + ":" + minutesString;
-    }
-
-    // -----------------------------------------------------------------------
-
-    Label
-    {
-        id: dateLabel
-
-        color: highlighted ? Theme.secondaryHighlightColor : Theme.primaryColor
-        font { family: Theme.fontFamily; pixelSize: verticalMode ? Theme.fontSizeTiny : Theme.fontSizeSmall }
-        anchors { left: verticalMode ? undefined : parent.horizontalCenter; leftMargin: verticalMode ? 0 : parent.contentWidth / 2 + Theme.paddingSmall; verticalCenter: verticalMode ? undefined : parent.verticalCenter; bottom: verticalMode ? parent.top : undefined; horizontalCenter: verticalMode ? parent.horizontalCenter : undefined }
-        horizontalAlignment: verticalMode ? Text.AlignHCenter : Text.Left
-        verticalAlignment: verticalMode ? Text.Bottom : Text.AlignVCenter
+        text = hoursString + ":" + minutesString + daysString;
     }
 }

@@ -324,6 +324,18 @@
         <source>S</source>
         <translation>S</translation>
     </message>
+    <message>
+        <source>Rise</source>
+        <translation>Aufgang</translation>
+    </message>
+    <message>
+        <source>Transit</source>
+        <translation>Meridian</translation>
+    </message>
+    <message>
+        <source>Set</source>
+        <translation>Untergang</translation>
+    </message>
 </context>
 <context>
     <name>SolarSystem</name>

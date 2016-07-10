@@ -126,7 +126,6 @@ Item
 
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
-            verticalMode: false
             highlighted: false
         }
         Label
@@ -143,7 +142,6 @@ Item
 
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
-            verticalMode: false
             highlighted: false
         }
         Label
@@ -160,7 +158,6 @@ Item
 
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
-            verticalMode: false
             highlighted: false
         }
     }
