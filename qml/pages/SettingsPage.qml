@@ -174,7 +174,7 @@ Page
 
             SectionHeader
             {
-                text: qsTr("Position")
+                text: qsTr("Geographic Position")
 
                 BusyIndicator
                 {
@@ -269,6 +269,9 @@ Page
                 onTextChanged:
                 {
                     settings.latitude = (text != "" ? text : 0.0);
+
+                    if (app.initialized)
+                        settings.positionSet = true;
                 }
             }
             TextField
@@ -286,6 +289,9 @@ Page
                 onTextChanged:
                 {
                     settings.longitude = (text != "" ? text : 0.0);
+
+                    if (app.initialized)
+                        settings.positionSet = true;
                 }
             }
         }

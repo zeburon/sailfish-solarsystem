@@ -128,7 +128,7 @@ Page
 
     function showPlanetDetailsPage(solarBody, solarSystem)
     {
-        planetDetailsPage.solarBody = solarBody;
+        planetDetailsPage.solarBody   = solarBody;
         planetDetailsPage.solarSystem = solarSystem;
         pageStack.push(planetDetailsPage);
     }
@@ -138,7 +138,7 @@ Page
     function showHelpText(text)
     {
         helpText.text = text;
-        helpTextTimer.start();
+        helpTextTimer.restart();
     }
 
     // -----------------------------------------------------------------------
@@ -198,7 +198,7 @@ Page
                 Row
                 {
                     anchors { left: parent.left; leftMargin: Theme.paddingLarge; verticalCenter: parent.verticalCenter }
-                    spacing: Theme.paddingSmall
+                    spacing: 0
 
                     Image
                     {
@@ -302,6 +302,7 @@ Page
                     width: page.isPortrait ? parent.width : page.width
                     height: page.isPortrait ? parent.width : page.height
                     visible: settings.showSkyView
+                    opacity: settings.positionSet ? 1 : 0.25
                     clip: true
                     showLabels: settings.showLabels
                     showAzimuth: settings.showAzimuth
@@ -314,6 +315,7 @@ Page
                     zoomZoomedOut: Math.min(width / height, height / width) * 0.5
                     animateSun: app.active && visible
                     animateZoom: app.initialized && visible
+                    interactive: settings.positionSet
                     Component.onCompleted:
                     {
                         clickedOnEmptySpace.connect(page.toggleZoom);
@@ -326,6 +328,18 @@ Page
                         {
                             page.update();
                         }
+                    }
+                }
+                Button
+                {
+                    anchors { centerIn: skyView }
+                    text: qsTr("Set geographic position")
+                    width: parent.width * 0.8
+                    visible: !settings.positionSet && skyView.visible
+                    onClicked:
+                    {
+                        pageStack.push(settingsPage);
+                        settings.positionSet = true;
                     }
                 }
             }

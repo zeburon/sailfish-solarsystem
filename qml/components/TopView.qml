@@ -175,9 +175,9 @@ Canvas
     function generateHelpText()
     {
         if (simplifiedOrbits)
-            showHelpText(qsTr("Click on planets for details"));
+            showHelpText(qsTr("Click planet: details"));
         else
-            showHelpText(qsTr("Click to toggle zoom"))
+            showHelpText(qsTr("Click: toggle zoom"))
     }
 
     // -----------------------------------------------------------------------

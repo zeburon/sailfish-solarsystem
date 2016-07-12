@@ -113,6 +113,10 @@
         <source>Animation Speed</source>
         <translation>Animationsgeschwindigkeit</translation>
     </message>
+    <message>
+        <source>Set geographic position</source>
+        <translation>Konfiguriere Koordinaten</translation>
+    </message>
 </context>
 <context>
     <name>PlanetDetailsPage</name>
@@ -267,10 +271,6 @@
         <translation>Längengrad in Grad</translation>
     </message>
     <message>
-        <source>Position</source>
-        <translation>Standort</translation>
-    </message>
-    <message>
         <source>Coordinates updated</source>
         <translation>Position aktualisiert</translation>
     </message>
@@ -293,6 +293,10 @@
     <message>
         <source>rise &amp; set times</source>
         <translation>Auf- und Untergang</translation>
+    </message>
+    <message>
+        <source>Geographic Position</source>
+        <translation>Geographische Koordinaten</translation>
     </message>
 </context>
 <context>
@@ -335,6 +339,22 @@
     <message>
         <source>Set</source>
         <translation>Untergang</translation>
+    </message>
+    <message>
+        <source>Tracking orientation...</source>
+        <translation>Auto Ausrichtung aktiv</translation>
+    </message>
+    <message>
+        <source>Click body: details</source>
+        <translation>Klicke Objekt: Details</translation>
+    </message>
+    <message>
+        <source>Long-click body: track</source>
+        <translation>Lang-Klicke Objekt: verfolge</translation>
+    </message>
+    <message>
+        <source>Click: toggle zoom</source>
+        <translation>Klick: zoomen</translation>
     </message>
 </context>
 <context>
@@ -387,12 +407,12 @@
 <context>
     <name>TopView</name>
     <message>
-        <source>Click on planets for details</source>
-        <translation>Klicke auf Planeten für Details</translation>
+        <source>Click planet: details</source>
+        <translation>Klicke Planet: Details</translation>
     </message>
     <message>
-        <source>Click to toggle zoom</source>
-        <translation>Klicke um zu zoomen</translation>
+        <source>Click: toggle zoom</source>
+        <translation>Klick: zoomen</translation>
     </message>
 </context>
 </TS>

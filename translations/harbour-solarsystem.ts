@@ -113,6 +113,10 @@
         <source>Animation Speed</source>
         <translation></translation>
     </message>
+    <message>
+        <source>Set geographic position</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>PlanetDetailsPage</name>
@@ -267,10 +271,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>Position</source>
-        <translation>Standort</translation>
-    </message>
-    <message>
         <source>Coordinates updated</source>
         <translation>Koordinaten aktualisiert</translation>
     </message>
@@ -292,6 +292,10 @@
     </message>
     <message>
         <source>rise &amp; set times</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Geographic Position</source>
         <translation></translation>
     </message>
 </context>
@@ -334,6 +338,22 @@
     </message>
     <message>
         <source>Set</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Tracking orientation...</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Click body: details</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Long-click body: track</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Click: toggle zoom</source>
         <translation></translation>
     </message>
 </context>
@@ -387,11 +407,11 @@
 <context>
     <name>TopView</name>
     <message>
-        <source>Click on planets for details</source>
+        <source>Click planet: details</source>
         <translation></translation>
     </message>
     <message>
-        <source>Click to toggle zoom</source>
+        <source>Click: toggle zoom</source>
         <translation></translation>
     </message>
 </context>

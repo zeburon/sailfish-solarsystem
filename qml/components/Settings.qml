@@ -30,6 +30,7 @@ QtObject
     property int coverPlanetIdx: 0;                                property string coverPlanetIdxKey: "coverPlanetIdx"
     property real latitude: 47.066;                                property string latitudeKey: "latitude"
     property real longitude: 15.433;                               property string longitudeKey: "longitude"
+    property bool positionSet: false;                              property string positionSetKey: "positionset"
 
     // -----------------------------------------------------------------------
 
@@ -141,6 +142,11 @@ QtObject
         var storedLongitude = Storage.getValue(longitudeKey);
         if (storedLongitude)
             longitude = storedLongitude;
+
+        // load positionSet
+        var storedPositionSet = Storage.getValue(positionSetKey);
+        if (storedPositionSet)
+            positionSet = storedPositionSet;
     }
 
     // -----------------------------------------------------------------------
@@ -247,5 +253,9 @@ QtObject
     onLongitudeChanged:
     {
         Storage.setValue(longitudeKey, longitude);
+    }
+    onPositionSetChanged:
+    {
+        Storage.setValue(positionSetKey, positionSet);
     }
 }

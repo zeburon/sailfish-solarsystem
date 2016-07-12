@@ -33,6 +33,7 @@ Canvas
     property real visibleRadius: 1.175 * Math.sqrt(2.0 * Math.pow(Math.max(width, height), 2.0)) * currentZoom / 2.0
     property real visibleRadiusSquared: visibleRadius * visibleRadius
     property real visibleRadiusFadeStart: visibleRadius - 40
+    property int helpTextIdx: 0
 
     // mouse-look properties
     property real longitudeLookOffset: 0
@@ -45,6 +46,7 @@ Canvas
     property int mouseYStart
     property int mouseLatitudeOffsetStart
     property bool mouseDragged: false
+    property alias interactive: mouseArea.enabled
 
     // solar system information
     property alias solarSystem: solarSystem
@@ -397,7 +399,24 @@ Canvas
 
     function generateHelpText()
     {
-        showHelpText("");
+        if (!settings.positionSet)
+        {
+            showHelpText("");
+            return;
+        }
+        if (settings.trackOrientation)
+        {
+            showHelpText(qsTr("Tracking orientation..."));
+            return;
+        }
+
+        switch (helpTextIdx)
+        {
+            case 0: showHelpText(qsTr("Click: toggle zoom")); break;
+            case 1: showHelpText(qsTr("Click body: details")); break;
+            case 2: showHelpText(qsTr("Long-click body: track")); break;
+        }
+        helpTextIdx = (helpTextIdx + 1) % 3;
     }
 
     // -----------------------------------------------------------------------
