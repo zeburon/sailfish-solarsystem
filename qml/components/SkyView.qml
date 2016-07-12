@@ -399,14 +399,9 @@ Canvas
 
     function generateHelpText()
     {
-        if (!settings.positionSet)
+        if (!settings.positionSet || settings.trackOrientation)
         {
             showHelpText("");
-            return;
-        }
-        if (settings.trackOrientation)
-        {
-            showHelpText(qsTr("Tracking orientation..."));
             return;
         }
 

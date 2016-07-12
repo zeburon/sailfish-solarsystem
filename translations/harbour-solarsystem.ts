@@ -117,6 +117,14 @@
         <source>Set geographic position</source>
         <translation></translation>
     </message>
+    <message>
+        <source>Tracking current time</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Tracking orientation</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>PlanetDetailsPage</name>
@@ -338,10 +346,6 @@
     </message>
     <message>
         <source>Set</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Tracking orientation...</source>
         <translation></translation>
     </message>
     <message>

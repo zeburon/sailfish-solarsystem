@@ -117,6 +117,14 @@
         <source>Set geographic position</source>
         <translation>Konfiguriere Koordinaten</translation>
     </message>
+    <message>
+        <source>Tracking current time</source>
+        <translation>Verwende akt. Zeit</translation>
+    </message>
+    <message>
+        <source>Tracking orientation</source>
+        <translation>Auto Ausrichtung aktiv</translation>
+    </message>
 </context>
 <context>
     <name>PlanetDetailsPage</name>
@@ -339,10 +347,6 @@
     <message>
         <source>Set</source>
         <translation>Untergang</translation>
-    </message>
-    <message>
-        <source>Tracking orientation...</source>
-        <translation>Auto Ausrichtung aktiv</translation>
     </message>
     <message>
         <source>Click body: details</source>

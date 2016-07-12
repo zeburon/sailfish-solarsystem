@@ -386,6 +386,7 @@ Page
                         onSignalActivated:
                         {
                             dateTime.setNow();
+                            showHelpText(qsTr("Tracking current time"));
                         }
                     }
                     Label
@@ -476,6 +477,8 @@ Page
                 onClicked:
                 {
                     settings.trackOrientation = !settings.trackOrientation;
+                    if (settings.trackOrientation)
+                        showHelpText(qsTr("Tracking orientation"));
                 }
             }
             /*
