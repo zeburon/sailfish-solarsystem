@@ -216,7 +216,7 @@ Page
 
                         SequentialAnimation
                         {
-                            running: true
+                            running: sensorImage.visible && app.active
                             loops: Animation.Infinite
 
                             NumberAnimation { target: sensorImage; property: "opacity"; from: 0.5; to: 1.0; easing.type: Easing.InOutSine; duration: 600 }
