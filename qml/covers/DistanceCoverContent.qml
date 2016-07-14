@@ -33,8 +33,8 @@ Item
 
     function updatePlanetDistanceLabel()
     {
-        var solarBody = bodyIdx === -1 ? solarSystem.sun : solarSystem.solarBodies[bodyIdx];
-        var result = solarSystem.getDistanceToEarth(solarBody);
+        var solarBody      = bodyIdx === -1 ? solarSystem.sun : solarSystem.solarBodies[bodyIdx];
+        var result         = solarSystem.getDistanceToEarth(solarBody);
         labelName.text     = qsTr("Distance to %1").arg(solarBody.name);
         labelDistance.text = result.toFixed(2) + " AU";
     }

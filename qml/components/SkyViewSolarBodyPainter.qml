@@ -96,7 +96,7 @@ Item
             }
 
             var elongation = Math.acos(Math.cos((sunLongitude - solarBody.orbitalElements.longitude) * Math.PI / 180) * Math.cos(solarBody.orbitalElements.latitude * Math.PI / 180));
-            var phase = 1.0 - (1.0 + Math.cos(Math.PI - elongation)) / 4.0;
+            var phase = (1.0 + Math.cos(Math.PI - elongation)) / 4.0;
             if (longitudeDifference > 180.0)
             {
                 phase = 1.0 - phase;
@@ -125,7 +125,7 @@ Item
             {
                 phase = 1.0 - phase;
             }
-            displayedPhase = 1.0 - phase;
+            displayedPhase = phase;
         }
         else
         {

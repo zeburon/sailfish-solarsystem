@@ -158,7 +158,7 @@ float Projector::getImageRotation(float longitude, float latitude) const
     QVector3D projected_coordinates1 = sphericalEclipticToScreenCoordinates(longitude, latitude, 1.0f);
     QVector3D projected_coordinates2 = sphericalEclipticToScreenCoordinates(longitude + 0.01f, latitude, 1.0f);
     return qRadiansToDegrees(qAtan2(projected_coordinates2.x() - projected_coordinates1.x(),
-                                    -(projected_coordinates2.y() - projected_coordinates1.y()))) + 90.0f;
+                                    -(projected_coordinates2.y() - projected_coordinates1.y()))) - 90.0f;
 }
 
 // -----------------------------------------------------------------------

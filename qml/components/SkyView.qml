@@ -81,9 +81,9 @@ Canvas
             painters.push(painter);
 
             var image = planetImageComponent.createObject(items, {"solarBody": solarBody, "painter": painter});
-
-            repaintImages.connect(image.requestPaint);
             images.push(image);
+            repaintImages.connect(image.requestPaint);
+
             var label = solarBodyLabelComponent.createObject(items, {"solarBody": solarBody, "painter": painter, "yOffset": image.imageHeight * 0.3});
         }
 
