@@ -457,12 +457,15 @@ Canvas
 
         // calculate new projection parameters
         projector.update();
-        if (trackedPainter && !rotationSensor.active)
+        if (trackedPainter)
         {
             trackedPainter.applyRelativeCoordinates();
-            longitudeLookOffset = 180.0 - trackedPainter.azimuthalLongitude;
-            latitudeLookOffset  = trackedPainter.azimuthalLatitude;
-            projector.update();
+            if (!rotationSensor.active)
+            {
+                longitudeLookOffset = 180.0 - trackedPainter.azimuthalLongitude;
+                latitudeLookOffset  = trackedPainter.azimuthalLatitude;
+                projector.update();
+            }
 
             var riseTransitSetTimes = projector.getRiseTransitSetTimes(trackedPainter.geocentricLongitude, trackedPainter.geocentricLatitude, trackedPainter.solarBody.orbitalElements.averageLongitudeChangePerDay / 24.0);
             riseLabel.time    = riseTransitSetTimes.x;
@@ -697,7 +700,7 @@ Canvas
         }
         onPressAndHold:
         {
-            if (!mouseDragged && !rotationSensor.active)
+            if (!mouseDragged)
                 root.pressAndHold(mouse.x, mouse.y);
         }
         onClicked:
@@ -757,13 +760,13 @@ Canvas
     }
     Behavior on displayedLongitudeLookOffset
     {
-        enabled: !trackedPainter
+        enabled: !trackedPainter || rotationSensor.active
 
         RotationAnimation { id: longitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: rotationSensor.active ? 800 : 100 }
     }
     Behavior on displayedLatitudeLookOffset
     {
-        enabled: !trackedPainter
+        enabled: !trackedPainter || rotationSensor.active
 
         RotationAnimation { id: latitudeLookOffsetAnimation; direction: RotationAnimation.Shortest; easing.type: Easing.OutQuad; duration: rotationSensor.active ? 800 : 100 }
     }
