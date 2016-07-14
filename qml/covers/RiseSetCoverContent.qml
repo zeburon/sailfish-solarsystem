@@ -21,6 +21,7 @@ Item
     {
         solarSystem.dateTime.setNow();
         updateTimeLabels();
+        solarBodyImage.requestPaint();
     }
 
     // -----------------------------------------------------------------------
@@ -92,7 +93,7 @@ Item
             height: imageHeight
             visible: true
             shadowPhase: solarBodyPainter.displayedPhase
-            shadowOpacity: 0.4
+            shadowOpacity: 0.5
             useSmallImage: false
             useLargeImage: true
             highlighted: true
