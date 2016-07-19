@@ -205,7 +205,12 @@ Page
             {
                 width: parent.width * 0.3
                 title: qsTr("Satellites")
-                value: solarBody.satelliteCount
+                value:
+                {
+                    if (solarBody.satelliteCount > 99)
+                        return qsTr("countless");
+                    return solarBody.satelliteCount;
+                }
                 unit: ""
             }
             DetailsElement

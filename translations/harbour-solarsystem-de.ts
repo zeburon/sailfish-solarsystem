@@ -198,7 +198,7 @@
     </message>
     <message>
         <source>Satellites</source>
-        <translation>Monde</translation>
+        <translation>Satelliten</translation>
     </message>
     <message>
         <source>Temperature</source>
@@ -227,6 +227,10 @@
     <message>
         <source>Sun</source>
         <translation>Sonne</translation>
+    </message>
+    <message>
+        <source>countless</source>
+        <translation>unzählige</translation>
     </message>
 </context>
 <context>

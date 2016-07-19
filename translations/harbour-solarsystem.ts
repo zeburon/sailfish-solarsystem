@@ -228,6 +228,10 @@
         <source>Sun</source>
         <translation></translation>
     </message>
+    <message>
+        <source>countless</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>RiseSetCoverContent</name>
