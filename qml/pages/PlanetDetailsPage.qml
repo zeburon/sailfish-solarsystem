@@ -11,9 +11,12 @@ Page
     // -----------------------------------------------------------------------
 
     property bool active: status === PageStatus.Active
-    property SolarBody solarBody
     property SolarSystem solarSystem
+    property SolarBody solarBody
+    property SolarBody earth: solarSystem.earth
     property bool isSun: solarBody === solarSystem.sun
+    property bool compareToEarth: settings.compareToEarth
+    readonly property real zeroKelvinInDegrees: -273.15
 
     // -----------------------------------------------------------------------
 
@@ -59,6 +62,20 @@ Page
 
     // -----------------------------------------------------------------------
 
+    function formatScale(value)
+    {
+        if (value === 1.0)
+            return qsTr("identical");
+        else if (value < 10)
+            return value.toFixed(2) + " ×";
+        else if (value < 100)
+            return value.toFixed(1) + " ×";
+        else
+            return value.toFixed(0) + " ×";
+    }
+
+    // -----------------------------------------------------------------------
+
     function formatAsSuperscript(exponent)
     {
         // <sup> tag only makes font smaller...
@@ -87,321 +104,470 @@ Page
 
     // -----------------------------------------------------------------------
 
-    Column
+    SilicaFlickable
     {
-        id: column
+        anchors { fill: parent }
+        contentHeight: column.height
 
-        anchors { left: parent.left; leftMargin: Theme.paddingSmall; right: parent.right }
-        spacing: Theme.paddingSmall
-
-        PageHeader
+        Column
         {
-            title: solarBody.name
-        }
+            id: column
 
-        SideSolarBodyImage
-        {
-            id: planetImage
+            anchors { left: parent.left; leftMargin: Theme.paddingSmall; right: parent.right }
+            spacing: Theme.paddingSmall
 
-            useSmallImage: false
-            useLargeImage: true
-            solarBody: page.solarBody
-            anchors { left: parent.left; leftMargin: 75; top: parent.top; topMargin: 75 }
-            shadowRotation: 180
-            shadowOpacity: isSun ? 0.2 : 1.0
-            axialTilt: solarBody.axialTilt
-        }
+            PageHeader
+            {
+                title: solarBody.name
 
-        SectionHeader
-        {
-            id: physicalCharacteristicsSection
-
-            text: qsTr("Physical characteristics")
-        }
-        Row
-        {
-            width: parent.width
-
-            DetailsElement
-            {
-                width: parent.width * 0.3
-                title: qsTr("Radius")
-                value: solarBody.radius.toFixed(0)
-                unit: "km"
-            }
-            DetailsElement
-            {
-                width: parent.width * 0.35
-                title: qsTr("Axial Tilt")
-                value: solarBody.axialTilt.toFixed(2)
-                unit: "°"
-            }
-            DetailsElement
-            {
-                width: parent.width * 0.35
-                title: qsTr("Rot. Period")
-                value: solarBody.rotationPeriod.toFixed(2)
-                unit: "d"
-            }
-        }
-        Row
-        {
-            width: parent.width
-
-
-            DetailsElement
-            {
-                width: parent.width * 0.3
-                title: qsTr("Volume")
-                value: formatExponentialNumber(solarBody.volume)
-                unit: "km³"
-            }
-            DetailsElement
-            {
-                width: parent.width * 0.35
-                title: qsTr("Mass")
-                value: formatExponentialNumber(solarBody.mass)
-                unit: "kg"
-            }
-            DetailsElement
-            {
-                width: parent.width * 0.35
-                title: qsTr("Density")
-                value: (solarBody.density / 1000000000).toFixed(0)
-                unit: "kg/m³"
-            }
-        }
-        Row
-        {
-            width: parent.width
-
-            DetailsElement
-            {
-                width: parent.width * 0.3
-                title: qsTr("Surface")
-                value: formatExponentialNumber(solarBody.surface)
-                unit: "km²"
-            }
-            DetailsElement
-            {
-                width: parent.width * 0.35
-                title: qsTr("Gravity")
-                value: solarBody.surfaceGravity.toFixed(2)
-                unit: "m/s²"
-            }
-            DetailsElement
-            {
-                width: parent.width * 0.35
-                title: qsTr("Escape Velocity")
-                value: (solarBody.escapeVelocity / 1000).toFixed(2)
-                unit: "km/s"
-            }
-        }
-        Row
-        {
-            width: parent.width
-
-            DetailsElement
-            {
-                width: parent.width * 0.3
-                title: qsTr("Satellites")
-                value:
+                Label
                 {
-                    if (solarBody.satelliteCount > 99)
-                        return qsTr("countless");
-                    return solarBody.satelliteCount;
-                }
-                unit: ""
-            }
-            DetailsElement
-            {
-                width: parent.width * 0.35
-                title: qsTr("Temperature")
-                value:
-                {
-                    if (settings.temperatureUnit === "°C")
-                        return "~ " + (solarBody.averageTemperature - 273.15).toFixed(0);
-                    else
-                        return "~ " + solarBody.averageTemperature.toFixed(0);
-                }
-                unit: settings.temperatureUnit
-            }
-            DetailsElement
-            {
-                width: parent.width * 0.35
-                title: qsTr("Pressure")
-                value:
-                {
-                    if (solarBody.pressure < 0)
-                        return qsTr("plenty");
-                    else if (solarBody.pressure < 0.1)
-                        return qsTr("trace");
-                    else
-                    {
-                        if (settings.pressureUnit === "bar")
-                            return (solarBody.pressure / 100000).toFixed(2);
-                        else
-                            return formatExponentialNumber(solarBody.pressure);
-                    }
-                }
-                unit:
-                {
-                    if (solarBody.pressure > 0.1)
-                        return settings.pressureUnit;
-                    return "";
+                    anchors { right: parent.right; rightMargin: Theme.paddingLarge; bottom: parent.bottom }
+                    text: qsTr("compared to %1").arg(earth.name)
+                    visible: compareToEarth
+                    color: Theme.secondaryHighlightColor
+                    font { family: Theme.fontFamily; pixelSize: Theme.fontSizeSmall }
                 }
             }
-        }
 
-        SectionHeader
-        {
-            id: orbitalCharacteristicsSection
-
-            text: qsTr("Orbital characteristics")
-            opacity: isSun ? 0 : 1
-        }
-        Row
-        {
-            width: parent.width
-            opacity: orbitalCharacteristicsSection.opacity
-
-            DetailsElement
+            SideSolarBodyImage
             {
-                width: parent.width * 0.3
-                title: qsTr("Orb. Period")
-                value:
-                {
-                    if (solarBody.orbitalElements.period < 0.1)
-                        return (solarBody.orbitalElements.period * 365.25).toFixed(2);
+                id: planetImage
 
-                    return solarBody.orbitalElements.period.toFixed(2);
-                }
-                unit:
-                {
-                    if (solarBody.orbitalElements.period < 0.1)
-                        return "d";
-
-                    return "a";
-                }
+                useSmallImage: false
+                useLargeImage: true
+                solarBody: page.solarBody
+                anchors { left: parent.left; leftMargin: 75; top: parent.top; topMargin: 75 }
+                shadowRotation: 180
+                shadowOpacity: isSun ? 0.2 : 1.0
+                axialTilt: solarBody.axialTilt
             }
-            DetailsElement
+
+            SectionHeader
             {
-                width: parent.width * 0.35
-                title: qsTr("Velocity")
-                value: (solarBody.orbitalElements.averageVelocity / 1000).toFixed(2)
-                unit: "km/s"
+                id: physicalCharacteristicsSection
+
+                text: qsTr("Physical characteristics")
             }
-            DetailsElement
-            {
-                width: parent.width * 0.35
-                title: qsTr("Inclination")
-                value: (solarBody.orbitalElements.inclination * 180 / Math.PI).toFixed(2)
-                unit: "°"
-            }
-        }
-
-        SectionHeader
-        {
-            id: distanceSection
-
-            text: qsTr("Distance to ") + (solarBody.parentSolarBody ? solarBody.parentSolarBody.name : qsTr("Sun"))
-            opacity: isSun ? 0 : 1
-        }
-        Row
-        {
-            width: parent.width
-            opacity: distanceSection.opacity
-
-            DetailsElement
-            {
-                width: parent.width * 0.3
-                title: qsTr("Average")
-                value: formatExponentialNumberIfNecessary(solarBody.orbitalElements.averageDistance)
-                unit: "AU"
-            }
-            DetailsElement
-            {
-                width: parent.width * 0.35
-                title: qsTr("Minimum")
-                value: formatExponentialNumberIfNecessary(solarBody.orbitalElements.minimumDistance)
-                unit: "AU"
-            }
-            DetailsElement
-            {
-                width: parent.width * 0.35
-                title: qsTr("Maximum")
-                value: formatExponentialNumberIfNecessary(solarBody.orbitalElements.maximumDistance)
-                unit: "AU"
-            }
-        }
-        Item
-        {
-            width: 1
-            height: Theme.paddingLarge
-        }
-
-        Row
-        {
-            id: planetComparisonRow
-
-            width: parent.width
-            height: 100
-
-            Repeater
+            Row
             {
                 width: parent.width
-                height: parent.height
-                model: solarSystem.solarBodies.length
-                delegate: Item {
-                    property SolarBody solarBody: solarSystem.solarBodies[index]
-                    property real sizePercent: Math.sqrt(solarBody.radius / solarSystem.jupiter.radius)
-                    property bool isDisplayed: solarBody === page.solarBody || solarBody == page.solarBody.parentSolarBody
 
-                    width: planetComparisonRow.width / solarSystem.visiblePlanetCount
-                    height: planetComparisonRow.height
-                    visible: solarBody.visible && !solarBody.parentSolarBody
-
-                    Rectangle
+                DetailsElement
+                {
+                    width: parent.width * 0.3
+                    title: qsTr("Radius")
+                    value:
                     {
-                        anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.top; verticalCenterOffset: parent.width / 2 }
-                        width: parent.width * sizePercent
-                        height: width
-                        radius: width / 2
-                        color: isDisplayed ? Theme.highlightColor : Theme.secondaryHighlightColor
-                        opacity: isDisplayed ? 0.75 : 0.15
+                        if (compareToEarth)
+                            return formatScale(solarBody.radius / earth.radius);
+                        else
+                            return solarBody.radius.toFixed(0);
                     }
-                    Label
+                    unit: compareToEarth ? "" : "km"
+                }
+                DetailsElement
+                {
+                    width: parent.width * 0.35
+                    title: qsTr("Axial Tilt")
+                    value:
                     {
-                        anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom }
-                        text:
-                        {
-                            if (isDisplayed)
-                                return "↔";
+                        if (compareToEarth)
+                            return formatScale(solarBody.axialTilt / earth.axialTilt);
+                        else
+                            return solarBody.axialTilt.toFixed(2);
+                    }
+                    unit: compareToEarth ? "" : "°"
+                }
+                DetailsElement
+                {
+                    width: parent.width * 0.35
+                    title: qsTr("Rot. Period")
+                    value:
+                    {
+                        if (compareToEarth)
+                            return formatScale(solarBody.rotationPeriod / earth.rotationPeriod);
+                        else
+                            return solarBody.rotationPeriod.toFixed(2);
+                    }
+                    unit: compareToEarth ? "" : "d"
+                }
+            }
+            Row
+            {
+                width: parent.width
 
-                            var distance = solarSystem.getDistanceBetweenBodies(solarBody, page.solarBody);
-                            return distance.toFixed(1) + "<sub>" + qsTr("AU") + "</unit>";
-                        }
-                        color:
+
+                DetailsElement
+                {
+                    width: parent.width * 0.3
+                    title: qsTr("Volume")
+                    value:
+                    {
+                        if (compareToEarth)
+                            return formatScale(solarBody.volume / earth.volume);
+                        else
+                            return formatExponentialNumber(solarBody.volume);
+                    }
+                    unit: compareToEarth ? "" : "km³"
+                }
+                DetailsElement
+                {
+                    width: parent.width * 0.35
+                    title: qsTr("Mass")
+                    value:
+                    {
+                        if (compareToEarth)
+                            return formatScale(solarBody.mass / earth.mass);
+                        else
+                            return formatExponentialNumber(solarBody.mass);
+                    }
+                    unit: compareToEarth ? "" : "kg"
+                }
+                DetailsElement
+                {
+                    width: parent.width * 0.35
+                    title: qsTr("Density")
+                    value:
+                    {
+                        if (compareToEarth)
+                            return formatScale(solarBody.density / earth.density);
+                        else
+                            return (solarBody.density / 1000000000).toFixed(0);
+                    }
+                    unit: compareToEarth ? "" : "kg/m³"
+                }
+            }
+            Row
+            {
+                width: parent.width
+
+                DetailsElement
+                {
+                    width: parent.width * 0.3
+                    title: qsTr("Surface")
+                    value:
+                    {
+                        if (compareToEarth)
+                            return formatScale(solarBody.surface / earth.surface);
+                        else
+                            return formatExponentialNumber(solarBody.surface)
+                    }
+                    unit: compareToEarth ? "" : "km²";
+                }
+                DetailsElement
+                {
+                    width: parent.width * 0.35
+                    title: qsTr("Gravity")
+                    value:
+                    {
+                        if (compareToEarth)
+                            return formatScale(solarBody.surfaceGravity / earth.surfaceGravity);
+                        else
+                            return solarBody.surfaceGravity.toFixed(2);
+                    }
+                    unit: compareToEarth ? "" : "m/s²"
+                }
+                DetailsElement
+                {
+                    width: parent.width * 0.35
+                    title: qsTr("Escape Velocity")
+                    value:
+                    {
+                        if (compareToEarth)
+                            return formatScale(solarBody.escapeVelocity / earth.escapeVelocity);
+                        else
+                            return (solarBody.escapeVelocity / 1000).toFixed(2);
+                    }
+                    unit: compareToEarth ? "" : "km/s"
+                }
+            }
+            Row
+            {
+                width: parent.width
+
+                DetailsElement
+                {
+                    width: parent.width * 0.3
+                    title: qsTr("Satellites")
+                    value:
+                    {
+                        if (compareToEarth)
                         {
-                            if (isDisplayed)
-                                return Theme.highlightColor;
+                            if (solarBody.satelliteCount > 99)
+                                return qsTr("more");
+                            return formatScale(solarBody.satelliteCount / earth.satelliteCount);
+                        }
+                        else
+                        {
+                            if (solarBody.satelliteCount > 99)
+                                return qsTr("countless");
+                            return solarBody.satelliteCount;
+                        }
+                    }
+                    unit: ""
+                }
+                DetailsElement
+                {
+                    width: parent.width * 0.35
+                    title: qsTr("Temperature")
+                    value:
+                    {
+                        if (compareToEarth)
+                        {
+                            if (settings.temperatureUnit === "°C")
+                                return formatScale((solarBody.averageTemperature + zeroKelvinInDegrees) / (earth.averageTemperature + zeroKelvinInDegrees));
                             else
-                                return Theme.secondaryHighlightColor;
+                                return formatScale(solarBody.averageTemperature / earth.averageTemperature);
                         }
-                        height: contentHeight
-                        textFormat: Text.RichText
-                        horizontalAlignment: Text.horizontalCenter
-                        font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
-                    }
-
-                    MouseArea
-                    {
-                        anchors { fill: parent }
-                        onClicked:
+                        else
                         {
-                            page.solarBody = solarBody;
+                            if (settings.temperatureUnit === "°C")
+                                return "~ " + (solarBody.averageTemperature + zeroKelvinInDegrees).toFixed(0);
+                            else
+                                return "~ " + solarBody.averageTemperature.toFixed(0);
                         }
                     }
+                    unit: compareToEarth ? "" : settings.temperatureUnit
+                }
+                DetailsElement
+                {
+                    width: parent.width * 0.35
+                    title: qsTr("Pressure")
+                    value:
+                    {
+                        if (compareToEarth)
+                        {
+                            if (solarBody.pressure < 0)
+                                return qsTr("more");
+                            else
+                                return formatScale(solarBody.pressure / earth.pressure);
+                        }
+                        else
+                        {
+                            if (solarBody.pressure < 0)
+                                return qsTr("plenty");
+                            else if (solarBody.pressure < 0.1)
+                                return qsTr("trace");
+                            else if (settings.pressureUnit === "bar")
+                                return (solarBody.pressure / 100000).toFixed(2);
+                            else
+                                return formatExponentialNumber(solarBody.pressure);
+                        }
+                    }
+                    unit:
+                    {
+                        if (solarBody.pressure > 0.1 && !compareToEarth)
+                            return settings.pressureUnit;
+                        return "";
+                    }
+                }
+            }
+
+            SectionHeader
+            {
+                id: orbitalCharacteristicsSection
+
+                text: qsTr("Orbital characteristics")
+                opacity: isSun ? 0 : 1
+            }
+            Row
+            {
+                width: parent.width
+                opacity: orbitalCharacteristicsSection.opacity
+
+                DetailsElement
+                {
+                    width: parent.width * 0.3
+                    title: qsTr("Orb. Period")
+                    value:
+                    {
+                        if (compareToEarth)
+                            return formatScale(solarBody.orbitalElements.period / earth.orbitalElements.period);
+                        else
+                        {
+                            if (solarBody.orbitalElements.period < 0.1)
+                                return (solarBody.orbitalElements.period * 365.25).toFixed(2);
+
+                            return solarBody.orbitalElements.period.toFixed(2);
+                        }
+                    }
+                    unit:
+                    {
+                        if (compareToEarth)
+                            return "";
+                        if (solarBody.orbitalElements.period < 0.1)
+                            return "d";
+
+                        return "a";
+                    }
+                }
+                DetailsElement
+                {
+                    width: parent.width * 0.35
+                    title: qsTr("Velocity")
+                    value:
+                    {
+                        if (compareToEarth)
+                            return formatScale(solarBody.orbitalElements.averageVelocity / earth.orbitalElements.averageVelocity);
+                        else
+                            return (solarBody.orbitalElements.averageVelocity / 1000).toFixed(2);
+                    }
+                    unit: compareToEarth ? "" : "km/s"
+                }
+                DetailsElement
+                {
+                    width: parent.width * 0.35
+                    title: qsTr("Inclination")
+                    value:
+                    {
+                        if (compareToEarth)
+                        {
+                            if (solarBody.orbitalElements.inclination === earth.orbitalElements.inclination)
+                                return formatScale(1.0);
+                            else
+                                return formatScale((solarBody.orbitalElements.inclination / earth.orbitalElements.inclination) / (360));
+                        }
+                        else
+                            return (solarBody.orbitalElements.inclination * 180 / Math.PI).toFixed(2);
+                    }
+                    unit: compareToEarth ? "" : "°"
+                }
+            }
+
+            SectionHeader
+            {
+                id: distanceSection
+
+                text: qsTr("Distance to ") + (solarBody.parentSolarBody ? solarBody.parentSolarBody.name : qsTr("Sun"))
+                opacity: isSun ? 0 : 1
+            }
+            Row
+            {
+                width: parent.width
+                opacity: distanceSection.opacity
+
+                DetailsElement
+                {
+                    width: parent.width * 0.3
+                    title: qsTr("Average")
+                    value:
+                    {
+                        if (compareToEarth)
+                            return formatScale(solarBody.orbitalElements.averageDistance / earth.orbitalElements.averageDistance);
+                        else
+                            return formatExponentialNumberIfNecessary(solarBody.orbitalElements.averageDistance);
+                    }
+                    unit: compareToEarth ? "" : "AU"
+                }
+                DetailsElement
+                {
+                    width: parent.width * 0.35
+                    title: qsTr("Minimum")
+                    value:
+                    {
+                        if (compareToEarth)
+                            return formatScale(solarBody.orbitalElements.minimumDistance / earth.orbitalElements.minimumDistance);
+                        else
+                            return formatExponentialNumberIfNecessary(solarBody.orbitalElements.minimumDistance);
+                    }
+                    unit: compareToEarth ? "" : "AU"
+                }
+                DetailsElement
+                {
+                    width: parent.width * 0.35
+                    title: qsTr("Maximum")
+                    value:
+                    {
+                        if (compareToEarth)
+                            return formatScale(solarBody.orbitalElements.maximumDistance / earth.orbitalElements.maximumDistance);
+                        else
+                            return formatExponentialNumberIfNecessary(solarBody.orbitalElements.maximumDistance);
+                    }
+                    unit: compareToEarth ? "" : "AU"
+                }
+            }
+            Item
+            {
+                width: 1
+                height: Theme.paddingLarge
+            }
+
+            Row
+            {
+                id: planetComparisonRow
+
+                width: parent.width
+                height: 100
+
+                Repeater
+                {
+                    width: parent.width
+                    height: parent.height
+                    model: solarSystem.solarBodies.length
+                    delegate: Item {
+                        property SolarBody solarBody: solarSystem.solarBodies[index]
+                        property real sizePercent: Math.sqrt(solarBody.radius / solarSystem.jupiter.radius)
+                        property bool isDisplayed: solarBody === page.solarBody || solarBody == page.solarBody.parentSolarBody
+
+                        width: planetComparisonRow.width / solarSystem.visiblePlanetCount
+                        height: planetComparisonRow.height
+                        visible: solarBody.visible && !solarBody.parentSolarBody
+
+                        Rectangle
+                        {
+                            anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.top; verticalCenterOffset: parent.width / 2 }
+                            width: parent.width * sizePercent
+                            height: width
+                            radius: width / 2
+                            color: isDisplayed ? Theme.highlightColor : Theme.secondaryHighlightColor
+                            opacity: isDisplayed ? 0.75 : 0.15
+                        }
+                        Label
+                        {
+                            anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom }
+                            text:
+                            {
+                                if (isDisplayed)
+                                    return "↔";
+
+                                var distance = solarSystem.getDistanceBetweenBodies(solarBody, page.solarBody);
+                                return distance.toFixed(1) + "<sub>" + qsTr("AU") + "</unit>";
+                            }
+                            color:
+                            {
+                                if (isDisplayed)
+                                    return Theme.highlightColor;
+                                else
+                                    return Theme.secondaryHighlightColor;
+                            }
+                            height: contentHeight
+                            textFormat: Text.RichText
+                            horizontalAlignment: Text.horizontalCenter
+                            font { family: Theme.fontFamily; pixelSize: Theme.fontSizeTiny }
+                        }
+
+                        MouseArea
+                        {
+                            anchors { fill: parent }
+                            onClicked:
+                            {
+                                page.solarBody = solarBody;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        PushUpMenu
+        {
+            MenuItem
+            {
+                text: settings.compareToEarth ? qsTr("Show absolute values") : qsTr("Compare with Earth values")
+                onClicked:
+                {
+                    settings.compareToEarth = !settings.compareToEarth;
                 }
             }
         }

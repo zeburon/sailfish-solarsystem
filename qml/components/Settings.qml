@@ -31,6 +31,7 @@ QtObject
     property real latitude: 47.066;                                property string latitudeKey: "latitude"
     property real longitude: 15.433;                               property string longitudeKey: "longitude"
     property bool positionSet: false;                              property string positionSetKey: "positionset"
+    property bool compareToEarth: false;                           property string compareToEarthKey: "compareToEarth"
 
     // -----------------------------------------------------------------------
 
@@ -147,6 +148,11 @@ QtObject
         var storedPositionSet = Storage.getValue(positionSetKey);
         if (storedPositionSet)
             positionSet = storedPositionSet;
+
+        // load compareToEarth
+        var storedCompareToEarth = Storage.getValue(compareToEarthKey);
+        if (storedCompareToEarth)
+            compareToEarth = storedCompareToEarth;
     }
 
     // -----------------------------------------------------------------------
@@ -257,5 +263,9 @@ QtObject
     onPositionSetChanged:
     {
         Storage.setValue(positionSetKey, positionSet);
+    }
+    onCompareToEarthChanged:
+    {
+        Storage.setValue(compareToEarthKey, compareToEarth);
     }
 }

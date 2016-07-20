@@ -232,6 +232,26 @@
         <source>countless</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>more</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>identical</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>compared to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show absolute values</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compare with Earth values</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RiseSetCoverContent</name>

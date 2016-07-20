@@ -22,7 +22,7 @@ Column
     {
         id: valueLabel
 
-        text: value + " <sub>" + unit + "</unit>"
+        text: value + " <sub>" + unit + "</sub>"
         color: Theme.secondaryColor
         height: contentHeight
         textFormat: Text.RichText
