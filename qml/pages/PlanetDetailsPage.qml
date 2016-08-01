@@ -66,9 +66,13 @@ Page
     {
         if (value === 1.0)
             return qsTr("identical");
-        else if (value < 10)
+        else if (Math.abs(value) < 0.001)
+            return "0 ×";
+        else if (Math.abs(value) < 0.01)
+            return value.toFixed(3) + " ×";
+        else if (Math.abs(value) < 10)
             return value.toFixed(2) + " ×";
-        else if (value < 100)
+        else if (Math.abs(value) < 100)
             return value.toFixed(1) + " ×";
         else
             return value.toFixed(0) + " ×";
@@ -426,12 +430,18 @@ Page
                             if (solarBody.orbitalElements.inclination === earth.orbitalElements.inclination)
                                 return formatScale(1.0);
                             else
-                                return formatScale((solarBody.orbitalElements.inclination / earth.orbitalElements.inclination) / (360));
+                            {
+                                var diff = solarBody.orbitalElements.inclination * 180 / Math.PI;
+                                if (diff > 0.0)
+                                    return "+" + diff.toFixed(2);
+                                else
+                                    diff.toFixed(2);
+                            }
                         }
                         else
                             return (solarBody.orbitalElements.inclination * 180 / Math.PI).toFixed(2);
                     }
-                    unit: compareToEarth ? "" : "°"
+                    unit: (compareToEarth && solarBody.orbitalElements.inclination === earth.orbitalElements.inclination) ? "" : "°"
                 }
             }
 
@@ -439,7 +449,7 @@ Page
             {
                 id: distanceSection
 
-                text: qsTr("Distance to ") + (solarBody.parentSolarBody ? solarBody.parentSolarBody.name : qsTr("Sun"))
+                text: qsTr("Distance to ") + ((solarBody.parentSolarBody && !compareToEarth) ? solarBody.parentSolarBody.name : qsTr("Sun"))
                 opacity: isSun ? 0 : 1
             }
             Row
@@ -454,7 +464,12 @@ Page
                     value:
                     {
                         if (compareToEarth)
-                            return formatScale(solarBody.orbitalElements.averageDistance / earth.orbitalElements.averageDistance);
+                        {
+                            if (solarBody.parentSolarBody)
+                                return formatScale(solarBody.parentSolarBody.orbitalElements.averageDistance / earth.orbitalElements.averageDistance);
+                            else
+                                return formatScale(solarBody.orbitalElements.averageDistance / earth.orbitalElements.averageDistance);
+                        }
                         else
                             return formatExponentialNumberIfNecessary(solarBody.orbitalElements.averageDistance);
                     }
@@ -467,7 +482,12 @@ Page
                     value:
                     {
                         if (compareToEarth)
-                            return formatScale(solarBody.orbitalElements.minimumDistance / earth.orbitalElements.minimumDistance);
+                        {
+                            if (solarBody.parentSolarBody)
+                                return formatScale(solarBody.parentSolarBody.orbitalElements.minimumDistance / earth.orbitalElements.minimumDistance);
+                            else
+                                return formatScale(solarBody.orbitalElements.minimumDistance / earth.orbitalElements.minimumDistance);
+                        }
                         else
                             return formatExponentialNumberIfNecessary(solarBody.orbitalElements.minimumDistance);
                     }
@@ -480,7 +500,12 @@ Page
                     value:
                     {
                         if (compareToEarth)
-                            return formatScale(solarBody.orbitalElements.maximumDistance / earth.orbitalElements.maximumDistance);
+                        {
+                            if (solarBody.parentSolarBody)
+                                return formatScale(solarBody.parentSolarBody.orbitalElements.maximumDistance / earth.orbitalElements.maximumDistance);
+                            else
+                                return formatScale(solarBody.orbitalElements.maximumDistance / earth.orbitalElements.maximumDistance);
+                        }
                         else
                             return formatExponentialNumberIfNecessary(solarBody.orbitalElements.maximumDistance);
                     }
