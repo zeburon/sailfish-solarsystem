@@ -147,12 +147,12 @@ QtObject
         // load positionSet
         var storedPositionSet = Storage.getValue(positionSetKey);
         if (storedPositionSet)
-            positionSet = storedPositionSet;
+            positionSet = storedPositionSet === "true";
 
         // load compareToEarth
         var storedCompareToEarth = Storage.getValue(compareToEarthKey);
         if (storedCompareToEarth)
-            compareToEarth = storedCompareToEarth;
+            compareToEarth = storedCompareToEarth === "true";
     }
 
     // -----------------------------------------------------------------------
