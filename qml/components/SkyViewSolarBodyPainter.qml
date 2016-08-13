@@ -83,8 +83,12 @@ Item
 
     function calculatePhase()
     {
-        if (solarBody === sun)
+        // sun and planets beyond mars display no or hardly any phase
+        if (solarBody === sun || solarBody.orbitalElements.distance > mars.orbitalElements.distance)
+        {
+            displayedPhase = 0.5;
             return;
+        }
 
         if (solarBody === moon)
         {
@@ -103,7 +107,7 @@ Item
             }
             displayedPhase = phase;
         }
-        else if (solarBody.orbitalElements.distance <= mars.orbitalElements.distance)
+        else
         {
             var longitudeDifference = (earth.orbitalElements.longitude - solarBody.orbitalElements.longitude) % 360.0;
             if (longitudeDifference < 0.0)
@@ -126,10 +130,6 @@ Item
                 phase = 1.0 - phase;
             }
             displayedPhase = phase;
-        }
-        else
-        {
-            displayedPhase = 0.5;
         }
     }
 
