@@ -87,6 +87,18 @@ void OrbitalElements::setLongitudeOfAscendingNode(float value)
 
 // -----------------------------------------------------------------------
 
+void OrbitalElements::setPeriod(float period)
+{
+    if (period != m_period)
+    {
+        m_period = period;
+        emit signalPeriodChanged();
+        updateOrbitalCharacteristics();
+    }
+}
+
+// -----------------------------------------------------------------------
+
 void OrbitalElements::setCenturiesSinceJ2000(float value)
 {
     if (value != m_centuries_since_j2000)
@@ -105,7 +117,6 @@ void OrbitalElements::setCenturiesSinceJ2000(float value)
 void OrbitalElements::updateOrbitalCharacteristics()
 {
     updateOrbitalDistances();
-    updateOrbitalPeriod();
     updateOrbitalLongitudeChangePerDay();
     updateOrbitalVelocity();
 }
@@ -133,25 +144,6 @@ void OrbitalElements::updateOrbitalDistances()
     {
         m_maximum_distance = maximum_distance;
         emit signalMaximumDistanceChanged();
-    }
-}
-
-// -----------------------------------------------------------------------
-
-void OrbitalElements::updateOrbitalPeriod()
-{
-    float period = 360.0f / m_mean_anomaly;
-    if (period != m_period)
-    {
-        m_period = period;
-        emit signalPeriodChanged();
-    }
-
-    float average_longitude_change_per_day = 360.0f / (m_period * 365.25f);
-    if (average_longitude_change_per_day != m_average_longitude_change_per_day)
-    {
-        m_average_longitude_change_per_day = average_longitude_change_per_day;
-        emit signalAverageLongitudeChangePerDayChanged();
     }
 }
 

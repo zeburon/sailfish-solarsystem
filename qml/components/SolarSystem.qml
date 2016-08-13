@@ -75,6 +75,7 @@ QtObject
                 meanLongitudeStart: 252.25166724; meanLongitudePerCentury: 149472.67486623
                 longitudeOfPeriapsisStart: 77.45771895; longitudeOfPeriapsisPerCentury: 0.15940013
                 longitudeOfAscendingNodeStart: 48.33961819; longitudeOfAscendingNodePerCentury: -0.12214182
+                period: 0.24
             }
 
             axialTilt: 0.027
@@ -107,6 +108,7 @@ QtObject
                 meanLongitudeStart: 181.97970850; meanLongitudePerCentury: 58517.81560260
                 longitudeOfPeriapsisStart: 131.76755713; longitudeOfPeriapsisPerCentury: 0.05679648
                 longitudeOfAscendingNodeStart: 76.67261496; longitudeOfAscendingNodePerCentury: -0.27274174
+                period: 0.615
             }
 
             axialTilt: 177.36
@@ -139,6 +141,7 @@ QtObject
                 meanLongitudeStart: 100.46691572; meanLongitudePerCentury: 35999.37306329
                 longitudeOfPeriapsisStart: 102.93005885; longitudeOfPeriapsisPerCentury: 0.31795260
                 longitudeOfAscendingNodeStart: -5.11260389; longitudeOfAscendingNodePerCentury: -0.24123856
+                period: 1.0
             }
 
             axialTilt: 23.43
@@ -174,7 +177,7 @@ QtObject
                 meanAnomalyStart: 115.3654; meanAnomalyPerCentury: 477198.8675316225
                 argumentOfPeriapsisStart: 318.0634; argumentOfPeriapsisPerCentury: 6003.1511970075
                 longitudeOfAscendingNodeStart: 125.1228; longitudeOfAscendingNodePerCentury: -1934.1378481575
-                periodOverride: 0.07481
+                period: 0.07481
             }
 
             axialTilt: 6.687 // to orbit plane
@@ -207,6 +210,7 @@ QtObject
                 meanLongitudeStart: -4.56813164; meanLongitudePerCentury: 19140.29934243
                 longitudeOfPeriapsisStart: -23.91744784;  longitudeOfPeriapsisPerCentury: 0.45223625
                 longitudeOfAscendingNodeStart: 49.71320984; longitudeOfAscendingNodePerCentury: -0.26852431
+                period: 1.88
             }
 
             axialTilt: 25.19
@@ -239,6 +243,7 @@ QtObject
                 meanLongitudeStart: 34.33479152; meanLongitudePerCentury: 3034.90371757; meanAnomalyParameterB: -0.00012452; meanAnomalyParameterC: 0.06064060; meanAnomalyParameterS: -0.35635438; meanAnomalyParameterF: 38.35125000
                 longitudeOfPeriapsisStart: 14.27495244; longitudeOfPeriapsisPerCentury: 0.18199196
                 longitudeOfAscendingNodeStart: 100.29282654; longitudeOfAscendingNodePerCentury: 0.13024619
+                period: 11.86
             }
 
             axialTilt: 3.13
@@ -273,6 +278,7 @@ QtObject
                 meanLongitudeStart: 50.07571329; meanLongitudePerCentury: 1222.11494724; meanAnomalyParameterB: 0.00025899; meanAnomalyParameterC: 0.13434469; meanAnomalyParameterS: 0.87320147; meanAnomalyParameterF: 38.35125000
                 longitudeOfPeriapsisStart: 92.86136063; longitudeOfPeriapsisPerCentury: 0.54179478
                 longitudeOfAscendingNodeStart: 113.63998702; longitudeOfAscendingNodePerCentury: -0.25015002
+                period: 29.45
             }
 
             axialTilt: 26.73
@@ -306,6 +312,7 @@ QtObject
                 meanLongitudeStart: 314.20276625; meanLongitudePerCentury: 428.49512595; meanAnomalyParameterB: 0.00058331; meanAnomalyParameterC: -0.97731848; meanAnomalyParameterS: 0.17689245; meanAnomalyParameterF: 7.67025000
                 longitudeOfPeriapsisStart: 172.43404441; longitudeOfPeriapsisPerCentury: 0.09266985
                 longitudeOfAscendingNodeStart: 73.96250215; longitudeOfAscendingNodePerCentury: 0.05739699
+                period: 84.02
             }
 
             axialTilt: 97.77
@@ -338,6 +345,7 @@ QtObject
                 meanLongitudeStart: 304.22289287; meanLongitudePerCentury: 218.46515314; meanAnomalyParameterB: -0.00041348; meanAnomalyParameterC: 0.68346318; meanAnomalyParameterS: -0.10162547; meanAnomalyParameterF: 7.67025000
                 longitudeOfPeriapsisStart: 46.68158724; longitudeOfPeriapsisPerCentury: 0.01009938
                 longitudeOfAscendingNodeStart: 131.78635853; longitudeOfAscendingNodePerCentury: -0.00606302
+                period: 164.8
             }
 
             axialTilt: 28.32
@@ -373,6 +381,7 @@ QtObject
                 meanLongitudeStart: 238.96535011; meanLongitudePerCentury: 145.18042903; meanAnomalyParameterB: -0.01262724
                 longitudeOfPeriapsisStart: 224.09702598; longitudeOfPeriapsisPerCentury: -0.00968827
                 longitudeOfAscendingNodeStart: 110.30167986; longitudeOfAscendingNodePerCentury: -0.00809981
+                period: 248
             }
 
             axialTilt: 119.59

@@ -16,7 +16,6 @@ public:
 protected:
     virtual void updateElements();
     virtual void updateCoordinates();
-    virtual void updateOrbitalPeriod();
 };
 
 // -----------------------------------------------------------------------

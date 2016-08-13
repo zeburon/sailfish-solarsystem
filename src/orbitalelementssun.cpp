@@ -24,9 +24,3 @@ void OrbitalElementsSun::updateElements()
 void OrbitalElementsSun::updateCoordinates()
 {
 }
-
-// -----------------------------------------------------------------------
-
-void OrbitalElementsSun::updateOrbitalPeriod()
-{
-}

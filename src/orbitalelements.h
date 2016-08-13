@@ -19,7 +19,7 @@ class OrbitalElements : public QObject
     Q_PROPERTY(float averageDistance READ getAverageDistance NOTIFY signalAverageDistanceChanged)
     Q_PROPERTY(float minimumDistance READ getMinimumDistance NOTIFY signalMinimumDistanceChanged)
     Q_PROPERTY(float maximumDistance READ getMaximumDistance NOTIFY signalMaximumDistanceChanged)
-    Q_PROPERTY(float period READ getPeriod NOTIFY signalPeriodChanged)
+    Q_PROPERTY(float period READ getPeriod WRITE setPeriod NOTIFY signalPeriodChanged)
     Q_PROPERTY(float averageLongitudeChangePerDay READ getAverageLongitudeChangePerDay NOTIFY signalAverageLongitudeChangePerDayChanged)
     Q_PROPERTY(float averageVelocity READ getAverageVelocity NOTIFY signalAverageVelocityChanged)
 
@@ -46,6 +46,7 @@ public:
     float getAverageDistance() const { return m_average_distance; }
     float getMinimumDistance() const { return m_minimum_distance; }
     float getMaximumDistance() const { return m_maximum_distance; }
+    void setPeriod(float period);
     float getPeriod() const  { return m_period; }
     float getAverageLongitudeChangePerDay() const  { return m_average_longitude_change_per_day; }
     float getAverageVelocity() const { return m_average_velocity; }
@@ -89,7 +90,6 @@ protected:
     virtual void updateCoordinates() = 0;
     virtual void updateOrbitalCharacteristics();
     virtual void updateOrbitalDistances();
-    virtual void updateOrbitalPeriod();
     virtual void updateOrbitalLongitudeChangePerDay();
     virtual void updateOrbitalVelocity();
 
