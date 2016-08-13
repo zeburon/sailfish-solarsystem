@@ -252,6 +252,10 @@
         <source>Compare with Earth values</source>
         <translation></translation>
     </message>
+    <message>
+        <source>none</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>RiseSetCoverContent</name>

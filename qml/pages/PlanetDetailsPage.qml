@@ -438,10 +438,12 @@ Page
                                     diff.toFixed(2);
                             }
                         }
+                        else if (solarBody.orbitalElements.inclination === earth.orbitalElements.inclination)
+                            return qsTr("none");
                         else
                             return (solarBody.orbitalElements.inclination * 180 / Math.PI).toFixed(2);
                     }
-                    unit: (compareToEarth && solarBody.orbitalElements.inclination === earth.orbitalElements.inclination) ? "" : "°"
+                    unit: (compareToEarth || solarBody.orbitalElements.inclination === earth.orbitalElements.inclination) ? "" : "°"
                 }
             }
 
