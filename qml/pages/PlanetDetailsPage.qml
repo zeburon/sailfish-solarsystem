@@ -443,7 +443,7 @@ Page
                         else
                             return (solarBody.orbitalElements.inclination * 180 / Math.PI).toFixed(2);
                     }
-                    unit: (compareToEarth || solarBody.orbitalElements.inclination === earth.orbitalElements.inclination) ? "" : "°"
+                    unit: solarBody.orbitalElements.inclination === earth.orbitalElements.inclination ? "" : "°"
                 }
             }
 
