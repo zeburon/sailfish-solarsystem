@@ -1,450 +1,450 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="en_US">
+<TS version="2.1" language="sv">
 <context>
     <name>AboutPage</name>
     <message>
         <source>Solar System</source>
-        <translation></translation>
+        <translation>Solar System</translation>
     </message>
     <message>
         <source>Version %1</source>
-        <translation></translation>
+        <translation>Version %1</translation>
     </message>
     <message>
         <source>Planet images based on photographs taken by NASA and ESA (public domain)</source>
-        <translation></translation>
+        <translation>Planetbilder baserade på fotografier tagna av NASA och ESA (publikt tillgängliga)</translation>
     </message>
     <message>
         <source>This program is open source software licensed under the terms of the GNU General Public License.</source>
-        <translation></translation>
+        <translation>Det här programmet är öppen källkod, licensierad under villkoren för GNU General Public License.</translation>
     </message>
     <message>
         <source>GitHub Project Page</source>
-        <translation></translation>
+        <translation>GitHubs projektsida</translation>
     </message>
     <message>
         <source>Copyright © 2015 Lukas Fraser</source>
-        <translation></translation>
+        <translation>Copyright © 2015 Lukas Fraser</translation>
     </message>
     <message>
         <source>You can find the source code at the</source>
-        <translation></translation>
+        <translation>Du hittar källkoden på</translation>
     </message>
 </context>
 <context>
     <name>DistanceCoverContent</name>
     <message>
         <source>Distance to %1</source>
-        <translation></translation>
+        <translation>Avstånd till %1</translation>
     </message>
 </context>
 <context>
     <name>MainPage</name>
     <message>
         <source>About Solar System</source>
-        <translation></translation>
+        <translation>Om Solar System</translation>
     </message>
     <message>
         <source>Today</source>
-        <translation></translation>
+        <translation>I dag</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation></translation>
+        <translation>Inställningar</translation>
     </message>
     <message>
         <source>Switch to Top View</source>
-        <translation></translation>
+        <translation>Växla till översiktsvy</translation>
     </message>
     <message>
         <source>Switch to Sky View</source>
-        <translation></translation>
+        <translation>Växla till himmelsvy</translation>
     </message>
     <message>
         <source>Now</source>
-        <translation></translation>
+        <translation>Nu</translation>
     </message>
     <message>
         <source>Stop tracking orientation</source>
-        <translation></translation>
+        <translation>Sluta spåra orientering</translation>
     </message>
     <message>
         <source>Start tracking orientation</source>
-        <translation></translation>
+        <translation>Börja spåra orientering</translation>
     </message>
     <message>
         <source>Hide Ecliptic</source>
-        <translation></translation>
+        <translation>Dölj ekliptikan</translation>
     </message>
     <message>
         <source>Show Ecliptic</source>
-        <translation></translation>
+        <translation>Visa ekliptikan</translation>
     </message>
     <message>
         <source>Hide Equator</source>
-        <translation></translation>
+        <translation>Dölj ekvatorn</translation>
     </message>
     <message>
         <source>Show Equator</source>
-        <translation></translation>
+        <translation>Visa ekvatorn</translation>
     </message>
     <message>
         <source>Hide planet orbits</source>
-        <translation></translation>
+        <translation>Dölj omloppsbanor</translation>
     </message>
     <message>
         <source>Show planet orbits</source>
-        <translation></translation>
+        <translation>Visa omloppsbanor</translation>
     </message>
     <message>
         <source>Switch to realistic mode</source>
-        <translation></translation>
+        <translation>Växla till realistiskt läge</translation>
     </message>
     <message>
         <source>Switch to simplified mode</source>
-        <translation></translation>
+        <translation>Växla till förenklat läge</translation>
     </message>
     <message>
         <source>Solar System</source>
-        <translation></translation>
+        <translation>Solystemet</translation>
     </message>
     <message>
         <source>Animation Speed</source>
-        <translation></translation>
+        <translation>Animeringshastighet</translation>
     </message>
     <message>
         <source>Set geographic position</source>
-        <translation></translation>
+        <translation>Ange geografisk position</translation>
     </message>
     <message>
         <source>Tracking current time</source>
-        <translation></translation>
+        <translation>Spårning aktuell tid</translation>
     </message>
     <message>
         <source>Tracking orientation</source>
-        <translation></translation>
+        <translation>Spårningsorientering</translation>
     </message>
 </context>
 <context>
     <name>PlanetDetailsPage</name>
     <message>
         <source>Radius</source>
-        <translation></translation>
+        <translation>Radie</translation>
     </message>
     <message>
         <source>Volume</source>
-        <translation></translation>
+        <translation>Volym</translation>
     </message>
     <message>
         <source>Mass</source>
-        <translation></translation>
+        <translation>Massa</translation>
     </message>
     <message>
         <source>Density</source>
-        <translation></translation>
+        <translation>Densitet</translation>
     </message>
     <message>
         <source>Escape Velocity</source>
-        <translation></translation>
+        <translation>Flykthastighet</translation>
     </message>
     <message>
         <source>Average</source>
-        <translation></translation>
+        <translation>Medel</translation>
     </message>
     <message>
         <source>Minimum</source>
-        <translation></translation>
+        <translation>Minimum</translation>
     </message>
     <message>
         <source>Maximum</source>
-        <translation></translation>
+        <translation>Maximum</translation>
     </message>
     <message>
         <source>Velocity</source>
-        <translation></translation>
+        <translation>Hastighet</translation>
     </message>
     <message>
         <source>Axial Tilt</source>
-        <translation></translation>
+        <translation>Axellutning</translation>
     </message>
     <message>
         <source>Gravity</source>
-        <translation></translation>
+        <translation>Gravitation</translation>
     </message>
     <message>
         <source>Inclination</source>
-        <translation></translation>
+        <translation>Lutning</translation>
     </message>
     <message>
         <source>Surface</source>
-        <translation></translation>
+        <translation>Yta</translation>
     </message>
     <message>
         <source>Physical characteristics</source>
-        <translation></translation>
+        <translation>Fysiska egenskaper</translation>
     </message>
     <message>
         <source>Orbital characteristics</source>
-        <translation></translation>
+        <translation>Omloppsegenskaper</translation>
     </message>
     <message>
         <source>Rot. Period</source>
-        <translation></translation>
+        <translation>Rotationsperiod</translation>
     </message>
     <message>
         <source>Orb. Period</source>
-        <translation></translation>
+        <translation>Omloppstid</translation>
     </message>
     <message>
         <source>Satellites</source>
-        <translation></translation>
+        <translation>Satelliter</translation>
     </message>
     <message>
         <source>Temperature</source>
-        <translation></translation>
+        <translation>Temperatur</translation>
     </message>
     <message>
         <source>plenty</source>
-        <translation></translation>
+        <translation>massor</translation>
     </message>
     <message>
         <source>trace</source>
-        <translation></translation>
+        <translation>spår</translation>
     </message>
     <message>
         <source>Pressure</source>
-        <translation></translation>
+        <translation>Tryck</translation>
     </message>
     <message>
         <source>AU</source>
-        <translation></translation>
+        <translation>AE</translation>
     </message>
     <message>
         <source>Distance to </source>
-        <translation></translation>
+        <translation>Avstånd till </translation>
     </message>
     <message>
         <source>Sun</source>
-        <translation></translation>
+        <translation>Solen</translation>
     </message>
     <message>
         <source>countless</source>
-        <translation></translation>
+        <translation>otaliga</translation>
     </message>
     <message>
         <source>more</source>
-        <translation></translation>
+        <translation>mer</translation>
     </message>
     <message>
         <source>identical</source>
-        <translation></translation>
+        <translation>Identiskt</translation>
     </message>
     <message>
         <source>compared to %1</source>
-        <translation></translation>
+        <translation>jämfört med %1</translation>
     </message>
     <message>
         <source>Show absolute values</source>
-        <translation></translation>
+        <translation>Visa absoluta värden</translation>
     </message>
     <message>
         <source>Compare with Earth values</source>
-        <translation></translation>
+        <translation>Jämför med jordvärden</translation>
     </message>
     <message>
         <source>none</source>
-        <translation></translation>
+        <translation>ingen</translation>
     </message>
 </context>
 <context>
     <name>RiseSetCoverContent</name>
     <message>
         <source>Rise</source>
-        <translation></translation>
+        <translation>Uppgång</translation>
     </message>
     <message>
         <source>Transit</source>
-        <translation></translation>
+        <translation>Överresa</translation>
     </message>
     <message>
         <source>Set</source>
-        <translation></translation>
+        <translation>Nedgång</translation>
     </message>
 </context>
 <context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
-        <translation></translation>
+        <translation>Inställningar</translation>
     </message>
     <message>
         <source>Show Pluto</source>
-        <translation></translation>
+        <translation>Visa Pluto</translation>
     </message>
     <message>
         <source>Show planet names</source>
-        <translation></translation>
+        <translation>Visa planetnamn</translation>
     </message>
     <message>
         <source>Date format</source>
-        <translation></translation>
+        <translation>Datumformat</translation>
     </message>
     <message>
         <source>Pressure unit</source>
-        <translation></translation>
+        <translation>Tryckenhet</translation>
     </message>
     <message>
         <source>Temperature unit</source>
-        <translation></translation>
+        <translation>Temperaturenhet</translation>
     </message>
     <message>
         <source>Latitude in degrees</source>
-        <translation></translation>
+        <translation>Latitud i grader</translation>
     </message>
     <message>
         <source>Longitude in degrees</source>
-        <translation></translation>
+        <translation>Longitud i grader</translation>
     </message>
     <message>
         <source>Coordinates updated</source>
-        <translation>Koordinaten aktualisiert</translation>
+        <translation>Koordinater uppdaterade</translation>
     </message>
     <message>
         <source>Failed to update coordinates</source>
-        <translation>Aktualisierung fehlgeschlagen</translation>
+        <translation>Kunde inte uppdatera koordinater</translation>
     </message>
     <message>
         <source>Use current location</source>
-        <translation>Aktuelle Position setzen</translation>
+        <translation>Använd aktuell plats</translation>
     </message>
     <message>
         <source>Cover content</source>
-        <translation></translation>
+        <translation>Miniatyrinnehåll</translation>
     </message>
     <message>
         <source>planet distances</source>
-        <translation></translation>
+        <translation>planetavstånd</translation>
     </message>
     <message>
         <source>rise &amp; set times</source>
-        <translation></translation>
+        <translation>uppgång &amp; nedgångstider</translation>
     </message>
     <message>
         <source>Geographic Position</source>
-        <translation></translation>
+        <translation>Geografisk position</translation>
     </message>
 </context>
 <context>
     <name>SideSolarBodyImage</name>
     <message>
         <source>N</source>
-        <translation></translation>
+        <translation>N</translation>
     </message>
     <message>
         <source>S</source>
-        <translation></translation>
+        <translation>S</translation>
     </message>
 </context>
 <context>
     <name>SkyView</name>
     <message>
         <source>E</source>
-        <translation></translation>
+        <translation>Ö</translation>
     </message>
     <message>
         <source>N</source>
-        <translation></translation>
+        <translation>N</translation>
     </message>
     <message>
         <source>W</source>
-        <translation></translation>
+        <translation>V</translation>
     </message>
     <message>
         <source>S</source>
-        <translation></translation>
+        <translation>S</translation>
     </message>
     <message>
         <source>Rise</source>
-        <translation></translation>
+        <translation>Uppgång</translation>
     </message>
     <message>
         <source>Transit</source>
-        <translation></translation>
+        <translation>Överresa</translation>
     </message>
     <message>
         <source>Set</source>
-        <translation></translation>
+        <translation>Nedgång</translation>
     </message>
     <message>
         <source>Click body: details</source>
-        <translation></translation>
+        <translation>Tryck: Detaljinfo</translation>
     </message>
     <message>
         <source>Long-click body: track</source>
-        <translation></translation>
+        <translation>Långtryck: Spår</translation>
     </message>
     <message>
         <source>Click: toggle zoom</source>
-        <translation></translation>
+        <translation>Tryck: Växla zoomläge</translation>
     </message>
 </context>
 <context>
     <name>SolarSystem</name>
     <message>
         <source>Mercury</source>
-        <translation></translation>
+        <translation>Merkurius</translation>
     </message>
     <message>
         <source>Venus</source>
-        <translation></translation>
+        <translation>Venus</translation>
     </message>
     <message>
         <source>Earth</source>
-        <translation></translation>
+        <translation>Jorden</translation>
     </message>
     <message>
         <source>Moon</source>
-        <translation></translation>
+        <translation>Månen</translation>
     </message>
     <message>
         <source>Mars</source>
-        <translation></translation>
+        <translation>Mars</translation>
     </message>
     <message>
         <source>Jupiter</source>
-        <translation></translation>
+        <translation>Jupiter</translation>
     </message>
     <message>
         <source>Saturn</source>
-        <translation></translation>
+        <translation>Saturnus</translation>
     </message>
     <message>
         <source>Uranus</source>
-        <translation></translation>
+        <translation>Uranus</translation>
     </message>
     <message>
         <source>Neptune</source>
-        <translation></translation>
+        <translation>Neptunus</translation>
     </message>
     <message>
         <source>Pluto</source>
-        <translation></translation>
+        <translation>Pluto</translation>
     </message>
     <message>
         <source>Sun</source>
-        <translation></translation>
+        <translation>Solen</translation>
     </message>
 </context>
 <context>
     <name>TopView</name>
     <message>
         <source>Click planet: details</source>
-        <translation></translation>
+        <translation>Planettryck: Detaljinfo</translation>
     </message>
     <message>
         <source>Click: toggle zoom</source>
-        <translation></translation>
+        <translation>Tryck: Växla zoomläge</translation>
     </message>
 </context>
 </TS>
