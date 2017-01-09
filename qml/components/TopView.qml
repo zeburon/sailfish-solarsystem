@@ -182,13 +182,6 @@ Canvas
 
     // -----------------------------------------------------------------------
 
-    onShowDwarfPlanetsChanged:
-    {
-        if (initialized)
-        {
-            updateSimplifiedOrbitRadiuses();
-        }
-    }
     onSimplifiedOrbitsChanged:
     {
         if (initialized)
@@ -313,6 +306,12 @@ Canvas
         id: solarSystem
 
         showDwarfPlanets: root.showDwarfPlanets
+        onVisiblePlanetCountChanged: {
+            if (root.initialized)
+            {
+                root.updateSimplifiedOrbitRadiuses();
+            }
+        }
     }
 
     Item
