@@ -316,7 +316,7 @@ QtObject
             }
 
             axialTilt: 97.77
-            rotationPeriod: 0.718
+            rotationPeriod: -0.718
             satelliteCount: 27
             radius: 25362
             volume: 6.833e13
